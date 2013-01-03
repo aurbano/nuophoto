@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Image Editor</title>
+<link rel="stylesheet" href="lib/font-awesome.css">
+<link rel="stylesheet" href="styles.css">
+<link href='http://fonts.googleapis.com/css?family=Raleway:400' type='text/css' rel="stylesheet" >
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://dat-gui.googlecode.com/git/build/dat.gui.min.js"></script>
+<script type="text/javascript" src="src/main.js"></script>
+</head>
+
+<body>
+<h1 id="logo"><i class="icon-fire icon-large"></i> nuophoto <small>A canvas image editor</small></h1>
+<div id="gallery" class="overlayMenu">
+	<h1><i class="icon-briefcase"></i> Photo gallery</h1>
+	<p>Pick the photo you would like to edit</p>
+	<ul id="photoList">
+		<li><a href="#changePic" rel="1.jpg" style="background-image:url(img/editor/1.jpg)"></a></li>
+		<li><a href="#changePic" rel="2.png" style="background-image:url(img/editor/2.png); background-position:-23px;"></a></li>
+		<li><a href="#changePic" rel="3.jpg" style="background-image:url(img/editor/3.jpg);"></a></li>
+		<li><a href="#changePic" rel="4.jpg" style="background-image:url(img/editor/4.jpg);"></a></li>
+	</ul>
+</div>
+<div id="webPhoto" class="overlayMenu">
+	<h1><i class="icon-cloud"></i> Load from URL</h1>
+	<p>Enter the URL of the photo you would like to edit</p>
+	<p>Sorry but it's not ready yet :(</p>
+</div>
+<div id="overlay"></div>
+<div id="navBar" class="gui" style="right:270px">
+	<div class="block">
+		<h3><i class="icon-caret-right"></i> Image</h3>
+		<ul id="imageFunctions" style="display:none">
+			<li><a href="#gallery" style="border-left:#C30 solid 3px"><i class="icon-briefcase"></i> Load from gallery</a></li>
+			<li><a href="#webPhoto" style="border-left:#C30 solid 3px"><i class="icon-cloud"></i> Load from URL</a></li>
+			<li><a href="#download" style="border-left:#C30 solid 3px"><i class="icon-download-alt"></i> Save</a></li>
+		</ul>
+	</div>
+	
+	<div class="block">
+		<h3><i class="icon-caret-right"></i> Color effects</h3>
+		<ul id="colorEffects" style="display:none">
+			<li><a style="border-left:#FC0 solid 3px" href="#blackAndWhite">Black and White</a></li>
+			<li><a style="border-left:#FC0 solid 3px" href="#sepia">Sepia</a></li>
+			<li><a style="border-left:#FC0 solid 3px" href="#contrast">Contrast</a></li>
+		</ul>
+	</div>
+	<div class="block">
+		<h3><i class="icon-caret-right"></i> Artistic</h3>
+		<ul id="artisticEffects" style="display:none">
+			<li><a href="#pixelate">Pixelate</a></li>
+			<li><a href="#rgbPixels">RGB pixels</a></li>
+			<li><a href="#strokesWidthLeft">Brush left</a></li>
+			<li><a href="#strokesWidthRight">Brush right</a></li>
+			<li><a href="#strokesOpacityRight">Strokes right</a></li>
+			<li><a href="#strokesOpacityLeft">Strokes left</a></li>
+			<li><a href="#strokesOpacityVertical">Vertical strokes</a></li>
+			<li><a href="#strokesOpacityHorizontal">Horizontal strokes</a></li>
+			<li><a href="#strokesPastel">Pastel</a></li>
+			<li><a href="#squaresFilled">Filled squares</a></li>
+			<li><a href="#squaresLines">Empty squares</a></li>
+			<li><a href="#blur">Blur</a></li>
+			<li><a href="#blur2">Soft blur</a></li>
+			<li><a href="#watercolor">Watercolor</a></li>
+		</ul>
+	</div>
+</div>
+<div id="config" class="gui">
+	<div class="block">
+		<h2>History</h2>
+		<ul id="history" style="height:300px; background:#1A1A1A; border-left:solid #000 3px;"></ul>
+		<h2>Layers</h2>
+		<ul id="layers"></ul>
+	</div>
+</div>
+<canvas width="100%" height="100%" id="bg" style="color:#09F"></canvas>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26633779-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

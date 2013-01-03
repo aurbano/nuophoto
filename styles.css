@@ -1,0 +1,179 @@
+body{
+	margin:0;
+	padding:0;
+	position:relative;
+	background:#1a1a1a url(img/stressed_linen.png);
+	color:#e6e6e6;
+	font-family:Raleway, Helvetica, Arial, sans-serif;
+	font-size:100%;
+	overflow:hidden;
+	top:0;
+}
+h1{ color:#FC0; }
+h1#logo{
+	position:absolute;
+	top:20px;
+	left:50px;
+	font-size:220%;
+}
+h1 small{
+	color:#CCC;
+	font-size:40%;
+	display:block;
+	text-align:right;
+}
+#overlay{
+	background:rgba(0,0,0,0.8);
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:10;
+	display:none;
+}
+.overlayMenu{
+	position:absolute;
+	top:100px;
+	left:0;
+	z-index:11;
+	display:none;
+	text-align:center;
+	width:100%;
+	color:#FFF;
+}
+.overlayMenu ul{
+	list-style:none;
+	margin:0 auto;
+	padding:0;
+	padding-left:15px;
+	width:890px;
+	text-align:left;
+}
+.overlayMenu ul li{
+	display:inline-block;
+	margin-right:15px;
+	margin-bottom:15px;	
+}
+.overlayMenu ul li a{
+	display:block;
+	width:200px;
+	height:150px;
+	border:#FFF solid 1px;
+	padding:1px;
+	overflow:hidden;
+	background-size:cover;	
+	background-repeat: no-repeat;
+	box-shadow:#000 0 0 30px 0;
+}
+.gui{
+	position:absolute;
+	top:0;
+	right:0;
+	color:#FFF;
+	padding:0;
+	font-size:80%;
+}
+.gui .block{
+	display:block;
+	width:270px;
+	background:rgba(0,0,0,0.5);
+	float:left;
+	border-bottom:#000 solid 2px;
+	box-shadow:#333 0 0 10px 0px;
+}
+h1, h2, h3{
+	font-weight:100;
+	margin:0;
+	padding:6px 10px;
+}
+.gui h2{
+	color:#FC0;
+	border-top:#333 solid 1px;
+	border-bottom:#333 solid 1px;	
+}
+.gui h3{
+	background:#111;
+	border-top:#000 solid 1px;
+	border-bottom:#000 solid 1px;	
+	cursor:pointer;
+}
+.gui h3:hover{
+	background:#000;
+}
+.gui ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	overflow:auto;
+	max-height:300px;
+}
+.gui ul li a{
+	padding:5px 6px;
+	display:block;
+	color:#ccc;
+	text-decoration:none;
+	background:rgba(20,20,20,0.8);
+	border-bottom:transparent 1px solid;
+	border-left:#2FA1D6 solid 3px;
+	margin-left:3px;
+	border-bottom: 1px solid #2C2C2C;
+	position:relative;
+}
+.gui ul li a span{
+	position:absolute;
+	top:4px;
+	right:10px;
+	display:none;
+}
+.gui ul li a:hover span{
+	display:block;
+}
+.gui ul li a i:hover{
+	color:#F00 !important;	
+}
+.gui ul li a:hover{
+	background:rgba(0,0,0,0.8);
+	margin-left:5px;
+	color:#FFF;
+}
+.gui ul li a:hover i{
+	color:#FC0;
+}
+.gui ::-webkit-scrollbar{
+width: 15px;
+height: 15px;
+}
+.gui ::-webkit-scrollbar-button:start:decrement, .gui ::-webkit-scrollbar-button:end:increment {
+	height: 1px;
+	display: block;
+	background-color: #000;
+}
+.gui ::-webkit-scrollbar-button:horizontal:start:decrement, .gui ::-webkit-scrollbar-button:horizontal:end:increment {
+	height: 1px;
+	display: block;
+	background-color: #EFF7FF;
+}
+.gui ::-webkit-scrollbar-track-piece {
+	background-color: #000;
+}
+.gui ::-webkit-scrollbar-thumb:vertical,.gui ::-webkit-scrollbar-thumb:horizontal{
+	background-color: #333;
+	border:none;
+}
+.gui ::-webkit-scrollbar-thumb:vertical:hover,.gui ::-webkit-scrollbar-thumb:horizontal:hover{
+	background:#555;
+}
+.picker{
+	border:#000 solid 1px;
+	width:14px;
+	height:14px;
+	display:inline-block;
+	vertical-align:middle;
+	margin-bottom:1px;
+	margin-right:3px;
+}
+.picker:hover{
+	border:#000 solid 1px;
+	outline:#FFF solid 1px;	
+}
