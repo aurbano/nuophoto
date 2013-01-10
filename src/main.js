@@ -109,6 +109,23 @@ var ImgEditor = function(){
 	// --------- IMAGE FUNCTIONS ----------- //
 	
 	// Changes the current image to black and white
+	this.grayScale = function(){
+		if(this.img.i.src.length < 1) return true;
+		// Start processing
+		var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
+		var pix = imgd.data, avg;
+		for (var i = 0; n = pix.length, i < n; i += 4) {
+			// Get avg
+			avg = (pix[i]+pix[i+1]+pix[i+2])/3;
+			pix[i] = avg; // red channel
+			pix[i+1] = avg; // green channel
+			pix[i+2] = avg; // blue channel
+		}
+		this.canvas.ctx.putImageData(imgd, this.img.x, this.img.y);
+		// Reset the averages
+		this.generated = false;
+	}
+	
 	this.blackAndWhite = function(){
 		if(this.img.i.src.length < 1) return true;
 		// Start processing
@@ -117,6 +134,8 @@ var ImgEditor = function(){
 		for (var i = 0; n = pix.length, i < n; i += 4) {
 			// Get avg
 			avg = (pix[i]+pix[i+1]+pix[i+2])/3;
+			if(avg > 127) avg = 255;
+			else avg = 0;
 			pix[i] = avg; // red channel
 			pix[i+1] = avg; // green channel
 			pix[i+2] = avg; // blue channel
@@ -155,6 +174,24 @@ var ImgEditor = function(){
 			pix[i] = Math.min((.393 * pix[i]) + (.769 * pix[i+1]) + (.189 * (pix[i+2])), 255); // red channel
 			pix[i+1] = Math.min((.349 * pix[i]) + (.686 * pix[i+1]) + (.168 * (pix[i+2])), 255); // red channel
 			pix[i+2] = Math.min((.272 * pix[i]) + (.534 * pix[i+1]) + (.131 * (pix[i+2])), 255); // red channel
+		}
+		this.canvas.ctx.putImageData(imgd, this.img.x, this.img.y);
+		// Reset the averages
+		this.generated = false;
+	}
+	
+	// Changes the current image to sepia
+	this.saturate = function(){
+		if(this.img.i.src.length < 1) return true;
+		// Start processing
+		var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
+		var pix = imgd.data, avg;
+		for (var i = 0; n = pix.length, i < n; i += 4) {
+			// Get avg
+			var maxRGB = i;
+			if(pix[i+1]>pix[i]) maxRGB = i+1;
+			if(pix[i+2]>pix[maxRGB]) maxRGB = i+2;
+			pix[maxRGB] = Math.min(pix[maxRGB]+0.1*pix[maxRGB],255);
 		}
 		this.canvas.ctx.putImageData(imgd, this.img.x, this.img.y);
 		// Reset the averages
@@ -434,25 +471,7 @@ var ImgEditor = function(){
 		}
 	}
 	
-	// Simulates watercolor painting (I hope)
 	this.blur = function(){
-		if(this.img.i.src.length < 1) return true;
-		if(!this.generated) this.generateAvg();
-		var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
-		var pix = imgd.data, i=0, auxAvg;
-		for(var y = 0; y < this.img.i.height; y += this.strokeResolution){
-			for(var x = 0; x < this.img.i.width; x += this.strokeResolution){
-				// Draw strokes
-				this.circle(Math.round(this.canvas.WIDTH/2+x+this.innerMargin),Math.round(this.img.y+y),this.strokeResolution,'rgba('+this.avg[i][0]+','+this.avg[i][1]+','+this.avg[i][2]+',0.3)');
-				this.circle(Math.round(this.canvas.WIDTH/2+x+this.innerMargin),Math.round(this.img.y+y+this.strokeResolution),this.strokeResolution,'rgba('+this.avg[i][0]+','+this.avg[i][1]+','+this.avg[i][2]+',0.3)');
-				this.circle(Math.round(this.canvas.WIDTH/2+x+this.innerMargin+this.strokeResolution),Math.round(this.img.y+y),this.strokeResolution,'rgba('+this.avg[i][0]+','+this.avg[i][1]+','+this.avg[i][2]+',0.3)');
-				this.circle(Math.round(this.canvas.WIDTH/2+x+this.innerMargin+this.strokeResolution),Math.round(this.img.y+y+this.strokeResolution),this.strokeResolution,'rgba('+this.avg[i][0]+','+this.avg[i][1]+','+this.avg[i][2]+',0.3)');
-				i++;
-			}
-		}
-	}
-	
-	this.blur2 = function(){
 		if(this.img.i.src.length < 1) return true;
 		if(!this.generated) this.generateAvg();
 		var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
@@ -463,8 +482,7 @@ var ImgEditor = function(){
 				var rad = this.canvas.ctx.createRadialGradient(Math.round(this.canvas.WIDTH/2+x+this.strokeResolution/2),Math.round(this.img.y+y+this.strokeResolution/2),0.01,Math.round(this.canvas.WIDTH/2+x+this.strokeResolution/2),Math.round(this.img.y+y+this.strokeResolution/2), this.strokeResolution+20);
 				rad.addColorStop(0, 'rgba('+this.avg[i][0]+','+this.avg[i][1]+','+this.avg[i][2]+',1)');
 				rad.addColorStop(1, 'rgba('+this.avg[i][0]+','+this.avg[i][1]+','+this.avg[i][2]+',0)');
-				this.canvas.ctx.fillStyle = rad;
-    			this.canvas.ctx.fillRect(Math.round(this.canvas.WIDTH/2+x+this.innerMargin),Math.round(this.img.y+y),this.strokeResolution,this.strokeResolution);
+				this.circle(Math.round(this.canvas.WIDTH/2+x+this.innerMargin+this.strokeResolution/2),Math.round(this.img.y+y+this.strokeResolution/2), this.strokeResolution*10, rad);
 				i++;
 			}
 		}
