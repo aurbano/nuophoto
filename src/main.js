@@ -34,7 +34,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
     //the jquery.alpha.js and jquery.beta.js plugins have been loaded.
     $(function() {
         $(document).ready(function(e){
-			var editor = new imgEditor('#bg');
+			var editor = new imgEditor('#file1');
 			editor.load('img/editor/1.jpg', function(){
 				workspace.addHistory('New photo','#C30'); // Initial background layer
 				workspace.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
@@ -71,6 +71,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 				e.preventDefault();
 				if($(this).children('i').first().attr('class') == 'icon-caret-right'){
 					// Collapsed
+					workspace.closeMenus();
 					$(this).next('ul').slideDown(100);
 					$(this).children('i').first().removeClass('icon-caret-right').addClass('icon-caret-down');
 					return true;	
@@ -81,8 +82,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 			
 			$('canvas, #config').click(function(e){
 				e.preventDefault();
-				$('#navBar ul').slideUp(100);
-				$('#navBar h3 i').removeClass('icon-caret-down').addClass('icon-caret-right');
+				workspace.closeMenus();
 			});
 			
 			$('#overlay').click(function(e){

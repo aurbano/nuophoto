@@ -51,5 +51,10 @@ var workspace = {
 		$('#overlay').fadeIn(300, function(){
 			$('#webPhoto').show();
 		});
+	},
+	
+	closeMenus : function(){
+		$('#navBar ul').slideUp(100);
+		$('#navBar h3 i').removeClass('icon-caret-down').addClass('icon-caret-right');	
 	}
 };

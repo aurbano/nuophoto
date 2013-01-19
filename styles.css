@@ -89,6 +89,7 @@ h1, h2, h3{
 }
 .gui h2{
 	color:#FC0;
+	background:#111;
 	border-top:#333 solid 1px;
 	border-bottom:#333 solid 1px;	
 }
@@ -176,4 +177,30 @@ height: 15px;
 .picker:hover{
 	border:#000 solid 1px;
 	outline:#FFF solid 1px;	
+}
+/* -------- WINDOW SYSTEM -------- */
+.file{
+	position:absolute;
+	top:200px;
+	left:400px;
+	background:#999;
+	border:#000 solid 1px;
+	z-index:9;
+	padding-top:30px;
+}
+.box{
+	overflow:auto;
+	height:300px;
+	width:300px;
+}
+.topInfo{
+	position:absolute;
+	color:#CCC;
+	top:0;
+	left:0;
+	background:#333;
+	border-bottom:#000 solid 1px;
+	width:100%;
+	font-size:13px;
+	padding:3px;
 }

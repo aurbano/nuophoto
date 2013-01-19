@@ -45,8 +45,8 @@ var imgEditor = function(canvasID){
 	
 	this.drawImage = function(){
 		this.clear();
-		this.img.x = parseInt(this.canvas.WIDTH/2 - this.img.i.width - this.innerMargin);
-		this.img.y = parseInt(this.canvas.HEIGHT/2 - this.img.i.height/2);
+		this.img.x = 0;
+		this.img.y = 0;
 		
 		if(this.img.x < 0) this.img.x = 0;
 		if(this.img.y < 0) this.img.y = 0;
@@ -54,11 +54,11 @@ var imgEditor = function(canvasID){
 		this.canvas.ctx.drawImage(this.img.i, this.img.x, this.img.y);
 		
 		// Now add the white canvas to its right
-		this.background("#efefef");
+		// this.background("#efefef");
 		
 		// Divider lines
 
-		this.canvas.ctx.lineWidth = 1;
+		/*this.canvas.ctx.lineWidth = 1;
 		this.canvas.ctx.strokeStyle = '#555';
 		this.canvas.ctx.beginPath();
 		this.canvas.ctx.moveTo(0,this.img.y);
@@ -73,7 +73,7 @@ var imgEditor = function(canvasID){
 		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.innerMargin,this.canvas.HEIGHT);
 		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.img.i.width + this.innerMargin,0);
 		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.img.i.width + this.innerMargin,this.canvas.HEIGHT);
-		this.canvas.ctx.stroke();
+		this.canvas.ctx.stroke();*/
 	}
 	
 	this.background = function(color){
@@ -133,9 +133,19 @@ var imgEditor = function(canvasID){
 		this.avg = []; // clear current avg
 		
 		// Fills an array with the rgb values in average for each square in the pic
-		if(this.img.i.src.length < 1) return true; // Check if image exists
-		var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
-		var pix = imgd.data, avg1, auxAvg, points;
+		// without actually drawing the pic
+		//if(this.img.i.src.length < 1) return true; // Check if image exists
+		//var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
+		//var pix = imgd.data, avg1, auxAvg, points;
+		//
+		var canvas = document.createElement('canvas'),
+			ctx = canvas.getContext('2d'),
+			avg1,
+			auxAvg,
+			points;
+		ctx.drawImage(this.img.i, 0, 0 ),
+		pix = ctx.getImageData(0, 0, this.img.i.width, this.img.i.height);
+		//
 		for(var y = 0; y < this.img.i.height; y += this.strokeResolution){
 			for(var x = 0; x < this.img.i.width; x += this.strokeResolution){
 				auxAvg = [0, 0, 0];	// Avg
