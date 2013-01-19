@@ -1,4 +1,4 @@
-// Pixelate effect
+// Paint image using filled squares
 var exec = function(main){
 	if(main.img.i.src.length < 1) return true;
 	if(!main.generated) main.generateAvg();
@@ -9,7 +9,7 @@ var exec = function(main){
 			// Draw strokes
 			auxAvg = (main.avg[i][0]+main.avg[i][1]+main.avg[i][2])/3;
 			main.canvas.ctx.fillStyle = 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',1)';
-			main.canvas.ctx.fillRect(Math.round(main.canvas.WIDTH/2+x+main.innerMargin),Math.round(main.img.y+y),main.strokeResolution, main.strokeResolution);
+			main.canvas.ctx.fillRect(Math.round(main.canvas.WIDTH/2+x+main.innerMargin),Math.round(main.img.y+y),main.strokeResolution*(255-auxAvg)/255, main.strokeResolution*(255-auxAvg)/255);
 			i++;
 		}
 	}
