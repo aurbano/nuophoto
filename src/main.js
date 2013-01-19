@@ -31,10 +31,13 @@ requirejs.config({
 });
 
 define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
-    //the jquery.alpha.js and jquery.beta.js plugins have been loaded.
     $(function() {
+		var files = new Array();
         $(document).ready(function(e){
-			var editor = new imgEditor('#file1');
+			files.push(workspace.openFile('img/editor/1.jpg'));
+			
+			
+			/*var editor = new imgEditor('#file1');
 			editor.load('img/editor/1.jpg', function(){
 				workspace.addHistory('New photo','#C30'); // Initial background layer
 				workspace.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
@@ -46,7 +49,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 								editor.background('#' + hex);
 							}
 				});
-			});
+			});*/
 			
 			$('.gui a').click(function(e){
 				e.preventDefault();
@@ -102,7 +105,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 			});
 			
 			// Updaters
-			$(window).resize(function(e){editor.resizeCanvas(); });
+			//$(window).resize(function(e){editor.resizeCanvas(); });
 		});
 	});
 });

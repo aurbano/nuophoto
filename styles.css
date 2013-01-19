@@ -181,7 +181,7 @@ height: 15px;
 /* -------- WINDOW SYSTEM -------- */
 .file{
 	position:absolute;
-	top:200px;
+	top:100px;
 	left:400px;
 	background:#999;
 	border:#000 solid 1px;
@@ -190,8 +190,8 @@ height: 15px;
 }
 .box{
 	overflow:auto;
-	height:300px;
-	width:300px;
+	height:400px;
+	width:500px;
 }
 .topInfo{
 	position:absolute;

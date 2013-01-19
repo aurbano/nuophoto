@@ -16,6 +16,10 @@ var imgEditor = function(canvasID){
 	this.innerMargin = 20;		// Margin to each side of the canvas
 	//
 	if(canvasID == null) canvasID = 'canvas';
+	if($(canvasID).length == 0){
+		alert('File undefined');
+		return false;
+	}
 	// Canvas
 	this.canvas = {
 		elem : $(canvasID),
@@ -87,18 +91,12 @@ var imgEditor = function(canvasID){
 		p : {x:0, y:0}	// Mouse position
 	}
 	
-	this.resizeCanvas = function(canvasID) {
-		this.canvas.WIDTH = window.innerWidth;
-		this.canvas.HEIGHT = window.innerHeight;
+	this.resizeCanvas = function(h,w) {
+		this.canvas.WIDTH = w;
+		this.canvas.HEIGHT = h;
 		
 		this.canvas.elem.attr('width',this.canvas.WIDTH);
 		this.canvas.elem.attr('height',this.canvas.HEIGHT);
-		
-		// Overlay
-		$('#overlay').css({width : this.canvas.WIDTH, height : this.canvas.HEIGHT});
-		
-		// Redraw
-		this.drawImage();
 	}
 	
 	this.circle = function(x,y,rad,color){
@@ -180,6 +178,4 @@ var imgEditor = function(canvasID){
 			exec(this);
 		},this));
 	}
-	
-	this.resizeCanvas();
 };
