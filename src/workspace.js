@@ -6,44 +6,53 @@
  *	will be done in main.js
  */
 var workspace = {
-	layers : new Array(),
-	history : new Array(),
-	files : 0,
+	files : new Array(), // Will hold editor references, layers and history information
 	current : 0,
 	
-	openFile : function(src){
-		this.files++;
-		this.current = this.files;
-		var id = 'file'+this.files;
+	newFile : function(s){
+		this.current = this.files.length++;
+		var id = 'file'+this.current;
 		$('#workspace').append('<div class="file"><div class="topInfo"><div class="filename">File '+this.current+'</div><div class="fileops"><a href="#closeFile"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>');
-		// Set initial size
+		//
 		var editor = new imgEditor('#'+id);
-		var wk = this;
 		editor.resizeCanvas(400,500);
-		editor.load(src, function(){
-			wk.addHistory('New photo','#C30'); // Initial background layer
-			wk.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
-			// Colorpicker on the picker
-			$('.picker').ColorPicker({
-				color : 'efefef',
-				onChange: function (hsb, hex, rgb) {
-					$('.picker').css('backgroundColor', '#' + hex);
-					editor.background('#' + hex);
-				}
-			});
-		});
+		editor.background('#efefef');
 		// Create and return new imgEditor for this file
-		return {'src': src, 'editor' : editor};
+		this.files.push({
+			'src' : null,
+			'editor' : editor,
+			'layers' : new Array(),
+			'history' : new Array()
+		});
+		this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
+		// Colorpicker on the picker
+		$('.picker').ColorPicker({
+			color : 'efefef',
+			onChange: function (hsb, hex, rgb) {
+				$('.picker').css('backgroundColor', '#' + hex);
+				editor.background('#' + hex);
+			}
+		});
+		return true;
+	},
+	
+	loadFile : function(src, editor){
+		// Set initial size
+		var wk = this;
+		editor.load(src, function(){
+			wk.addHistory('New layer','#C30'); // Initial background layer
+		});
 	},
 	
 	addLayer : function(name, color){
-		this.layers.push(name);
+		this.files[this.current].layers.push(name);
 		var span = '', eye='';
-		if(layers.length > 1){
+		var total = this.files[this.current].length;
+		if(total > 1){
 			eye = '<i class="icon-eye-open icon-large"></i> ';
 			span = '<span><i class="icon-trash"></span>';
 		}
-		$('<li><a href="#layers" rel="'+(layers.length-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
+		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
 		$('#layers a span').unbind('click');
 		$('#layers a span').click(function(e){
 			e.preventDefault();
@@ -54,8 +63,9 @@ var workspace = {
 	},
 	
 	addHistory : function(name, color){
-		this.history.push(name);
-		$('<li><a href="#layers" rel="'+(history.length-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
+		this.files[this.current].history.push(name);
+		var total = this.files[this.current].length;
+		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
 		$('#history a').click(function(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -64,7 +74,7 @@ var workspace = {
 	},
 	
 	removeLayer : function(index){
-		this.layers.splice(index,1);
+		this.files[this.current].layers.splice(index,1);
 		$("#layers a[rel='"+index+"']").parent('li').remove();
 	},
 	
@@ -87,6 +97,6 @@ var workspace = {
 	
 	resizeEditor : function(){
 		// Overlay
-		$('#overlay').css({width : w, height : h});	
+		$('#overlay').css({width : $(window).width(), height : $(window).height()});	
 	}
 };

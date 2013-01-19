@@ -83,7 +83,7 @@ var imgEditor = function(canvasID){
 	this.background = function(color){
 		// Now add the white canvas to its right
 		this.canvas.ctx.fillStyle=color;
-		this.canvas.ctx.fillRect(this.canvas.WIDTH/2 + this.innerMargin, this.img.y, this.img.i.width, this.img.i.height);
+		this.canvas.ctx.fillRect(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT);
 	}
 	
 	this.mouse = {

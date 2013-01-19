@@ -32,30 +32,21 @@ requirejs.config({
 
 define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
     $(function() {
-		var files = new Array();
-        $(document).ready(function(e){
-			files.push(workspace.openFile('img/editor/1.jpg'));
+		$(document).ready(function(e){
+			// Resize editor
+			workspace.resizeEditor();
 			
+			// Create a new empty file
+			workspace.newFile();
 			
-			/*var editor = new imgEditor('#file1');
-			editor.load('img/editor/1.jpg', function(){
-				workspace.addHistory('New photo','#C30'); // Initial background layer
-				workspace.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
-				// Colorpicker on the picker
-				$('.picker').ColorPicker({
-					color : 'efefef',
-					onChange: function (hsb, hex, rgb) {
-								$('.picker').css('backgroundColor', '#' + hex);
-								editor.background('#' + hex);
-							}
-				});
-			});*/
 			
 			$('.gui a').click(function(e){
 				e.preventDefault();
+				// Close menu
+				workspace.closeMenus();
 				// Intercept gallery calls
-				if($(this).attr('href') == '#gallery') return displayGallery();
-				if($(this).attr('href') == '#webPhoto') return displayWebPhoto();
+				if($(this).attr('href') == '#gallery') return workspace.displayGallery();
+				if($(this).attr('href') == '#webPhoto') return workspace.displayWebPhoto();
 				if($(this).attr('href') == '#download') return alert('Not ready yet!');
 				// Copy color from tool
 				var color = $(this).css('borderLeftColor'),
@@ -63,10 +54,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 				// Normal effect
 				workspace.addHistory($(this).text(),color);
 				workspace.addLayer($(this).text(),color);
-				/*
-				// Call function
-				editor[$(this).attr('href').substring(1)]();
-				*/
+				
 				editor.applyEffect(effect);
 			});
 			
@@ -98,7 +86,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 			$('#photoList a').click(function(e){
 				e.preventDefault();
 				// Now load the new pic
-				editor.load('img/editor/'+$(this).attr('rel'));
+				workspace.loadFile('img/editor/'+$(this).attr('rel'), files[0].editor);
 				$('#gallery').fadeOut(300);
 				$('#webPhoto').fadeOut(300);
 				$('#overlay').fadeOut(300);
