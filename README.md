@@ -11,8 +11,8 @@ Nuophoto will become a nice gui to interact with it and test it out.
 Requirements:
 -------
 
-- jQuery
-- requireJS
+- [jQuery](https://github.com/jquery/jquery)
+- [requireJS](https://github.com/jrburke/requirejs)
 - imgEditor
 - workspace	(Just some gui functions bundled together)
 
