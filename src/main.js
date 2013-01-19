@@ -55,7 +55,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 				workspace.addHistory($(this).text(),color);
 				workspace.addLayer($(this).text(),color);
 				
-				editor.applyEffect(effect);
+				workspace.editor().applyEffect(effect);
 			});
 			
 			$('.gui h3').click(function(e){
@@ -86,7 +86,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 			$('#photoList a').click(function(e){
 				e.preventDefault();
 				// Now load the new pic
-				workspace.loadFile('img/editor/'+$(this).attr('rel'), files[0].editor);
+				workspace.loadFile('img/editor/'+$(this).attr('rel'));
 				$('#gallery').fadeOut(300);
 				$('#webPhoto').fadeOut(300);
 				$('#overlay').fadeOut(300);

@@ -7,10 +7,10 @@
  */
 var workspace = {
 	files : new Array(), // Will hold editor references, layers and history information
-	current : 0,
+	current : 0,		 // Current must always point to element in focus
 	
 	newFile : function(s){
-		this.current = this.files.length++;
+		this.current = 0;
 		var id = 'file'+this.current;
 		$('#workspace').append('<div class="file"><div class="topInfo"><div class="filename">File '+this.current+'</div><div class="fileops"><a href="#closeFile"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>');
 		//
@@ -36,12 +36,16 @@ var workspace = {
 		return true;
 	},
 	
-	loadFile : function(src, editor){
+	loadFile : function(src){
 		// Set initial size
 		var wk = this;
-		editor.load(src, function(){
+		this.files[this.current].editor.load(src, function(){
 			wk.addHistory('New layer','#C30'); // Initial background layer
 		});
+	},
+	
+	editor : function(){
+		return this.files[this.current].editor;
 	},
 	
 	addLayer : function(name, color){
