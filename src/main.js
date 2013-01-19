@@ -25,11 +25,12 @@
 requirejs.config({
     enforceDefine: false,
     paths: {
-        jquery: '/nuophoto/lib/jquery.min'
+        jquery: '/nuophoto/lib/jquery.min',
+		colorpicker: '/nuophoto/lib/colorpicker/js/colorpicker'
     }
 });
 
-define(["jquery", "imgEditor", "workspace"], function($) {
+define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
     //the jquery.alpha.js and jquery.beta.js plugins have been loaded.
     $(function() {
         $(document).ready(function(e){
@@ -37,6 +38,14 @@ define(["jquery", "imgEditor", "workspace"], function($) {
 			editor.load('img/editor/1.jpg', function(){
 				workspace.addHistory('New photo','#C30'); // Initial background layer
 				workspace.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
+				// Colorpicker on the picker
+				$('.picker').ColorPicker({
+					color : 'efefef',
+					onChange: function (hsb, hex, rgb) {
+								$('.picker').css('backgroundColor', '#' + hex);
+								editor.background('#' + hex);
+							}
+				});
 			});
 			
 			$('.gui a').click(function(e){

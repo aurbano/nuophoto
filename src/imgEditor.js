@@ -54,8 +54,7 @@ var imgEditor = function(canvasID){
 		this.canvas.ctx.drawImage(this.img.i, this.img.x, this.img.y);
 		
 		// Now add the white canvas to its right
-		this.canvas.ctx.fillStyle="#efefef";
-		this.canvas.ctx.fillRect(this.canvas.WIDTH/2 + this.innerMargin, this.img.y, this.img.i.width, this.img.i.height);
+		this.background("#efefef");
 		
 		// Divider lines
 
@@ -75,6 +74,12 @@ var imgEditor = function(canvasID){
 		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.img.i.width + this.innerMargin,0);
 		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.img.i.width + this.innerMargin,this.canvas.HEIGHT);
 		this.canvas.ctx.stroke();
+	}
+	
+	this.background = function(color){
+		// Now add the white canvas to its right
+		this.canvas.ctx.fillStyle=color;
+		this.canvas.ctx.fillRect(this.canvas.WIDTH/2 + this.innerMargin, this.img.y, this.img.i.width, this.img.i.height);
 	}
 	
 	this.mouse = {
