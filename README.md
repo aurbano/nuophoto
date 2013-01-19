@@ -1,15 +1,26 @@
 nuophoto
 ========
 
-JavaScript and HTML5 canvas image editor.
+> A JavaScript/HTML5 canvas image editor
 
-Temp test version available at http://lab.nuostudio.com/editor.html
+A nice editor built using imgEditor. At the moment they are the same project although as things move on I will probably separate them and create two independent projects. imgEditor will become a JS img library with editing functions and such, hopefully with less dependance on the canvas element.
 
-- - - -
-
-I am currently working on refactoring the code to use RequireJS, trying to make it easier for future modules development.
+Nuophoto will become a nice gui to interact with it and test it out.
 
 - - - -
 
-Licensed under the MIT license. Developed by Alejandro U. Alvarez
-http://urbanoalvarez.es
+Requirements:
+=====
+
+- jQuery
+- requireJS
+- imgEditor
+- workspace	(Just some gui functions bundled together)
+
+Try it out:
+=====
+
+Still in alpha stage of development. If you want to test the latest build check out:
+http://lab.nuostudio.com/editor.html
+
+**Note: The code contained in that location should be the latest build available in the Master branch**
