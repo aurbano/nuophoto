@@ -7,10 +7,9 @@ A nice editor built using imgEditor. At the moment they are the same project alt
 
 Nuophoto will become a nice gui to interact with it and test it out.
 
-- - - -
 
 Requirements:
-=====
+-------
 
 - jQuery
 - requireJS
@@ -18,9 +17,10 @@ Requirements:
 - workspace	(Just some gui functions bundled together)
 
 Try it out:
-=====
+------
 
 Still in alpha stage of development. If you want to test the latest build check out:
-http://lab.nuostudio.com/editor.html
 
-**Note: The code contained in that location should be the latest build available in the Master branch**
+- http://lab.nuostudio.com/editor.html
+
+*Note: The code contained in that location should be the latest build available in the Master branch*
