@@ -73,11 +73,12 @@ h1 small{
 	color:#FFF;
 	padding:0;
 	font-size:80%;
+	z-index:99;
 }
 .gui .block{
 	display:block;
 	width:270px;
-	background:rgba(0,0,0,0.5);
+	background:rgba(0,0,0,0.7);
 	float:left;
 	border-bottom:#000 solid 2px;
 	box-shadow:#333 0 0 10px 0px;
@@ -184,9 +185,10 @@ height: 15px;
 	top:100px;
 	left:400px;
 	background:#999;
-	border:#000 solid 1px;
-	z-index:9;
+	border:#000 solid 2px;
+	z-index:1;
 	padding-top:30px;
+	box-shadow:#000 0 0 10px 0px;
 }
 .box{
 	overflow:auto;
@@ -198,9 +200,25 @@ height: 15px;
 	color:#CCC;
 	top:0;
 	left:0;
-	background:#333;
-	border-bottom:#000 solid 1px;
+	background:#111;
+	border-bottom:#000 solid 2px;
+	border-top:#222 solid 1px;
 	width:100%;
-	font-size:13px;
-	padding:3px;
+	font-size:12px;
+}
+.filename{
+	padding:6px 10px;	
+}
+.fileops{
+	padding:8px 0;
+	position:absolute;
+	right:10px;	
+	top:0;
+}
+.fileops a{
+	color:#666;
+	text-decoration:none;
+}
+.fileops a:hover{
+	color:#C00;	
 }

@@ -15,13 +15,14 @@ var workspace = {
 		this.files++;
 		this.current = this.files;
 		var id = 'file'+this.files;
-		$('#workspace').append('<div class="file"><div class="topInfo">File '+this.current+'</div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>');
+		$('#workspace').append('<div class="file"><div class="topInfo"><div class="filename">File '+this.current+'</div><div class="fileops"><a href="#closeFile"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>');
 		// Set initial size
 		var editor = new imgEditor('#'+id);
+		var wk = this;
 		editor.resizeCanvas(400,500);
 		editor.load(src, function(){
-			this.addHistory('New photo','#C30'); // Initial background layer
-			this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
+			wk.addHistory('New photo','#C30'); // Initial background layer
+			wk.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
 			// Colorpicker on the picker
 			$('.picker').ColorPicker({
 				color : 'efefef',
