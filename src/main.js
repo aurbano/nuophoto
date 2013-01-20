@@ -55,6 +55,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				// Close menu
 				workspace.closeMenus();
 				// Intercept gallery calls
+				if($(this).attr('href') == '#newFile') return workspace.newFile();
 				if($(this).attr('href') == '#gallery') return workspace.displayGallery();
 				if($(this).attr('href') == '#webPhoto') return workspace.displayWebPhoto();
 				if($(this).attr('href') == '#download') return alert('Not ready yet!');
@@ -100,6 +101,14 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				$('#gallery').fadeOut(300);
 				$('#webPhoto').fadeOut(300);
 				$('#overlay').fadeOut(300);
+			});
+			
+			$(document).on('click',"a[href='#closeFile']",function(e){
+				e.preventDefault();
+				// Out of this scope, use workspace
+				workspace.closeFile($(this).attr('rel'));
+				// Close visually
+				$(this).parents('.file').remove();
 			});
 			
 			// Updaters

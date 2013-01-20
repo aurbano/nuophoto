@@ -7,22 +7,15 @@
  */
 var workspace = {
 	files : {}, 	// Will hold editor references, layers and history information
-	current : 0,	// Current must always point to element in focus
+	current : -1,	// Current must always point to element in focus
 	
 	newFile : function(s){
-		this.current = 0;
+		this.current++;
 		var id = 'file'+this.current;
 		$('<div class="file"><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
-			handle: '.topInfo'
+			handle: '.topInfo',
+			stack: ".file"
 		}).resizable();
-		//
-		$("a[href='#closeFile']").unbind('click').click(function(e){
-			e.preventDefault();
-			// Out of this scope, use workspace
-			workspace.closeFile($(this).attr('rel'));
-			// Close visually
-			$(this).parents('.file').remove();
-		});
 		//
 		var editor = new imgEditor('#'+id);
 		editor.resizeCanvas(400,500);
