@@ -6,26 +6,34 @@
  *	will be done in main.js
  */
 var workspace = {
-	files : new Array(), // Will hold editor references, layers and history information
-	current : 0,		 // Current must always point to element in focus
+	files : {}, 	// Will hold editor references, layers and history information
+	current : 0,	// Current must always point to element in focus
 	
 	newFile : function(s){
 		this.current = 0;
 		var id = 'file'+this.current;
-		$('<div class="file scrollbars"><div class="topInfo"><div class="filename">File '+this.current+'</div><div class="fileops"><a href="#closeFile"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		$('<div class="file"><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo'
 		}).resizable();
+		//
+		$("a[href='#closeFile']").unbind('click').click(function(e){
+			e.preventDefault();
+			// Out of this scope, use workspace
+			workspace.closeFile($(this).attr('rel'));
+			// Close visually
+			$(this).parents('.file').remove();
+		});
 		//
 		var editor = new imgEditor('#'+id);
 		editor.resizeCanvas(400,500);
 		editor.background('#efefef');
 		// Create and return new imgEditor for this file
-		this.files.push({
+		this.files[this.current] = {
 			'src' : null,
 			'editor' : editor,
 			'layers' : new Array(),
 			'history' : new Array()
-		});
+		};
 		this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
 		// Colorpicker on the picker
 		$('.picker').ColorPicker({
@@ -44,6 +52,10 @@ var workspace = {
 		this.files[this.current].editor.load(src, function(){
 			wk.addHistory('New layer','#C30'); // Initial background layer
 		});
+	},
+	
+	closeFile : function(num){
+		delete this.files.num;
 	},
 	
 	editor : function(){

@@ -130,35 +130,34 @@ var imgEditor = function(canvasID){
 	this.generateAvg = function(){
 		this.avg = []; // clear current avg
 		
-		// Fills an array with the rgb values in average for each square in the pic
-		// without actually drawing the pic
+		// Get samples from the image with the resolution set in strokeResolution
 		//if(this.img.i.src.length < 1) return true; // Check if image exists
 		//var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
 		//var pix = imgd.data, avg1, auxAvg, points;
 		//
-		var canvas = document.createElement('canvas'),
-			ctx = canvas.getContext('2d'),
-			avg1,
-			auxAvg,
-			points;
-		ctx.drawImage(this.img.i, 0, 0 ),
-		pix = ctx.getImageData(0, 0, this.img.i.width, this.img.i.height);
+		/*var canvas = document.createElement('canvas'),
+			ctx = canvas.getContext('2d'),*/
+		//var	pix;
+		//ctx.drawImage(this.img.i, 0, 0 ),
+		var pix = this.canvas.ctx.getImageData(0, 0, this.img.i.width, this.img.i.height), auxAvg, points;
 		//
-		for(var y = 0; y < this.img.i.height; y += this.strokeResolution){
-			for(var x = 0; x < this.img.i.width; x += this.strokeResolution){
+		for(var y = 0; y < pix.height; y += this.strokeResolution){
+			for(var x = 0; x < pix.width; x += this.strokeResolution){
 				auxAvg = [0, 0, 0];	// Avg
-				points = 0;	// Pixels measured for avg
+				points = 0;	// Pixels measured for avg (strokeResolution^2)
 				for(var x1 = 0; x1 < this.strokeResolution;	x1++){
-					if(x+x1 > this.img.i.width) break;
+					if(x+x1 > pix.width) break;
 					for(var y1 = 0; y1 < this.strokeResolution;	y1++){
-						if(y+y1 > this.img.i.height) break;
+						if(y+y1 > pix.height) break;
 						// I now have all needed pointers
 						// Get the index inside pix array
-						var pixIndex = ((y+y1)*this.img.i.width+x+x1)*4;
-						auxAvg[0] += pix[pixIndex];
-						auxAvg[1] += pix[pixIndex+1];
-						auxAvg[2] += pix[pixIndex+2];
+						var pixIndex = ((y+y1)*pix.width+x+x1)*4;
+						auxAvg[0] += pix.data[pixIndex];
+						auxAvg[1] += pix.data[pixIndex+1];
+						auxAvg[2] += pix.data[pixIndex+2];
 						points++;
+						//console.log(pix.data[pixIndex]);
+						//debugger;
 					}
 				}
 				// Now get final average
@@ -169,6 +168,8 @@ var imgEditor = function(canvasID){
 				this.avg.push(auxAvg);
 			}
 		}
+		console.log('Sampling done');
+		console.log(this.avg);
 		// Set flag
 		this.generated = true;
 	}
