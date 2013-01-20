@@ -59,16 +59,16 @@ var workspace = {
 	
 	closeFile : function(num){
 		delete this.files.num;
-		this.current = 0;
+		this.cleanMenus();
 	},
 	
 	switchFile : function(num){
-		$('#layers').html('');
+		this.cleanMenus();
+		// Redraw
 		for(var i=0;i<this.files[this.current].layers.length;i++){
 			this.drawLayer(i);
 		}
 		
-		$('#history').html('');
 		for(var i=0;i<this.files[this.current].history.length;i++){
 			this.drawHistory(i);
 		}
@@ -136,5 +136,10 @@ var workspace = {
 	resizeEditor : function(){
 		// Overlay
 		$('#overlay').css({width : $(window).width(), height : $(window).height()});	
+	},
+	
+	cleanMenus : function(){
+		$('#layers').html('');
+		$('#history').html('');
 	}
 };
