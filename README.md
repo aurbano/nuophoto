@@ -21,6 +21,6 @@ Try it out:
 
 Still in alpha stage of development. If you want to test the latest build check out:
 
-- http://lab.nuostudio.com/editor.html
+- http://aurbano.github.com/nuophoto
 
-*Note: The code contained in that location should be the latest build available in the Master branch*
+*Note: I merge from the master branch to the preview branch whenever everythink "is working fine".*
