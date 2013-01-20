@@ -142,28 +142,28 @@ h1, h2, h3{
 .gui ul li a:hover i{
 	color:#FC0;
 }
-.gui ::-webkit-scrollbar{
+.scrollbars ::-webkit-scrollbar{
 width: 15px;
 height: 15px;
 }
-.gui ::-webkit-scrollbar-button:start:decrement, .gui ::-webkit-scrollbar-button:end:increment {
+.scrollbars ::-webkit-scrollbar-button:start:decrement, .gui ::-webkit-scrollbar-button:end:increment {
 	height: 1px;
 	display: block;
 	background-color: #000;
 }
-.gui ::-webkit-scrollbar-button:horizontal:start:decrement, .gui ::-webkit-scrollbar-button:horizontal:end:increment {
+.scrollbars ::-webkit-scrollbar-button:horizontal:start:decrement, .gui ::-webkit-scrollbar-button:horizontal:end:increment {
 	height: 1px;
 	display: block;
 	background-color: #EFF7FF;
 }
-.gui ::-webkit-scrollbar-track-piece {
+.scrollbars ::-webkit-scrollbar-track-piece {
 	background-color: #000;
 }
-.gui ::-webkit-scrollbar-thumb:vertical,.gui ::-webkit-scrollbar-thumb:horizontal{
+.scrollbars ::-webkit-scrollbar-thumb:vertical,.gui ::-webkit-scrollbar-thumb:horizontal{
 	background-color: #333;
 	border:none;
 }
-.gui ::-webkit-scrollbar-thumb:vertical:hover,.gui ::-webkit-scrollbar-thumb:horizontal:hover{
+.scrollbars ::-webkit-scrollbar-thumb:vertical:hover,.gui ::-webkit-scrollbar-thumb:horizontal:hover{
 	background:#555;
 }
 .picker{
@@ -189,11 +189,22 @@ height: 15px;
 	z-index:1;
 	padding-top:30px;
 	box-shadow:#000 0 0 10px 0px;
+	height:400px;
+	width:500px;
 }
 .box{
 	overflow:auto;
-	height:400px;
+	height:100%;
+	width:100%;
+}
+.box canvas{
+	position:relative;
+	left:50%;
+	top:50%;
 	width:500px;
+	height:400px;
+	margin:-200px 0 0 -250px;
+
 }
 .topInfo{
 	position:absolute;
@@ -205,6 +216,7 @@ height: 15px;
 	border-top:#222 solid 1px;
 	width:100%;
 	font-size:12px;
+	cursor:move;
 }
 .filename{
 	padding:6px 10px;	

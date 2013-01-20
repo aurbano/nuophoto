@@ -25,12 +25,20 @@
 requirejs.config({
     enforceDefine: false,
     paths: {
-        jquery: '/nuophoto/lib/jquery.min',
+		// Including CDN version and local fallback in case that fails
+        jquery: ['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
+				'/nuophoto/lib/jquery.min'],
+		jqueryui : ['http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
+					'/nuophoto/lib/jqueryui.min'],
 		colorpicker: '/nuophoto/lib/colorpicker/js/colorpicker'
+    },
+	shim: {
+        'colorpicker': ['jquery'],
+        'jqueryui': ['jquery']
     }
 });
 
-define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
+define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function($) {
     $(function() {
 		$(document).ready(function(e){
 			// Resize editor
@@ -93,7 +101,7 @@ define(["jquery", "imgEditor", "workspace", "colorpicker"], function($) {
 			});
 			
 			// Updaters
-			//$(window).resize(function(e){editor.resizeCanvas(); });
+			$(window).resize(function(e){workspace.resizeEditor(); });
 		});
 	});
 });

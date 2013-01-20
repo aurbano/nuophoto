@@ -12,7 +12,9 @@ var workspace = {
 	newFile : function(s){
 		this.current = 0;
 		var id = 'file'+this.current;
-		$('#workspace').append('<div class="file"><div class="topInfo"><div class="filename">File '+this.current+'</div><div class="fileops"><a href="#closeFile"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>');
+		$('<div class="file scrollbars"><div class="topInfo"><div class="filename">File '+this.current+'</div><div class="fileops"><a href="#closeFile"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+			handle: '.topInfo'
+		}).resizable();
 		//
 		var editor = new imgEditor('#'+id);
 		editor.resizeCanvas(400,500);
