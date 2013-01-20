@@ -179,4 +179,8 @@ var imgEditor = function(canvasID){
 			exec(this);
 		},this));
 	}
+	
+	this.save = function(){
+		return this.canvas.elem.get(0).toDataURL();
+	}
 };

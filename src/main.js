@@ -74,7 +74,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				if($(this).attr('href') == '#newFile') return workspace.newFile();
 				if($(this).attr('href') == '#gallery') return workspace.displayGallery();
 				if($(this).attr('href') == '#webPhoto') return workspace.displayWebPhoto();
-				if($(this).attr('href') == '#download') return alert('Not ready yet!');
+				if($(this).attr('href') == '#download') return workspace.saveImage();
 				// Copy color from tool
 				var color = $(this).css('borderLeftColor'),
 					effect = $(this).attr('href').substring(1);

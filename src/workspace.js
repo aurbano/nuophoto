@@ -148,5 +148,10 @@ var workspace = {
 	cleanMenus : function(){
 		$('#layers').html('');
 		$('#history').html('');
+	},
+	
+	saveImage : function(){
+		var saved = this.files[this.current].editor.save();
+		window.open(saved, "Image | nuophoto", "width=600, height=400");
 	}
 };
