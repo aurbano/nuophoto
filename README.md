@@ -31,17 +31,17 @@ Roadmap
 I think it will be interesting to start tracking features I think the editor must have, so from now on.
 *Some of these are simply ideas I have, I might not develop them*
 
-[] Layer visibility (Hide/show layers)
-[] Filter options (At least a way of adding options if necessary)
-[] Display available filters automatically
-[] Selections: Apply filters to only certain parts
-[] Blending modes
-[] Layer opacity
-[] Undo/Go back to any place in history
-[] Create snapshots
-[] Load from URL
-[] Upload photo
-[] Share: Twitter, Facebook... etc
-[x] Change background color
-[x] Handle multiple files
-[x] Save photos
+- [ ] Layer visibility (Hide/show layers)
+- [ ] Filter options (At least a way of adding options if necessary)
+- [ ] Display available filters automatically
+- [ ] Selections: Apply filters to only certain parts
+- [ ] Blending modes
+- [ ] Layer opacity
+- [ ] Undo/Go back to any place in history
+- [ ] Create snapshots
+- [ ] Load from URL
+- [ ] Upload photo
+- [ ] Share: Twitter, Facebook... etc
+- [x] Change background color
+- [x] Handle multiple files
+- [x] Save photos
