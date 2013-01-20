@@ -46,8 +46,8 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 			
 			// Create a new empty file
 			workspace.newFile();
-			// Load an image
-			workspace.loadFile('img/editor/1.jpg');
+			// Preload an image (makes development faster)
+			//workspace.loadFile('img/editor/1.jpg');
 			
 			
 			$('.gui a').click(function(e){
