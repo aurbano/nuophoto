@@ -116,6 +116,13 @@ var workspace = {
 		$("#layers a[rel='"+index+"']").parent('li').remove();
 	},
 	
+	displayError : function(text){
+		$('#overlay').fadeIn(300, function(){
+			$('#errorText').html(text);
+			$('#error').show();
+		});
+	},
+	
 	displayGallery : function(){
 		$('#overlay').fadeIn(300, function(){
 			$('#gallery').show();
