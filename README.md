@@ -13,6 +13,7 @@ Requirements:
 
 - [jQuery](https://github.com/jquery/jquery)
 - [requireJS](https://github.com/jrburke/requirejs)
+- [Font Awesome](https://github.com/FortAwesome/Font-Awesome)
 - imgEditor
 - workspace	(Just some gui functions bundled together)
 
@@ -23,4 +24,4 @@ Still in alpha stage of development. If you want to test the latest build check 
 
 - http://aurbano.github.com/nuophoto
 
-*Note: I merge from the master branch to the preview branch whenever everythink "is working fine".*
+*Note: I merge from the master branch to the preview branch whenever everything "is working fine".*

@@ -14,7 +14,14 @@ var workspace = {
 		var id = 'file'+this.current;
 		$('<div class="file"><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
-			stack: ".file"
+			stack: ".file",
+			start: function(event, ui) {
+				var id = $(this).find("a[href='#closeFile']").attr('rel');
+				if(id == workspace.current) return true;
+				workspace.current = id;
+				if(id !== undefined) return workspace.switchFile(id);
+				return true;
+			}
 		}).resizable();
 		//
 		var editor = new imgEditor('#'+id);
@@ -27,6 +34,7 @@ var workspace = {
 			'layers' : new Array(),
 			'history' : new Array()
 		};
+		this.switchFile(this.current);
 		this.addHistory('New file','#3FC230'); // Initial background layer
 		this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
 		// Colorpicker on the picker
@@ -51,6 +59,22 @@ var workspace = {
 	
 	closeFile : function(num){
 		delete this.files.num;
+		this.current = 0;
+	},
+	
+	switchFile : function(num){
+		$('#layers').html('');
+		console.log("Number of layers: "+this.files[this.current].layers.length);
+		for(var i=0;i<this.files[this.current].layers.length;i++){
+			this.drawLayer(i);
+		}
+		
+		$('#history').html('');
+		for(var i=0;i<this.files[this.current].history.length;i++){
+			this.drawHistory(i);
+		}
+		
+		return true;
 	},
 	
 	editor : function(){
@@ -58,32 +82,31 @@ var workspace = {
 	},
 	
 	addLayer : function(name, color){
-		this.files[this.current].layers.push(name);
-		var span = '', eye='';
-		var total = this.files[this.current].length;
+		this.files[this.current].layers.push({'name' : name, 'color' : color});
+		this.drawLayer(this.files[this.current].layers.length-1);
+	},
+	
+	drawLayer : function(num){
+		var span = '',
+			eye='',
+			total = this.files[this.current].layers.length,
+			name = this.files[this.current].layers[num].name,
+			color = this.files[this.current].layers[num].color;
 		if(total > 1){
 			eye = '<i class="icon-eye-open icon-large"></i> ';
 			span = '<span><i class="icon-trash"></span>';
 		}
 		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
-		$('#layers a span').unbind('click');
-		$('#layers a span').click(function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			var index = $(this).parent().attr('rel');
-			removeLayer(index);
-		});
 	},
 	
 	addHistory : function(name, color){
-		this.files[this.current].history.push(name);
-		var total = this.files[this.current].length;
-		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
-		$('#history a').click(function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			console.log('Going back in time');
-		});
+		this.files[this.current].history.push({'name' : name, 'color' : color});
+		var total = this.files[this.current].history.length;
+		
+	},
+	
+	drawHistory : function(num){
+		$('<li><a href="#history" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
 	},
 	
 	removeLayer : function(index){

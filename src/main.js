@@ -111,6 +111,19 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				$(this).parents('.file').remove();
 			});
 			
+			$(document).on('click','#history a',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				console.log('Going back in time');
+			});
+			
+			$(document).on('click','#layers a span',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				var index = $(this).parent().attr('rel');
+				removeLayer(index);
+			});
+			
 			// Updaters
 			$(window).resize(function(e){workspace.resizeEditor(); });
 		});
