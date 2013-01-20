@@ -34,6 +34,7 @@ var workspace = {
 			'layers' : new Array(),
 			'history' : new Array()
 		};
+		this.addHistory('New file','#3FC230'); // Initial background layer
 		this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
 		// Colorpicker on the picker
 		$('.picker').ColorPicker({
@@ -50,7 +51,8 @@ var workspace = {
 		// Set initial size
 		var wk = this;
 		this.files[this.current].editor.load(src, function(){
-			wk.addHistory('New layer','#C30'); // Initial background layer
+			wk.addLayer('New layer','#C30'); // Initial background layer
+			wk.addHistory('Open photo','#C30'); // Initial background layer
 		});
 	},
 	
