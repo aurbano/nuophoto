@@ -121,7 +121,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				e.preventDefault();
 				e.stopPropagation();
 				var index = $(this).parent().attr('rel');
-				removeLayer(index);
+				workspace.removeLayer(index);
 			});
 			
 			// Updaters

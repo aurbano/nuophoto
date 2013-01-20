@@ -64,7 +64,6 @@ var workspace = {
 	
 	switchFile : function(num){
 		$('#layers').html('');
-		console.log("Number of layers: "+this.files[this.current].layers.length);
 		for(var i=0;i<this.files[this.current].layers.length;i++){
 			this.drawLayer(i);
 		}
@@ -101,15 +100,18 @@ var workspace = {
 	
 	addHistory : function(name, color){
 		this.files[this.current].history.push({'name' : name, 'color' : color});
-		var total = this.files[this.current].history.length;
-		
+		this.drawHistory(this.files[this.current].history.length-1);	
 	},
 	
 	drawHistory : function(num){
+		var total = this.files[this.current].history.length,
+			name = this.files[this.current].history[num].name,
+			color = this.files[this.current].history[num].color;;
 		$('<li><a href="#history" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
 	},
 	
 	removeLayer : function(index){
+		this.addHistory('Delete '+this.files[this.current].layers[index].name,this.files[this.current].layers[index].color);
 		this.files[this.current].layers.splice(index,1);
 		$("#layers a[rel='"+index+"']").parent('li').remove();
 	},
