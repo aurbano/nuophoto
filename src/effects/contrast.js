@@ -1,6 +1,5 @@
 // Contrast color effect
 var exec = function(main){
-	if(main.img.i.src.length < 1) return true;
 	// Start processing
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.img.i.width, main.img.i.height); 
 	var pix = imgd.data, avg;

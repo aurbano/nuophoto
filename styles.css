@@ -238,6 +238,21 @@ height: 15px;
 .active .overlay{
 	display:none;
 }
+.file .status{
+	position:absolute;
+	bottom:0;
+	left:0;
+	background:#FFC;
+	color:#888;
+	display:none;
+	font-size:11px;
+	z-index:1;
+	padding:2px 5px;
+	border-top:#BBB solid 1px;
+	border-right:#BBB solid 1px;
+	min-width:30%;
+	max-width:50%;
+}
 .filename{
 	padding:6px 10px;	
 }

@@ -12,7 +12,7 @@ var workspace = {
 	newFile : function(s){
 		this.current++;
 		var id = 'file'+this.current;
-		$('<div class="file active" style="position:absolute; top:100px;"><div class="overlay"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		$('<div class="file active" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
 			stack: ".file",
 			start: function(event, ui) {
@@ -55,11 +55,12 @@ var workspace = {
 	loadFile : function(src){
 		// Set initial size
 		var wk = this;
-		console.log(this.files[this.current]);
 		if(this.files[this.current] == undefined){
 			this.displayError('You must create a new file first');
 		}
+		this.setStatus('Loading image');
 		this.files[this.current].editor.load(src, function(){
+			wk.clearStatus();
 			wk.addLayer('New layer','#C30'); // Initial background layer
 			wk.addHistory('Open photo','#C30'); // Initial background layer
 		});
@@ -174,6 +175,14 @@ var workspace = {
 	saveImage : function(){
 		var saved = this.files[this.current].editor.save();
 		window.open(saved, "Image | nuophoto", "width=600, height=400");
+	},
+	
+	clearStatus : function(){
+		$('.file .status').text('').hide();
+	},
+	
+	setStatus : function(text){
+		$('#file'+this.current).parents('.file').find('.status').text(text).show();
 	},
 	
 	bringFront : function(elem){

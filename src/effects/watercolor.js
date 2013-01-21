@@ -1,7 +1,5 @@
 // Simulates watercolor painting (I hope)
 var exec = function(main){
-	if(main.img.i.src.length < 1) return true;
-	if(!main.generated) main.generateAvg();
 	var i=0, auxAvg;
 	for(var y = 0; y < main.img.i.height; y += main.strokeResolution){
 		for(var x = 0; x < main.img.i.width; x += main.strokeResolution){

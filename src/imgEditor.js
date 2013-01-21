@@ -127,7 +127,7 @@ var imgEditor = function(canvasID){
 	this.avg = [];
 	this.generated = false; // Flag to know if averages have been calculated.
 	
-	this.generateAvg = function(){
+	this.generateAvg = function(callback){
 		this.avg = []; // clear current avg
 		
 		// Get samples from the image with the resolution set in strokeResolution
@@ -172,11 +172,17 @@ var imgEditor = function(canvasID){
 		console.log(this.avg);
 		// Set flag
 		this.generated = true;
+		callback.call();
 	}
 	
 	this.applyEffect = function(effect){
 		require(["effects/"+effect], $.proxy( function(){
-			exec(this);
+			var obj = this;
+			if(!this.generated){
+				this.generateAvg(function(){
+					exec(obj);
+				});
+			}else exec(obj);
 		},this));
 	}
 	

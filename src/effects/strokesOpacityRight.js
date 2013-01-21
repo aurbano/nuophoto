@@ -1,7 +1,5 @@
 // Creates an image using only lines
 var exec = function(main){
-	if(main.img.i.src.length < 1) return true;
-	if(!main.generated) main.generateAvg();
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.img.i.width, main.img.i.height); 
 	var i=0;
 	for(var y = 0; y < main.img.i.height; y += main.strokeResolution){
