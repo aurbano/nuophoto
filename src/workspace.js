@@ -30,6 +30,10 @@ var workspace = {
 			workspace.current = id;
 			workspace.switchFile(id);
 		});
+		
+		$('#'+id).get(0).addEventListener('DOMMouseScroll',this.handleScroll,false);
+		$('#'+id).get(0).addEventListener('mousewheel',this.handleScroll,false);
+		
 		//
 		var editor = new imgEditor('#'+id);
 		editor.resizeCanvas(400,500);
@@ -207,5 +211,14 @@ var workspace = {
 		if(elem == undefined) return;
 
 		$(elem).css({'zIndex' : min + group.length});
+	},
+	
+	handleScroll : function(evt){
+		var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0,
+			x = evt.clientX,
+			y = evt.clientY;
+		console.log(delta,x,y)
+		if (delta) workspace.files[workspace.current].editor.zoom(delta, x, y);
+		return evt.preventDefault() && false;
 	}
 };

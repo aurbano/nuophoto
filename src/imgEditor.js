@@ -32,6 +32,11 @@ var imgEditor = function(canvasID){
 		canvasMaxY : this.canvasMinY + this.HEIGHT
 	}
 	
+	this.mouse = {
+		x : this.canvas.WIDTH/2,
+		y : this.canvas.HEIGHT/2
+	}
+	
 	this.clear = function() {
 		this.canvas.ctx.clearRect(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT);
 	}
@@ -68,11 +73,6 @@ var imgEditor = function(canvasID){
 		// Now add the white canvas to its right
 		this.canvas.ctx.fillStyle=color;
 		this.canvas.ctx.fillRect(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT);
-	}
-	
-	this.mouse = {
-		s : {x:0, y:0},	// Mouse speed
-		p : {x:0, y:0}	// Mouse position
 	}
 	
 	this.resizeCanvas = function(h,w) {
@@ -169,4 +169,15 @@ var imgEditor = function(canvasID){
 	this.save = function(){
 		return this.canvas.elem.get(0).toDataURL();
 	}
+	
+	this.zoom = function(clicks, x, y){
+		//var pt = this.canvas.elem.get(0).transformedPoint(x,y);
+		this.canvas.ctx.translate(x,y);
+		// Change the factor here for faster/slower zoom
+		var factor = Math.pow(1.1,clicks);
+		this.canvas.ctx.scale(factor,factor);
+		this.canvas.ctx.translate(-x,-y);
+	}
+
+		
 };
