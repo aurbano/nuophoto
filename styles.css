@@ -1,7 +1,6 @@
 body{
 	margin:0;
 	padding:0;
-	position:relative;
 	background:#1a1a1a url(img/stressed_linen.png);
 	color:#e6e6e6;
 	font-family:Raleway, Helvetica, Arial, sans-serif;
@@ -13,7 +12,7 @@ h1{ color:#FC0; }
 h1#logo{
 	position:absolute;
 	top:20px;
-	left:50px;
+	left:30px;
 	font-size:220%;
 }
 h1 small{
@@ -22,6 +21,13 @@ h1 small{
 	display:block;
 	text-align:right;
 }
+#github{
+	position:absolute;
+	bottom:10px;
+	left:10px;
+	z-index:1;	
+}
+#github a{ color:#999; text-decoration:none; text-shadow:#000 0 1px }
 #overlay{
 	background:rgba(0,0,0,0.8);
 	width:100%;
