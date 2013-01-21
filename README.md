@@ -22,7 +22,7 @@ Try it out:
 
 Still in alpha stage of development. If you want to test the latest build check out:
 
-- http://lab.nuostudio.com/nuophoto/ _(Release)
+- http://lab.nuostudio.com/nuophoto/ _(Release)_
 - http://aurbano.github.com/nuophoto _(Development)_
 
 *Note: It takes Github 10 min and up to 10 hours to update the code in gh-pages*
