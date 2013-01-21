@@ -38,8 +38,8 @@ var imgEditor = function(canvasID){
 	
 	this.img = {
 		i : new Image(),
-		x : null,
-		y : null
+		x : 0,
+		y : 0
 	}
 	
 	this.load = function(src, callback){
@@ -55,7 +55,7 @@ var imgEditor = function(canvasID){
 		if(this.img.x < 0) this.img.x = 0;
 		if(this.img.y < 0) this.img.y = 0;
 		
-		this.canvas.ctx.drawImage(this.img.i, this.img.x, this.img.y);
+		this.canvas.ctx.drawImage(this.img.i, 0, 0);
 		
 		// Now add the white canvas to its right
 		// this.background("#efefef");
@@ -65,18 +65,18 @@ var imgEditor = function(canvasID){
 		/*this.canvas.ctx.lineWidth = 1;
 		this.canvas.ctx.strokeStyle = '#555';
 		this.canvas.ctx.beginPath();
-		this.canvas.ctx.moveTo(0,this.img.y);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH,this.img.y);
-		this.canvas.ctx.moveTo(0,this.img.y + this.img.i.height);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH,this.img.y + this.img.i.height);
-		this.canvas.ctx.moveTo(this.img.x,0);
-		this.canvas.ctx.lineTo(this.img.x,this.canvas.HEIGHT);
-		this.canvas.ctx.moveTo(this.img.x + this.img.i.width,0);
-		this.canvas.ctx.lineTo(this.img.x + this.img.i.width,this.canvas.HEIGHT);
+		this.canvas.ctx.moveTo(0,0);
+		this.canvas.ctx.lineTo(this.canvas.WIDTH,0);
+		this.canvas.ctx.moveTo(0,0 + this.canvas.HEIGHT);
+		this.canvas.ctx.lineTo(this.canvas.WIDTH,0 + this.canvas.HEIGHT);
+		this.canvas.ctx.moveTo(0,0);
+		this.canvas.ctx.lineTo(0,this.canvas.HEIGHT);
+		this.canvas.ctx.moveTo(0 + this.canvas.WIDTH,0);
+		this.canvas.ctx.lineTo(0 + this.canvas.WIDTH,this.canvas.HEIGHT);
 		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.innerMargin,0);
 		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.innerMargin,this.canvas.HEIGHT);
-		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.img.i.width + this.innerMargin,0);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.img.i.width + this.innerMargin,this.canvas.HEIGHT);
+		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.canvas.WIDTH + this.innerMargin,0);
+		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.canvas.WIDTH + this.innerMargin,this.canvas.HEIGHT);
 		this.canvas.ctx.stroke();*/
 	}
 	
@@ -132,14 +132,14 @@ var imgEditor = function(canvasID){
 		
 		// Get samples from the image with the resolution set in strokeResolution
 		//if(this.img.i.src.length < 1) return true; // Check if image exists
-		//var imgd = this.canvas.ctx.getImageData(this.img.x, this.img.y, this.img.i.width, this.img.i.height); 
+		//var imgd = this.canvas.ctx.getImageData(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT); 
 		//var pix = imgd.data, avg1, auxAvg, points;
 		//
 		/*var canvas = document.createElement('canvas'),
 			ctx = canvas.getContext('2d'),*/
 		//var	pix;
 		//ctx.drawImage(this.img.i, 0, 0 ),
-		var pix = this.canvas.ctx.getImageData(0, 0, this.img.i.width, this.img.i.height), auxAvg, points;
+		var pix = this.canvas.ctx.getImageData(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT), auxAvg, points;
 		//
 		for(var y = 0; y < pix.height; y += this.strokeResolution){
 			for(var x = 0; x < pix.width; x += this.strokeResolution){

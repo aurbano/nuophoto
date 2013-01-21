@@ -1,7 +1,7 @@
 // Saturate colors
 var exec = function(main){
 	// Start processing
-	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.img.i.width, main.img.i.height); 
+	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var pix = imgd.data, avg;
 	for (var i = 0; n = pix.length, i < n; i += 4) {
 		// Get avg
