@@ -202,6 +202,28 @@ height: 15px;
 	/* Fixing antialiasing problem */
 	outline: 5px solid transparent;
 }
+.tool{
+	text-align:center;
+	border-bottom:#444 solid 1px;
+	border-top:#ccc solid 1px;
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+.tool li{
+	display:inline-block;
+	width:38px;
+}
+.tool a{
+	color:#333;
+	text-decoration:none;
+	display:inline-block;
+	width:100%;
+	padding:4px 0;
+}
+.tool a:hover{
+	background:#CCC;	
+}
 .box{
 	overflow:auto;
 	height:100%;
