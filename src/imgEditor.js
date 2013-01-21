@@ -44,7 +44,17 @@ var imgEditor = function(canvasID){
 	
 	this.load = function(src, callback){
 		this.img.i.src = src;
-		this.img.i.onload = $.proxy( function(){ this.drawImage(); callback.call(); },this)
+		this.img.i.onload = $.proxy( function(){
+			// Resize canvas to match image size (If bigger)
+			var newH = this.canvas.WIDTH, newW = this.canvas.HEIGHT;
+			if(this.img.i.width > this.canvas.WIDTH) newW = this.img.i.width;
+			if(this.img.i.height > this.canvas.HEIGHT) newH = this.img.i.height;
+			this.canvas.ctx.save();
+			this.resizeCanvas(newH,newW);
+			this.canvas.ctx.restore();
+			this.drawImage();
+			callback.call();
+		},this)
 	}
 	
 	this.drawImage = function(){
@@ -56,28 +66,6 @@ var imgEditor = function(canvasID){
 		if(this.img.y < 0) this.img.y = 0;
 		
 		this.canvas.ctx.drawImage(this.img.i, 0, 0);
-		
-		// Now add the white canvas to its right
-		// this.background("#efefef");
-		
-		// Divider lines
-
-		/*this.canvas.ctx.lineWidth = 1;
-		this.canvas.ctx.strokeStyle = '#555';
-		this.canvas.ctx.beginPath();
-		this.canvas.ctx.moveTo(0,0);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH,0);
-		this.canvas.ctx.moveTo(0,0 + this.canvas.HEIGHT);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH,0 + this.canvas.HEIGHT);
-		this.canvas.ctx.moveTo(0,0);
-		this.canvas.ctx.lineTo(0,this.canvas.HEIGHT);
-		this.canvas.ctx.moveTo(0 + this.canvas.WIDTH,0);
-		this.canvas.ctx.lineTo(0 + this.canvas.WIDTH,this.canvas.HEIGHT);
-		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.innerMargin,0);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.innerMargin,this.canvas.HEIGHT);
-		this.canvas.ctx.moveTo(this.canvas.WIDTH/2 + this.canvas.WIDTH + this.innerMargin,0);
-		this.canvas.ctx.lineTo(this.canvas.WIDTH/2 + this.canvas.WIDTH + this.innerMargin,this.canvas.HEIGHT);
-		this.canvas.ctx.stroke();*/
 	}
 	
 	this.background = function(color){
@@ -131,14 +119,6 @@ var imgEditor = function(canvasID){
 		this.avg = []; // clear current avg
 		
 		// Get samples from the image with the resolution set in strokeResolution
-		//if(this.img.i.src.length < 1) return true; // Check if image exists
-		//var imgd = this.canvas.ctx.getImageData(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT); 
-		//var pix = imgd.data, avg1, auxAvg, points;
-		//
-		/*var canvas = document.createElement('canvas'),
-			ctx = canvas.getContext('2d'),*/
-		//var	pix;
-		//ctx.drawImage(this.img.i, 0, 0 ),
 		var pix = this.canvas.ctx.getImageData(0, 0, this.canvas.WIDTH, this.canvas.HEIGHT), auxAvg, points;
 		//
 		for(var y = 0; y < pix.height; y += this.strokeResolution){

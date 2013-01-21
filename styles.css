@@ -233,8 +233,7 @@ height: 15px;
 	position:relative;
 	left:50%;
 	top:50%;
-	width:500px;
-	height:400px;
+	/* Margins must be set to half w and h */
 	margin:-200px 0 0 -250px;
 	box-shadow:#555 0 0 10px 0px;
 }

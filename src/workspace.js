@@ -63,6 +63,11 @@ var workspace = {
 		}
 		this.setStatus('Loading image');
 		this.files[this.current].editor.load(src, function(){
+			// Center the canvas
+			var id = 'file'+wk.current,
+				h = $('#'+id).height(),
+				w = $('#'+id).width();
+			$('#'+id).css({ marginTop : -h/2, marginLeft : -w/2});
 			wk.clearStatus();
 			wk.addLayer('New layer','#C30'); // Initial background layer
 			wk.addHistory('Open photo','#C30'); // Initial background layer
