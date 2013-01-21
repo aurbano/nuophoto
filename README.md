@@ -13,7 +13,7 @@ Requirements:
 
 - [jQuery](https://github.com/jquery/jquery)
 - [requireJS](https://github.com/jrburke/requirejs)
-- [Font Awesome](https://github.com/FortAwesome/Font-Awesome)
+- [Font Awesome 3](https://github.com/FortAwesome/Font-Awesome)
 - imgEditor
 - workspace	(Just some gui functions bundled together)
 
