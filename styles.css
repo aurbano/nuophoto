@@ -156,7 +156,7 @@ height: 15px;
 .scrollbars ::-webkit-scrollbar-button:start:decrement, .scrollbars ::-webkit-scrollbar-button:end:increment {
 	height: 1px;
 	display: block;
-	background-color: #000;
+	background-color: transparent;
 }
 .scrollbars ::-webkit-scrollbar-button:horizontal:start:decrement, .scrollbars ::-webkit-scrollbar-button:horizontal:end:increment {
 	height: 1px;
@@ -164,7 +164,7 @@ height: 15px;
 	background-color: #EFF7FF;
 }
 .scrollbars ::-webkit-scrollbar-track-piece {
-	background-color: #000;
+	background-color: transparent;
 }
 .scrollbars ::-webkit-scrollbar-thumb:vertical,.scrollbars ::-webkit-scrollbar-thumb:horizontal{
 	background-color: #333;

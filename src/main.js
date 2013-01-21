@@ -90,6 +90,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 			
 			$('.gui h3').click(function(e){
 				e.preventDefault();
+				e.stopPropagation();
 				if($(this).children('i').first().attr('class') == 'icon-caret-right'){
 					// Collapsed
 					workspace.closeMenus();
@@ -101,8 +102,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				$(this).children('i').first().removeClass('icon-caret-down').addClass('icon-caret-right');
 			});
 			
-			$('canvas, #config').click(function(e){
-				e.preventDefault();
+			$(document).click(function(e){
 				workspace.closeMenus();
 			});
 			
