@@ -144,6 +144,11 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				workspace.removeLayer(index);
 			});
 			
+			$('#tools').draggable({
+				handle: '.topInfo',
+				stack: ".file"
+			});
+			
 			// Updaters
 			$(window).resize(function(e){workspace.resizeEditor(); });
 		});

@@ -187,7 +187,7 @@ height: 15px;
 	outline:#FFF solid 1px;	
 }
 /* -------- WINDOW SYSTEM -------- */
-.file{
+.window{
 	position:absolute;
 	top:100px;
 	left:400px;

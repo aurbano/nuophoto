@@ -12,7 +12,7 @@ var workspace = {
 	newFile : function(s){
 		this.current++;
 		var id = 'file'+this.current;
-		$('<div class="file active" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		$('<div class="window file active" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-circle-blank icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
 			stack: ".file",
 			start: function(event, ui) {
