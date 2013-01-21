@@ -49,23 +49,19 @@ var imgEditor = function(canvasID){
 			var newH = this.canvas.WIDTH, newW = this.canvas.HEIGHT;
 			if(this.img.i.width > this.canvas.WIDTH) newW = this.img.i.width;
 			if(this.img.i.height > this.canvas.HEIGHT) newH = this.img.i.height;
-			this.canvas.ctx.save();
+			// Store current drawn canvas
+			//var cache = new Image;
+			//cache.src = this.save();
 			this.resizeCanvas(newH,newW);
-			this.canvas.ctx.restore();
-			this.drawImage();
+			// Redraw the saved data
+			//this.drawImage(cache);
+			this.drawImage(this.img.i);
 			callback.call();
 		},this)
 	}
 	
-	this.drawImage = function(){
-		this.clear();
-		this.img.x = 0;
-		this.img.y = 0;
-		
-		if(this.img.x < 0) this.img.x = 0;
-		if(this.img.y < 0) this.img.y = 0;
-		
-		this.canvas.ctx.drawImage(this.img.i, 0, 0);
+	this.drawImage = function(img){
+		this.canvas.ctx.drawImage(img, 0, 0);
 	}
 	
 	this.background = function(color){
