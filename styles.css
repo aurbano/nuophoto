@@ -225,6 +225,19 @@ height: 15px;
 	font-size:12px;
 	cursor:move;
 }
+.file .overlay{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:rgba(255,255,255,0.3);
+	border:#CCC inset 1px;
+	z-index:2;
+}
+.active .overlay{
+	display:none;
+}
 .filename{
 	padding:6px 10px;	
 }

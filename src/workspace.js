@@ -12,7 +12,7 @@ var workspace = {
 	newFile : function(s){
 		this.current++;
 		var id = 'file'+this.current;
-		$('<div class="file" style="position:absolute; top:100px;"><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		$('<div class="file active" style="position:absolute; top:100px;"><div class="overlay"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
 			stack: ".file",
 			start: function(event, ui) {
@@ -72,6 +72,8 @@ var workspace = {
 	
 	switchFile : function(num){
 		this.cleanMenus();
+		$('.file').removeClass('active');
+		$('#file'+num).parents('.file').addClass('active');
 		this.bringFront($('#file'+num).parents('.file'));
 		// Redraw
 		for(var i=0;i<this.files[this.current].layers.length;i++){
