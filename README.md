@@ -22,7 +22,7 @@ Try it out:
 
 Still in alpha stage of development. If you want to test the latest build check out:
 
-- http://aurbano.github.com/nuophoto
+- http://aurbano.github.com/nuophoto _(Build ba93b5b80f)_
 
 *Note: I merge from the master branch to the preview branch whenever everything "is working fine".*
 
