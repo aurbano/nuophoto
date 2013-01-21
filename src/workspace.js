@@ -22,7 +22,10 @@ var workspace = {
 				if(id !== undefined) return workspace.switchFile(id);
 				return true;
 			}
-		}).resizable().bind('click',function(){
+		}).resizable({
+			minHeight : 100,
+			minWidth : 200
+		}).bind('click',function(){
 			var id = $(this).find("a[href='#closeFile']").attr('rel');
 			workspace.current = id;
 			workspace.switchFile(id);

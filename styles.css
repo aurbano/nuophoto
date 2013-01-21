@@ -28,6 +28,7 @@ h1 small{
 	z-index:1;	
 }
 #github a{ color:#999; text-decoration:none; text-shadow:#000 0 1px }
+#github a:hover{ color:#FFF; }
 #overlay{
 	background:rgba(0,0,0,0.8);
 	width:100%;
@@ -194,10 +195,11 @@ height: 15px;
 	border:#000 solid 2px;
 	z-index:1;
 	padding-top:30px;
-	box-shadow:#000 0 0 10px 0px;
+	/*box-shadow:#000 0 0 10px 0px;*/
 	height:400px;
 	width:500px;
 	overflow:hidden;
+	outline: 1px solid transparent;
 }
 .box{
 	overflow:auto;
