@@ -82,7 +82,10 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				workspace.addHistory($(this).text(),color);
 				workspace.addLayer($(this).text(),color);
 				
-				workspace.editor().applyEffect(effect);
+				workspace.setStatus('Working...');
+				workspace.editor().applyEffect(effect, function(){
+					workspace.clearStatus();
+				});
 			});
 			
 			$('.gui h3').click(function(e){

@@ -175,14 +175,18 @@ var imgEditor = function(canvasID){
 		callback.call();
 	}
 	
-	this.applyEffect = function(effect){
+	this.applyEffect = function(effect, callback){
 		require(["effects/"+effect], $.proxy( function(){
 			var obj = this;
 			if(!this.generated){
 				this.generateAvg(function(){
 					exec(obj);
+					callback.call();
 				});
-			}else exec(obj);
+			}else{
+				exec(obj);
+				callback.call();
+			}
 		},this));
 	}
 	
