@@ -199,7 +199,8 @@ height: 15px;
 	height:400px;
 	width:500px;
 	overflow:hidden;
-	outline: 1px solid transparent;
+	/* Fixing antialiasing problem */
+	outline: 5px solid transparent;
 }
 .box{
 	overflow:auto;
