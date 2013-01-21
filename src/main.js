@@ -107,6 +107,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				e.preventDefault();
 				$('#gallery').fadeOut(300);
 				$('#webPhoto').fadeOut(300);
+				$('#error').fadeOut(300);
 				$('#overlay').fadeOut(300);
 			});
 			

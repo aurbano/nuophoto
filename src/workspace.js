@@ -55,6 +55,10 @@ var workspace = {
 	loadFile : function(src){
 		// Set initial size
 		var wk = this;
+		console.log(this.files[this.current]);
+		if(this.files[this.current] == undefined){
+			this.displayError('You must create a new file first');
+		}
 		this.files[this.current].editor.load(src, function(){
 			wk.addLayer('New layer','#C30'); // Initial background layer
 			wk.addHistory('Open photo','#C30'); // Initial background layer
@@ -62,7 +66,7 @@ var workspace = {
 	},
 	
 	closeFile : function(num){
-		delete this.files.num;
+		delete this.files[num];
 		this.cleanMenus();
 	},
 	
@@ -121,9 +125,15 @@ var workspace = {
 	},
 	
 	displayError : function(text){
+		$('#gallery').fadeOut(300);
+		$('#webPhoto').fadeOut(300);
 		$('#overlay').fadeIn(300, function(){
 			$('#errorText').html(text);
 			$('#error').show();
+			setTimeout(function(){
+				$('#error').fadeOut(300);
+				$('#overlay').fadeOut(300);
+			},3000);
 		});
 	},
 	
