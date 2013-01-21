@@ -3,7 +3,7 @@
  *
  *	A JavaScript/HTML5 canvas image editor
  *
- *	Test it: http://lab.nuostudio.com/editor.html (Temporary location)
+ *	Test it: http://aurbano.github.com/nuophoto (Temporary location)
  *	Project page: https://github.com/aurbano/nuophoto
  *	Author: Alejandro U. Alvarez (http://urbanoalvarez.es)
  *

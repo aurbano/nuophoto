@@ -12,7 +12,7 @@ var workspace = {
 	newFile : function(s){
 		this.current++;
 		var id = 'file'+this.current;
-		$('<div class="file"><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		$('<div class="file" style="position:absolute; top:100px;"><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" rel="'+this.current+'"><i class="icon-minus-sign icon-large"></i></a></div></div><div class="box scrollbars"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
 			stack: ".file",
 			start: function(event, ui) {
@@ -22,7 +22,11 @@ var workspace = {
 				if(id !== undefined) return workspace.switchFile(id);
 				return true;
 			}
-		}).resizable();
+		}).resizable().bind('click',function(){
+			var id = $(this).find("a[href='#closeFile']").attr('rel');
+			workspace.current = id;
+			workspace.switchFile(id);
+		});
 		//
 		var editor = new imgEditor('#'+id);
 		editor.resizeCanvas(400,500);
@@ -64,6 +68,7 @@ var workspace = {
 	
 	switchFile : function(num){
 		this.cleanMenus();
+		this.bringFront($('#file'+num).parents('.file'));
 		// Redraw
 		for(var i=0;i<this.files[this.current].layers.length;i++){
 			this.drawLayer(i);
@@ -71,8 +76,7 @@ var workspace = {
 		
 		for(var i=0;i<this.files[this.current].history.length;i++){
 			this.drawHistory(i);
-		}
-		
+		}		
 		return true;
 	},
 	
@@ -142,7 +146,12 @@ var workspace = {
 	
 	resizeEditor : function(){
 		// Overlay
-		$('#overlay').css({width : $(window).width(), height : $(window).height()});	
+		$('#overlay').css({width : $(window).width(), height : $(window).height()});
+		// Layers and history
+		var height = $(window).height();
+		var h2 = $('#config h2').height();
+		$('ul#history').css({'height' : Math.ceil(height/3)});
+		$('#layersContainer').css({'height' : Math.floor(height - height/3 - 3.5*h2)});	
 	},
 	
 	cleanMenus : function(){
@@ -153,5 +162,21 @@ var workspace = {
 	saveImage : function(){
 		var saved = this.files[this.current].editor.save();
 		window.open(saved, "Image | nuophoto", "width=600, height=400");
+	},
+	
+	bringFront : function(elem){
+		// Brings a file to the stack front
+		var min, group = $('.file');
+		
+		if(group.length < 1) return;
+
+		min = parseInt(group[0].style.zIndex, 10) || 0;
+		$(group).each(function(i) {
+			this.style.zIndex = min + i;
+		});
+		
+		if(elem == undefined) return;
+
+		$(elem).css({'zIndex' : min + group.length});
 	}
 };
