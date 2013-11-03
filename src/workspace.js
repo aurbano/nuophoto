@@ -107,11 +107,11 @@ var workspace = {
 		}
 		$(this.files[this.current].elem).find('canvas').css({
 			'marginTop' : -Math.min(
-				-parseInt($(this.files[this.current].elem).find('canvas').css('marginTop')),
+				$(this.files[this.current].elem).find('canvas').height()/2,
 				$(this.files[this.current].elem).find('.box').height()/2
 			),
 			'marginLeft': -Math.min(
-				-parseInt($(this.files[this.current].elem).find('canvas').css('marginLeft')), 				$(this.files[this.current].elem).find('.box').width()/2
+				$(this.files[this.current].elem).find('canvas').width()/2, 				$(this.files[this.current].elem).find('.box').width()/2
 			)
 		});
 	},
