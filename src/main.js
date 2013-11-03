@@ -151,11 +151,11 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				switch($(this).attr('href')){
 					case '#zoomOut':
 						console.log("Zooming out");
-						workspace.files[workspace.current].editor.zoom(0.75,0,0);
+						workspace.zoom(0.75);
 						break;
 					case '#zoomIn':
 						console.log("Zooming in");
-						workspace.files[workspace.current].editor.zoom(1.25,0,0);
+						workspace.zoom(1.25);
 						break;
 				}
 			});

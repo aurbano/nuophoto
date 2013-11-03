@@ -173,7 +173,7 @@ var imgEditor = function(canvasID){
 		return imgEditor.canvas.elem.get(0).toDataURL();
 	};
 	
-	imgEditor.zoom = function(scale, x, y){
+	imgEditor.zoom = function(scale){
 		var h = $(imgEditor.canvas.elem).height(),
 			w = $(imgEditor.canvas.elem).width();
 			

@@ -12,7 +12,7 @@ var workspace = {
 	newFile : function(s){
 		this.current++;
 		var id = 'file'+this.current;
-		$('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+'</div><div class="fileops"><a href="#closeFile" title="Close file" rel="'+this.current+'"><i class="icon-circle-blank icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+' <span class="zoom">[100%]</span></div><div class="fileops"><a href="#closeFile" title="Close file" rel="'+this.current+'"><i class="icon-circle-blank icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
 			stack: ".file",
 			start: function(event, ui) {
@@ -24,7 +24,10 @@ var workspace = {
 			}
 		}).resizable({
 			minHeight : 100,
-			minWidth : 200
+			minWidth : 200,
+			resize : function(){
+				workspace.fixMargin();
+			}
 		}).bind('click',function(){
 			var id = $(this).find("a[href='#closeFile']").attr('rel');
 			workspace.current = id;
@@ -40,15 +43,20 @@ var workspace = {
 		editor.background('#efefef');
 		// Create and return new imgEditor for this file
 		this.files[this.current] = {
+			'elem' : elem,
+			'zoom' : 1,
 			'src' : null,
 			'editor' : editor,
 			'layers' : new Array(),
 			'history' : new Array()
 		};
+		// Change to the new file
 		this.switchFile(this.current);
-		this.addHistory('New file','#3FC230'); // Initial background layer
-		this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230'); // Initial background layer
-		// Colorpicker on the picker
+		// Initial background layer
+		this.addHistory('New file','#3FC230');
+		// Initial background layer
+		this.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230');
+		// Changable background color via Colorpicker
 		$('.picker').ColorPicker({
 			color : 'efefef',
 			onChange: function (hsb, hex, rgb) {
@@ -75,6 +83,36 @@ var workspace = {
 			wk.clearStatus();
 			wk.addLayer('New layer','#C30'); // Initial background layer
 			wk.addHistory('Open photo','#C30'); // Initial background layer
+			wk.fixMargin();
+		});
+	},
+	
+	zoom : function(scale){
+		if(this.files[this.current] == undefined){
+			this.displayError('Please select a file');
+			return;
+		}
+		// Update zoom for display
+		this.files[this.current].zoom += scale-1;
+		$(this.files[this.current].elem).find('.zoom').text('['+this.files[this.current].zoom*100+'%]');
+		// Apply zoom
+		this.files[this.current].editor.zoom(scale);
+		// Fix margins
+		this.fixMargin();
+	},
+	
+	fixMargin : function(){
+		if(this.files[this.current] == undefined){
+			return;
+		}
+		$(this.files[this.current].elem).find('canvas').css({
+			'marginTop' : -Math.min(
+				-parseInt($(this.files[this.current].elem).find('canvas').css('marginTop')),
+				$(this.files[this.current].elem).find('.box').height()/2
+			),
+			'marginLeft': -Math.min(
+				-parseInt($(this.files[this.current].elem).find('canvas').css('marginLeft')), 				$(this.files[this.current].elem).find('.box').width()/2
+			)
 		});
 	},
 	
