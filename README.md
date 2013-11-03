@@ -8,11 +8,14 @@ The photo editing part is done with the library [PhotoJShop](https://github.com/
 
 Nuophoto and PhotoJShop started as the same project, but I realised that they should be developed independently, to provide image editing functions in JS without the need to load all the interface code in Nuophoto.
 
-PhotoJShop is still under development.
+##Demo:
+
+Still in alpha stage of development. If you want to test the latest build check out:
+
+- http://aurbano.github.com/nuophoto
 
 
-Requirements:
--------
+##Requirements:
 
 - [jQuery](https://github.com/jquery/jquery)
 - [requireJS](https://github.com/jrburke/requirejs)
@@ -20,12 +23,8 @@ Requirements:
 - [PhotoJShop](https://github.com/aurbano/PhotoJShop)
 - workspace	(Just some gui functions bundled together)
 
-Try it out:
-------
+##Meta
 
-Still in alpha stage of development. If you want to test the latest build check out:
-
-- http://lab.nuostudio.com/nuophoto/ _(Release)_
-- http://aurbano.github.com/nuophoto _(Development)_
-
-*Note: It takes Github 10 min and up to 10 hours to update the code in gh-pages*
+* Developed by [Alejandro U. Alvarez](http://urbanoalvarez.es)
+* Licensed under the MIT License
+* Contributors: -
