@@ -19,7 +19,7 @@ Still in alpha stage of development. If you want to test the latest build check 
 
 - [jQuery](https://github.com/jquery/jquery)
 - [requireJS](https://github.com/jrburke/requirejs)
-- [Font Awesome 3](https://github.com/FortAwesome/Font-Awesome)
+- [Font Awesome 3](https://github.com/FortAwesome/Font-Awesome/releases/tag/v3.2.0) *(Upgrade pending)*
 - [PhotoJShop](https://github.com/aurbano/PhotoJShop)
 - workspace	(Just some gui functions bundled together)
 
