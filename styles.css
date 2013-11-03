@@ -161,10 +161,10 @@ height: 15px;
 .scrollbars ::-webkit-scrollbar-button:horizontal:start:decrement, .scrollbars ::-webkit-scrollbar-button:horizontal:end:increment {
 	height: 1px;
 	display: block;
-	background-color: #EFF7FF;
+	background-color: #fff;
 }
 .scrollbars ::-webkit-scrollbar-track-piece {
-	background-color: transparent;
+	background-color: #fff;
 }
 .scrollbars ::-webkit-scrollbar-thumb:vertical,.scrollbars ::-webkit-scrollbar-thumb:horizontal{
 	background-color: #333;
@@ -209,10 +209,10 @@ height: 15px;
 	list-style:none;
 	padding:0;
 	margin:0;
+	font-size:0.7em;
 }
 .tool li{
 	display:inline-block;
-	width:38px;
 }
 .tool a{
 	color:#333;
@@ -220,6 +220,7 @@ height: 15px;
 	display:inline-block;
 	width:100%;
 	padding:4px 0;
+	width:3em;
 }
 .tool a:hover{
 	background:#CCC;	

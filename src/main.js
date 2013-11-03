@@ -63,7 +63,7 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 			// Create a new empty file
 			workspace.newFile();
 			// Preload an image (makes development faster)
-			//workspace.loadFile('img/editor/1.jpg');
+			workspace.loadFile('img/editor/1.jpg');
 			
 			
 			$('.gui a').click(function(e){
@@ -142,6 +142,22 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				e.stopPropagation();
 				var index = $(this).parent().attr('rel');
 				workspace.removeLayer(index);
+			});
+			
+			$(document).on('click','#tools a',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				
+				switch($(this).attr('href')){
+					case '#zoomOut':
+						console.log("Zooming out");
+						workspace.files[workspace.current].editor.zoom(0.75,0,0);
+						break;
+					case '#zoomIn':
+						console.log("Zooming in");
+						workspace.files[workspace.current].editor.zoom(1.25,0,0);
+						break;
+				}
 			});
 			
 			$('#tools').draggable({
