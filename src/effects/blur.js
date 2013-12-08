@@ -1,3 +1,11 @@
+/**
+ * Canvas blur. This effect is not achieved using a normal blur solution
+ * (Convoluting the pixels with a matrix) instead it redraws the image with circles
+ * colored with the center pixel, that fade out. The combination of all the circles creates
+ * the illusion of a blur effect.
+ *  
+ * @param {Object} main
+ */
 var exec = function(main){
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var pix = imgd.data, i=0, auxAvg;
@@ -11,4 +19,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

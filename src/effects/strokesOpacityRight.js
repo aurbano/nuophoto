@@ -1,4 +1,7 @@
-// Creates an image using only lines
+/**
+ * Paint the canvas with diagonal descending strokes 
+ * @param {Object} main
+ */
 var exec = function(main){
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var i=0;
@@ -14,4 +17,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

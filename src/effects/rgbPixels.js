@@ -1,4 +1,9 @@
-// main one will simulate an rgb pixel screen with small resolution
+/**
+ * This will replace every square of main.strokeResolution with a square divided in 3 columns
+ * Each column will be filled with the corresponding color in the order R-G-B
+ * It should mimic a very low resolution screen. 
+ * @param {Object} main
+ */
 var exec = function(main){
 	var i=0;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -15,4 +20,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

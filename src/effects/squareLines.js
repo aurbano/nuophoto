@@ -1,3 +1,7 @@
+/**
+ * Draw empty squares stroked with the average color of the pixels below it
+ * @param {Object} main
+ */
 var exec = function(main){
 	var i=0;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -11,4 +15,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

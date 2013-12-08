@@ -1,4 +1,7 @@
-// Saturate colors
+/**
+ * Color effect, saturate the colors in the image 
+ * @param {Object} main
+ */
 var exec = function(main){
 	// Start processing
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
@@ -13,4 +16,4 @@ var exec = function(main){
 	main.canvas.ctx.putImageData(imgd, main.img.x, main.img.y);
 	// Reset the averages
 	main.generated = false;
-}
+};

@@ -1,4 +1,7 @@
-// Creates an image using only lines
+/**
+ * Paint the canvas with thick descending strokes that kind of simulate a brush
+ * @param {Object} main
+ */
 var exec = function(main){
 	var i=0, auxAvg;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -14,4 +17,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

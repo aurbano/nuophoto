@@ -1,4 +1,7 @@
-// Pixelate effect
+/**
+ * Pixelating effect, this uses the color average to run faster 
+ * @param {Object} main
+ */
 var exec = function(main){
 	var i = 0;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -10,4 +13,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

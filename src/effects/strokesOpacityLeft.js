@@ -1,4 +1,7 @@
-// Creates an image using only lines
+/**
+ * Paint the canvas with diagonal strokes ascending
+ * @param {Object} main
+ */
 var exec = function(main){
 	var i=0;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -13,4 +16,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};

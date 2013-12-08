@@ -1,4 +1,7 @@
-// Emboss effect (edge detect)
+/**
+ *  Emboss effect (Using matrix convolution)
+ * @param {Object} main
+ */
 var exec = function(main){
 	var imgd = main.canvas.ctx.getImageData(0, 0, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var pix = imgd.data, total = pix.length;
@@ -8,4 +11,4 @@ var exec = function(main){
         pix[i] = 127 + 2*pix[i] - pix[i + 4] - pix[i + main.canvas.WIDTH*4];
 	}
 	main.canvas.ctx.putImageData(imgd, 0, 0);
-}
+};

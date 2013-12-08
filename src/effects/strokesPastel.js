@@ -1,3 +1,7 @@
+/**
+ * Paint the canvas with thick strokes that kind of simulate painting with pastels
+ * @param {Object} main
+ */
 var exec = function(main){
 	var i=0, auxAvg;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -13,4 +17,4 @@ var exec = function(main){
 			i++;
 		}
 	}
-}
+};
