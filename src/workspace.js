@@ -13,10 +13,9 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	};
 	
 	/**
-	 * Create a new file for an image 
- 	 * @param {Object} s
+	 * Create a new empty file
 	 */
-	wk.newFile = function(s){
+	wk.newFile = function(){
 		wk.current++;
 		var id = 'file'+wk.current;
 		var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="icon-circle-blank icon-large"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
@@ -71,13 +70,18 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				editor.background('#' + hex);
 			}
 		});
-		return true;
 	};
 	
+	/**
+	 * Load a new image inside the currently focused file.
+	 * If there is no file selected it will create it. 
+	 * @param {String} Image source
+	 */
 	wk.loadFile = function(src){
 		// Set initial size
 		if(wk.files[wk.current] == undefined){
-			wk.displayError('You must create a new file first');
+			// Create a new file and select it
+			wk.newFile();
 		}
 		wk.setStatus('Loading image');
 		wk.files[wk.current].editor.load(src, function(){
@@ -93,6 +97,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		});
 	};
 	
+	/**
+	 * Apply zoom to the selected file
+ 	 * @param {float} Scale to apply, where 1 is no zoom. 1.5 would be an increase of 50%.
+	 */
 	wk.zoom = function(scale){
 		if(wk.files[wk.current] == undefined){
 			return;
@@ -106,6 +114,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		wk.fixMargin();
 	};
 	
+	/**
+	 * Fix the margins to keep the image always centered if possible. If the viewport
+	 * is smaller than the image, then it will be stuck to the top-left corner. 
+	 */
 	wk.fixMargin = function(){
 		if(wk.files[wk.current] == undefined){
 			return;
@@ -122,11 +134,19 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		});
 	};
 	
+	/**
+	 * Close the specified file. 
+ 	 * @param {int} File identifier
+	 */
 	wk.closeFile = function(num){
 		delete wk.files[num];
 		wk.cleanMenus();
 	};
 	
+	/**
+	 * Change files, this will ensure that all views and variables are updated accordingly.
+ 	 * @param {int} File identifier
+	 */
 	wk.switchFile = function(num){
 		wk.cleanMenus();
 		$('.file').removeClass('active');
@@ -143,15 +163,27 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		return true;
 	};
 	
+	/**
+	 * Reference to current image editor 
+	 */
 	wk.editor = function(){
 		return wk.files[wk.current].editor;
 	};
 	
+	/**
+	 * Add a new layer to the workspace 
+ 	 * @param {String} Layer name
+ 	 * @param {String} Layer color, each layer type should use a different color to be identified more easily.
+	 */
 	wk.addLayer = function(name, color){
 		wk.files[wk.current].layers.push({'name' : name, 'color' : color});
 		wk.drawLayer(wk.files[wk.current].layers.length-1);
 	};
 	
+	/**
+	 * Add the layer to the DOM 
+ 	 * @param {int} Layer number
+	 */
 	wk.drawLayer = function(num){
 		var span = '',
 			eye='',
@@ -165,12 +197,22 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
 	};
 	
+	/**
+	 * Add an event to the history log 
+	 * @param {String} Event name
+	 * @param {String} Event color, each event type should use a different color to be identified more easily.
+	 * @param {Object} Current state of the canvas, so that it's possible to go back to this state
+	 */
 	wk.addHistory = function(name, color, data){
 		if(data==undefined) data = false;
 		wk.files[wk.current].history.push({'name' : name, 'color' : color, 'data' : data});
 		wk.drawHistory(wk.files[wk.current].history.length-1);	
 	};
 	
+	/**
+	 * Add the history element to the DOM 
+ 	 * @param {int} Event number
+	 */
 	wk.drawHistory = function(num){
 		var total = wk.files[wk.current].history.length,
 			name = wk.files[wk.current].history[num].name,
@@ -178,12 +220,21 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		$('<li><a href="#history" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
 	},
 	
+	/**
+	 * Remove a layer from the current file
+	 * // TODO Redraw canvas without this layer 
+ 	 * @param {int} Layer number
+	 */
 	wk.removeLayer = function(index){
 		wk.addHistory('Delete '+wk.files[wk.current].layers[index].name,wk.files[wk.current].layers[index].color);
 		wk.files[wk.current].layers.splice(index,1);
 		$("#layers a[rel='"+index+"']").parent('li').remove();
 	};
 	
+	/**
+	 * Display an error fullscreen. 
+ 	 * @param {String} Error text
+	 */
 	wk.displayError = function(text){
 		$('#gallery').fadeOut(300);
 		$('#webPhoto').fadeOut(300);
@@ -197,23 +248,35 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		});
 	};
 	
+	/**
+	 * Display the photo gallery 
+	 */
 	wk.displayGallery = function(){
 		$('#overlay').fadeIn(300, function(){
 			$('#gallery').show();
 		});
 	};
 	
+	/**
+	 * Display the load from URL menu 
+	 */
 	wk.displayWebPhoto = function(){
 		$('#overlay').fadeIn(300, function(){
 			$('#webPhoto').show();
 		});
 	};
 	
+	/**
+	 * Close all menus 
+	 */
 	wk.closeMenus = function(){
 		$('#navBar ul').slideUp(100);
 		$('#navBar h3 i').removeClass('icon-caret-down').addClass('icon-caret-right');	
 	};
 	
+	/**
+	 * Resize the editor (fluid layout) 
+	 */
 	wk.resizeEditor = function(){
 		// Overlay
 		$('#overlay').css({width : $(window).width(), height : $(window).height()});
@@ -224,24 +287,44 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		$('#layersContainer').css({'height' : Math.floor(height - height/3 - 3.5*h2)});	
 	};
 	
+	/**
+	 * Clear the menus 
+	 */
 	wk.cleanMenus = function(){
 		$('#layers').html('');
 		$('#history').html('');
 	};
 	
+	/**
+	 * Save the image on the current editor 
+	 */
 	wk.saveImage = function(){
+		if(wk.files[wk.current] == undefined){
+			return;
+		}
 		var saved = wk.files[wk.current].editor.save();
 		window.open(saved, "Image | nuophoto", "width=600, height=400");
 	};
 	
+	/**
+	 * Clear the status text
+	 */
 	wk.clearStatus = function(){
 		$('.file .status').text('').hide();
 	};
 	
+	/**
+	 * Set status text, possibly useful to display information while an effect is being applied. 
+ 	 * @param {String} Status text
+	 */
 	wk.setStatus = function(text){
 		$('#file'+wk.current).parents('.file').find('.status').text(text).show();
 	};
 	
+	/**
+	 * Bring a file to the front (by setting the z-index) 
+ 	 * @param {$} jQuery element
+	 */
 	wk.bringFront = function(elem){
 		// Brings a file to the stack front
 		var min, group = $('.file');
@@ -258,6 +341,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		$(elem).css({'zIndex' : min + group.length});
 	};
 	
+	/**
+	 * Zoom with the scrollwheel 
+ 	 * @param {Event} Scroll event
+	 */
 	wk.handleScroll = function(evt){
 		return;
 		var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0,
