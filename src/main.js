@@ -54,7 +54,7 @@ requirejs.onError = function (err) {
 	}
 };
 
-define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function($) {
+define(["jquery", "workspace"], function($, workspace) {
     $(function() {
 		$(document).ready(function(e){
 			// Resize editor
@@ -150,11 +150,9 @@ define(["jquery", "jqueryui", "imgEditor", "workspace", "colorpicker"], function
 				
 				switch($(this).attr('href')){
 					case '#zoomOut':
-						console.log("Zooming out");
 						workspace.zoom(0.75);
 						break;
 					case '#zoomIn':
-						console.log("Zooming in");
 						workspace.zoom(1.25);
 						break;
 				}
