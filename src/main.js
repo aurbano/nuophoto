@@ -8,13 +8,7 @@
  *	Author: Alejandro U. Alvarez (http://urbanoalvarez.es)
  *
  *	Description:
- *		A nice editor built using imgEditor
- *		at the moment they are the same project
- *		although as things move on I will probably separate them
- *		and create two independent projects. imgEditor will become
- *		a JS img library with editing functions and such, hopefully with
- *		dependance on the canvas element. And nuophoto will become a nice
- *		gui to interact with it and test it out.
+ *		A nice editor built with JavaScript.
  *
  *	Requirements:
  *		- jQuery

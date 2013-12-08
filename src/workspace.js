@@ -19,7 +19,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	wk.newFile = function(s){
 		wk.current++;
 		var id = 'file'+wk.current;
-		var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File '+(this.current+1)+' <span class="zoom">[100%]</span></div><div class="fileops"><a href="#closeFile" title="Close file" rel="'+this.current+'"><i class="icon-circle-blank icon-large"></i></a></div></div><div class="box"><canvas width="100%" height="100%" id="'+id+'" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+		var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="icon-circle-blank icon-large"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 			handle: '.topInfo',
 			stack: ".file",
 			start: function(event, ui) {
@@ -259,10 +259,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	};
 	
 	wk.handleScroll = function(evt){
+		return;
 		var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0,
 			x = evt.clientX,
 			y = evt.clientY;
-		console.log(delta,x,y)
 		if (delta) workspace.files[workspace.current].editor.zoom(delta, x, y);
 		return evt.preventDefault() && false;
 	};
