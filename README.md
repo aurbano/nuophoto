@@ -23,6 +23,18 @@ Still in alpha stage of development. If you want to test the latest build check 
 - [PhotoJShop](https://github.com/aurbano/PhotoJShop)
 - workspace	(Just some gui functions bundled together)
 
+##Contribute
+If you want to contribute please feel free to do so, below are some ideas I have for future development:
+- Use PhotoJShop where possible for the effects
+- Dialog menus for effects
+- Combine the two previous tasks and allow effect customization (i.e. blur radius)
+- Custom matrix effects (Maybe even store in local memory)
+- Upload/load from url
+- Allow history traversal (moving back and forth)
+- Allow hiding/showing layers
+- Layer options, like blending modes and opacity.
+- Update to FontAwesome 4
+
 ##Meta
 
 * Developed by [Alejandro U. Alvarez](http://urbanoalvarez.es)
