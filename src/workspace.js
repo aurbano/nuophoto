@@ -159,8 +159,9 @@ var workspace = {
 		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
 	},
 	
-	addHistory : function(name, color){
-		this.files[this.current].history.push({'name' : name, 'color' : color});
+	addHistory : function(name, color, data){
+		if(data==undefined) data = false;
+		this.files[this.current].history.push({'name' : name, 'color' : color, 'data' : data});
 		this.drawHistory(this.files[this.current].history.length-1);	
 	},
 	
