@@ -2,13 +2,18 @@
  *	A JavaScript/HTML5 canvas photo editor.
  *	All effects are in effects/ folder. 
  *	
- *	If no canvas ID is set, it will apply to all canvas elements found.
+ * If no canvas ID is set, it will apply to all canvas elements found.
+ * One imgEditor instance is necessary for every image that wants to be manipulated.
+ * This is the file that does the actual editing. 
+ * 
+ * 	Requirements:
  *		- jQuery
  */
 var imgEditor = function(canvasID){
 	
+	// Config variables
+	// TODO Allow user configuration of these variables
 	var imgEditor = {
-		// Config variables
 		strokeResolution : 5,		// Pixel side of squares for resolution
 		minRadius : 5,				// Minimum radius
 		randRadius : 5,				// Max random radius extra
@@ -17,13 +22,16 @@ var imgEditor = function(canvasID){
 	};
 	
 	
-	//
+	// Validation
 	if(canvasID == null) canvasID = 'canvas';
 	if($(canvasID).length == 0){
 		alert('File undefined');
 		return false;
 	}
-	// Canvas
+	
+	/**
+	 * Canvas data 
+	 */
 	imgEditor.canvas = {
 		elem : $(canvasID),
 		ctx : $(canvasID)[0].getContext("2d"),
@@ -35,21 +43,35 @@ var imgEditor = function(canvasID){
 		canvasMaxY : imgEditor.canvasMinY + imgEditor.HEIGHT
 	};
 	
+	/**
+	 * Mouse tracking 
+	 */
 	imgEditor.mouse = {
 		x : imgEditor.canvas.WIDTH/2,
 		y : imgEditor.canvas.HEIGHT/2
 	};
 	
+	/**
+	 * Clear the canvas 
+	 */
 	imgEditor.clear = function() {
 		imgEditor.canvas.ctx.clearRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
 	};
 	
+	/**
+	 * Define a new image 
+	 */
 	imgEditor.img = {
 		i : new Image(),
 		x : 0,
 		y : 0
 	};
 	
+	/**
+	 * Load a new image 
+	 * @param {String} Image source
+	 * @param {Function} Callback, executed when the image is loaded
+	 */
 	imgEditor.load = function(src, callback){
 		imgEditor.img.i.src = src;
 		imgEditor.img.i.onload = function(){
@@ -68,16 +90,29 @@ var imgEditor = function(canvasID){
 		};
 	};
 	
+	/**
+	 *  Draw image on the canvas
+ 	 * @param {Object} Image object to be drawn
+	 */
 	imgEditor.drawImage = function(img){
 		imgEditor.canvas.ctx.drawImage(img, 0, 0);
 	};
 	
+	/**
+	 * Set the background color 
+	 * @param {String} HTML color
+	 */
 	imgEditor.background = function(color){
 		// Now add the white canvas to its right
 		imgEditor.canvas.ctx.fillStyle=color;
 		imgEditor.canvas.ctx.fillRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
 	};
 	
+	/**
+	 * Resize the canvas 
+	 * @param {int} Height, in pixels
+	 * @param {int} Width, in pixels
+	 */
 	imgEditor.resizeCanvas = function(h,w) {
 		imgEditor.canvas.WIDTH = w;
 		imgEditor.canvas.HEIGHT = h;
@@ -86,6 +121,13 @@ var imgEditor = function(canvasID){
 		imgEditor.canvas.elem.attr('height',imgEditor.canvas.HEIGHT);
 	};
 	
+	/**
+	 * Draw a circle on the canvas. 
+	 * @param {int} x coordinate
+	 * @param {int} y coordinate
+	 * @param {int} Circle radius
+	 * @param {String} Circle background color
+	 */
 	imgEditor.circle = function(x,y,rad,color){
 		// Circulo
 		imgEditor.canvas.ctx.fillStyle = color;
@@ -94,12 +136,20 @@ var imgEditor = function(canvasID){
 		imgEditor.canvas.ctx.closePath();
 		imgEditor.canvas.ctx.fill();
 	};
-		
+	
+	/**
+	 * Create a new random color
+	 * @return {String} random color in HTML format 
+	 */
 	imgEditor.newColor = function(){
 		if(!imgEditor.colorful) return '#fff';
 		return '#'+Math.round(0xffffff * Math.random()).toString(16);
 	};
 	
+	/**
+	 * Convert mouse coordinates to canvas coordinates 
+	 * @param {Event} Mouse move event
+	 */
 	imgEditor.mouseMove = function(e) {
 		imgEditor.mouse.s.x = Math.max( Math.min( e.pageX - imgEditor.mouse.p.x, 40 ), -40 );
 		imgEditor.mouse.s.y = Math.max( Math.min( e.pageY - imgEditor.mouse.p.y, 40 ), -40 );
@@ -108,12 +158,15 @@ var imgEditor = function(canvasID){
 		imgEditor.mouse.p.y = e.pageY - imgEditor.canvas.canvasMinY;
 	};
 	
-	// --------- IMAGE FUNCTIONS ----------- //
-	
-	// Average values
 	imgEditor.avg = [];
 	imgEditor.generated = false; // Flag to know if averages have been calculated.
 	
+	/**
+	 * To increase speed some effects are now applied to every pixel, but to a smaller subset.
+	 * This is achieved by calculating a new image with less resolution, basically converting
+	 * every square of imgEditor.strokeResolution pixels into the average color of those pixels.
+ 	 * @param {Function} Callback
+	 */
 	imgEditor.generateAvg = function(callback){
 		imgEditor.avg = []; // clear current avg
 		
@@ -154,6 +207,12 @@ var imgEditor = function(canvasID){
 		callback.call();
 	};
 	
+	/**
+	 * Apply the desired effect to the canvas. The effect must be a file in the effects folder.
+	 * See some effects for the required format.
+	 * @param {String} Effect name
+	 * @param {Function} Callback
+	 */
 	imgEditor.applyEffect = function(effect, callback){
 		require(["effects/"+effect], function(){
 			var obj = imgEditor;
@@ -169,10 +228,18 @@ var imgEditor = function(canvasID){
 		});
 	};
 	
+	/**
+	 * Save the canvas data
+	 * @return {String} Data URL with the canvas contents. 
+	 */
 	imgEditor.save = function(){
 		return imgEditor.canvas.elem.get(0).toDataURL();
 	};
 	
+	/**
+	 * Apply zoom to the canvas, basically scaling it via CSS
+ 	 * @param {float} scale
+	 */
 	imgEditor.zoom = function(scale){
 		var h = $(imgEditor.canvas.elem).height(),
 			w = $(imgEditor.canvas.elem).width();
