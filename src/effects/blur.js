@@ -6,6 +6,7 @@
  *  
  * @param {Object} main
  */
+var parameters = [];
 var exec = function(main){
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var pix = imgd.data, i=0, auxAvg;

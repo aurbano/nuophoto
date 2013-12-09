@@ -2,6 +2,7 @@
  * Color effect, saturate the colors in the image 
  * @param {Object} main
  */
+var parameters = [];
 var exec = function(main){
 	// Start processing
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 

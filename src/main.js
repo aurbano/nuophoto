@@ -12,6 +12,7 @@
  *
  *	Requirements:
  *		- jQuery
+ * 		- jQueryUI
  *		- requireJS
  *		- imgEditor
  *		- workspace (Just some gui functions)
@@ -21,7 +22,7 @@ requirejs.config({
     paths: {
 		// Including CDN version and local fallback in case that fails
         jquery: ['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
-				'/nuophoto/lib/jquery.min'],
+				 '/nuophoto/lib/jquery.min'],
 		jqueryui : ['http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
 					'/nuophoto/lib/jqueryui.min'],
 		colorpicker: '/nuophoto/lib/colorpicker/js/colorpicker'
@@ -42,8 +43,8 @@ requirejs.onError = function (err) {
 			break;
 		default:
 			alert("An error occurred. For more information check the console");
-			console.log('[nuophoto] An error occured:');
-			console.log(err);
+			console.error('[nuophoto] An error occured:');
+			console.error(err);
 			break;
 	}
 };
@@ -69,6 +70,7 @@ define(["jquery", "workspace"], function($, workspace) {
 				if($(this).attr('href') == '#gallery') return workspace.displayGallery();
 				if($(this).attr('href') == '#webPhoto') return workspace.displayWebPhoto();
 				if($(this).attr('href') == '#download') return workspace.saveImage();
+				// If it didnt return it must be an effect
 				// Copy color from tool
 				var color = $(this).css('borderLeftColor'),
 					effect = $(this).attr('href').substring(1);
@@ -76,10 +78,7 @@ define(["jquery", "workspace"], function($, workspace) {
 				workspace.addHistory($(this).text(),color);
 				workspace.addLayer($(this).text(),color);
 				
-				workspace.setStatus('Working...');
-				workspace.editor().applyEffect(effect, function(){
-					workspace.clearStatus();
-				});
+				workspace.callEffect(effect);
 			});
 			
 			$('.gui h3').click(function(e){
@@ -155,6 +154,27 @@ define(["jquery", "workspace"], function($, workspace) {
 			$('#tools').draggable({
 				handle: '.topInfo',
 				stack: ".file"
+			});
+			
+			$('#customizer').draggable({
+				handle: '.topInfo',
+				stack: ".file"
+			}).resizable({
+				minHeight : 100,
+				minWidth : 300
+			});
+			
+			$('#customizer button').click(function(e){
+				e.preventDefault();
+				switch($(this).val()){
+					case 'apply':
+						workspace.applyEffect(workspace.effect.name, true);
+						workspace.closeCustomizer();
+						break;
+					case 'cancel':
+						workspace.closeCustomizer();
+						break;
+				}
 			});
 			
 			// Updaters

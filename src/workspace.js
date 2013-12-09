@@ -9,7 +9,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	
 	var wk = {
 		files : {}, 	// Will hold editor references, layers and history information
-		current : -1	// Current must always point to element in focus
+		current : -1,	// Current must always point to element in focus
+		effect : null	// Effect being applied, acts as memory when waiting for user input on the customizer window
 	};
 	
 	/**
@@ -168,6 +169,80 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 */
 	wk.editor = function(){
 		return wk.files[wk.current].editor;
+	};
+	
+	/**
+	 * Display and fill in the values of the customizer
+	 * window 
+	 */
+	wk.openCustomizer = function(title,params){
+		$('#customizer fieldset').html('');
+		for(var i=0;i<params.length;i++){
+			var param = params[i],
+				input;
+			// Prepare the input based on the type
+			switch(param.type){
+				case 'number':
+					input = '<input type="'+param.type+'" name="'+param.name+'" value="'+param.value+'"/>';
+					break;
+				case 'range':
+					input = '<input type="range" name="'+param.name+'" value="'+param.value+'" min="'+param.options.min+'" max="'+param.options.max+'">';
+					break;
+			}
+			$('#customizer fieldset').append('<label>'+param.name.replace('-',' ')+'<br />'+input+'</label>');
+		}
+		$('#customizer').show().find('.filename').text(title);
+	};
+	
+	/**
+	 * Close the customizer window
+	 * @param {Array} Configuration parameters
+	 */
+	wk.closeCustomizer = function(params){
+		$('#customizer').hide();
+		wk.clearStatus();
+	};
+	
+	/**
+	 * Initiate the requested effect, if it requires parameters
+	 * it will call the customizer window
+	 * @param {String} Effect name
+	 */
+	wk.callEffect = function(effect){
+		// Check if effect has configuration requirements
+		wk.setStatus('Waiting for input...');
+		require(["effects/"+effect], function(){
+			if(parameters.length == 0){
+				wk.applyEffect(effect);
+			}else{
+				wk.openCustomizer(effect+' options', parameters);
+				// Store the effect in memory
+				wk.effect = {
+					name : effect,
+					params : parameters
+				};
+			}
+		});
+	};
+	
+	/**
+	 * Applies the requested effect, if it has effects it will parse the contents
+	 * of the customizer window
+	 * @param {String} Effect name
+	 * @param {Boolean} true if it requires configuration
+	 */
+	wk.applyEffect = function(effect, hasConfig){
+		var params = [];
+		if(hasConfig){
+			// Load the corresponding parameters from the Customizer window
+			// I have to add support for checkboxes and radio buttons
+			$('#customizer input').each(function(){
+				params[$(this).attr('name')] = parseInt($(this).val());
+			});
+		}
+		wk.editor().applyEffect(effect, params, function(){
+			wk.clearStatus();
+		});
 	};
 	
 	/**

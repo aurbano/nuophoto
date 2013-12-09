@@ -2,6 +2,7 @@
  * Paint the canvas with thick ascending strokes that kind of simulate a brush
  * @param {Object} main
  */
+var parameters = [];
 var exec = function(main){
 	var i=0, auxAvg;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){

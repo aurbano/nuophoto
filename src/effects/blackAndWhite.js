@@ -4,6 +4,7 @@
  * This effect takes each pixel and finds the average value of RGB.
  * It then rounds it to either black or white.
  */
+var parameters = [];
 var exec = function(main){
 	// Start processing
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 

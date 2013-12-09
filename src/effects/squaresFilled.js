@@ -2,6 +2,7 @@
  * Draw squares filled with the average color of the pixels below it
  * @param {Object} main
  */
+var parameters = [];
 var exec = function(main){
 	var i=0, auxAvg;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){

@@ -2,6 +2,7 @@
  *  Emboss effect (Using matrix convolution)
  * @param {Object} main
  */
+var parameters = [];
 var exec = function(main){
 	var imgd = main.canvas.ctx.getImageData(0, 0, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var pix = imgd.data, total = pix.length;

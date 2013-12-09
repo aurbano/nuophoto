@@ -162,7 +162,7 @@ var imgEditor = function(canvasID){
 	imgEditor.generated = false; // Flag to know if averages have been calculated.
 	
 	/**
-	 * To increase speed some effects are now applied to every pixel, but to a smaller subset.
+	 * To increase speed some effects are not applied to every pixel, but to a smaller subset.
 	 * This is achieved by calculating a new image with less resolution, basically converting
 	 * every square of imgEditor.strokeResolution pixels into the average color of those pixels.
  	 * @param {Function} Callback
@@ -200,8 +200,6 @@ var imgEditor = function(canvasID){
 				imgEditor.avg.push(auxAvg);
 			}
 		}
-		console.log('Sampling done');
-		console.log(imgEditor.avg);
 		// Set flag
 		imgEditor.generated = true;
 		callback.call();
@@ -213,16 +211,19 @@ var imgEditor = function(canvasID){
 	 * @param {String} Effect name
 	 * @param {Function} Callback
 	 */
-	imgEditor.applyEffect = function(effect, callback){
+	imgEditor.applyEffect = function(effect, params, callback){
 		require(["effects/"+effect], function(){
 			var obj = imgEditor;
-			if(!imgEditor.generated){
+			if(!imgEditor.generated || (typeof(params['Square-size'])!=='undefined' && params['Square-size'] !== imgEditor.strokeResolution)){
+				if(typeof(params['Square-size'])!=='undefined'){
+					imgEditor.strokeResolution = params['Square-size'];
+				}
 				imgEditor.generateAvg(function(){
-					exec(obj);
+					exec(obj, params);
 					callback.call();
 				});
 			}else{
-				exec(obj);
+				exec(obj, params);
 				callback.call();
 			}
 		});
