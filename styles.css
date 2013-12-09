@@ -156,19 +156,24 @@ height: 15px;
 .scrollbars ::-webkit-scrollbar-button:start:decrement, .scrollbars ::-webkit-scrollbar-button:end:increment {
 	height: 1px;
 	display: block;
-	background-color: transparent;
+	background-color: #999;
+	outline:none !important;
 }
 .scrollbars ::-webkit-scrollbar-button:horizontal:start:decrement, .scrollbars ::-webkit-scrollbar-button:horizontal:end:increment {
 	height: 1px;
 	display: block;
-	background-color: #fff;
+	background-color: #999;
+	outline:none !important;
 }
 .scrollbars ::-webkit-scrollbar-track-piece {
-	background-color: #fff;
+	background-color: #999;
+	outline:none !important;
 }
 .scrollbars ::-webkit-scrollbar-thumb:vertical,.scrollbars ::-webkit-scrollbar-thumb:horizontal{
 	background-color: #333;
-	border:none;
+	border:5px solid #999;
+	outline:none !important;
+	border-radius:15px !important;
 }
 .scrollbars ::-webkit-scrollbar-thumb:vertical:hover,.scrollbars ::-webkit-scrollbar-thumb:horizontal:hover{
 	background:#555;
@@ -195,11 +200,15 @@ height: 15px;
 	border:#000 solid 2px;
 	z-index:1;
 	padding-top:30px;
-	/*box-shadow:#000 0 0 10px 0px;*/
+	/* I removed box shadow because it causes strange
+	 * trails when dragging
+	 *
+	 * box-shadow:#000 0 0 10px 0px;
+	 */
 	height:400px;
 	width:500px;
 	overflow:hidden;
-	/* Fixing antialiasing problem */
+	/* Fixes antialiasing problem */
 	outline: 5px solid transparent;
 }
 .tool{
