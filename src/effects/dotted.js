@@ -5,6 +5,7 @@
 var parameters = [
 	{
 		name : 'resolution',
+		display : 'Radius',
 		type : 'number',
 		value: 10
 	}
