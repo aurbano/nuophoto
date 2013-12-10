@@ -18,7 +18,8 @@ var imgEditor = function(canvasID){
 		minRadius : 5,				// Minimum radius
 		randRadius : 5,				// Max random radius extra
 		randPosition : 2,			// Max point position deviation
-		innerMargin : 20			// Margin to each side of the canvas
+		innerMargin : 20,			// Margin to each side of the canvas
+		buffer : {}					// Temporary buffer
 	};
 	
 	
@@ -44,6 +45,15 @@ var imgEditor = function(canvasID){
 	};
 	
 	/**
+	 * Temporary canvas data
+	 * This one is used by effects while they are being applied 
+	 */
+	imgEditor.buffer.elem = document.createElement('canvas');
+	imgEditor.buffer.ctx = imgEditor.buffer.elem.getContext("2d");
+	imgEditor.buffer.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
+	imgEditor.buffer.elem.setAttribute('width', imgEditor.canvas.WIDTH);
+	
+	/**
 	 * Mouse tracking 
 	 */
 	imgEditor.mouse = {
@@ -56,6 +66,13 @@ var imgEditor = function(canvasID){
 	 */
 	imgEditor.clear = function() {
 		imgEditor.canvas.ctx.clearRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
+	};
+	
+	/**
+	 * Clear the temporary canvas 
+	 */
+	imgEditor.clearBuffer = function(){
+		imgEditor.buffer.ctx.clearRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
 	};
 	
 	/**
@@ -119,6 +136,9 @@ var imgEditor = function(canvasID){
 		
 		imgEditor.canvas.elem.attr('width',imgEditor.canvas.WIDTH);
 		imgEditor.canvas.elem.attr('height',imgEditor.canvas.HEIGHT);
+		
+		imgEditor.buffer.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
+		imgEditor.buffer.elem.setAttribute('width', imgEditor.canvas.WIDTH);
 	};
 	
 	/**
@@ -219,14 +239,27 @@ var imgEditor = function(canvasID){
 					imgEditor.strokeResolution = params['resolution'];
 				}
 				imgEditor.generateAvg(function(){
-					exec(obj, params);
-					callback.call();
+					exec(obj, params, function(){
+						callback.call();
+					});
 				});
 			}else{
-				exec(obj, params);
-				callback.call();
+				exec(obj, params, function(){
+					callback.call();
+				});
 			}
 		});
+	};
+	
+	/**
+	 * Draws the contents of the canvas buffer into the main canvas
+	 * @param {Object} Canvas buffer element 
+	 */
+	imgEditor.drawToMain = function(buffer){
+		if(typeof(buffer)==='undefined'){
+			buffer = imgEditor.buffer.elem;
+		}
+		imgEditor.canvas.ctx.drawImage(buffer, 0, 0);
 	};
 	
 	/**

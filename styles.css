@@ -143,7 +143,6 @@ h1, h2, h3{
 }
 .gui ul li a:hover{
 	background:rgba(0,0,0,0.8);
-	margin-left:5px;
 	color:#FFF;
 }
 .gui ul li a:hover i{

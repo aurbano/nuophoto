@@ -206,14 +206,16 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	/**
 	 * Initiate the requested effect, if it requires parameters
 	 * it will call the customizer window
-	 * @param {String} Effect name
+	 * @param {String} Effect name, in the scripts folder
+	 * @param {String} Effect name for display
+	 * @param {String} Color for history and layer views
 	 */
-	wk.callEffect = function(effect){
+	wk.callEffect = function(effect, name, color){
 		// Check if effect has configuration requirements
 		wk.setStatus('Waiting for input...');
 		require(["effects/"+effect], function(){
 			if(parameters.length == 0){
-				wk.applyEffect(effect);
+				wk.applyEffect(effect, false, name, color);
 			}else{
 				wk.openCustomizer(effect+' options', parameters);
 				// Store the effect in memory
@@ -231,7 +233,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 * @param {String} Effect name
 	 * @param {Boolean} true if it requires configuration
 	 */
-	wk.applyEffect = function(effect, hasConfig){
+	wk.applyEffect = function(effect, hasConfig, name, color){
 		var params = [];
 		if(hasConfig){
 			// Load the corresponding parameters from the Customizer window
@@ -240,7 +242,16 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				params[$(this).attr('name')] = parseInt($(this).val());
 			});
 		}
+		wk.setStatus('Applying '+effect+'...');
 		wk.editor().applyEffect(effect, params, function(){
+			console.log("Effect applied, drawing from buffer to canvas");
+			// Draw the buffer content to the main canvas
+			wk.editor().drawToMain();
+			// Add the layer, with the buffer data included
+			workspace.addLayer($(this).text(),color,wk.editor().buffer.elem);
+			// And the history element
+			workspace.addHistory($(this).text(),color);
+			// Store the buffer in the history element
 			wk.clearStatus();
 		});
 	};
@@ -249,9 +260,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 * Add a new layer to the workspace 
  	 * @param {String} Layer name
  	 * @param {String} Layer color, each layer type should use a different color to be identified more easily.
+ 	 * @param {Object} Layer contents, as in the buffer state
 	 */
-	wk.addLayer = function(name, color){
-		wk.files[wk.current].layers.push({'name' : name, 'color' : color});
+	wk.addLayer = function(name, color, data){
+		wk.files[wk.current].layers.push({'name' : name, 'color' : color, 'data' : data});
 		wk.drawLayer(wk.files[wk.current].layers.length-1);
 	};
 	
@@ -276,11 +288,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 * Add an event to the history log 
 	 * @param {String} Event name
 	 * @param {String} Event color, each event type should use a different color to be identified more easily.
-	 * @param {Object} Current state of the canvas, so that it's possible to go back to this state
 	 */
-	wk.addHistory = function(name, color, data){
+	wk.addHistory = function(name, color){
 		if(data==undefined) data = false;
-		wk.files[wk.current].history.push({'name' : name, 'color' : color, 'data' : data});
+		wk.files[wk.current].history.push({'name' : name, 'color' : color});
 		wk.drawHistory(wk.files[wk.current].history.length-1);	
 	};
 	

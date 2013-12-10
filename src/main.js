@@ -73,12 +73,10 @@ define(["jquery", "workspace"], function($, workspace) {
 				// If it didnt return it must be an effect
 				// Copy color from tool
 				var color = $(this).css('borderLeftColor'),
-					effect = $(this).attr('href').substring(1);
-				// Normal effect
-				workspace.addHistory($(this).text(),color);
-				workspace.addLayer($(this).text(),color);
+					effect = $(this).attr('href').substring(1),
+					name = $(this).text();
 				
-				workspace.callEffect(effect);
+				workspace.callEffect(effect, name, color);
 			});
 			
 			$('.gui h3').click(function(e){
