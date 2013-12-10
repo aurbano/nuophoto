@@ -2,7 +2,13 @@
  * Recreate the image using only dots
  * @param {Object} imgEditor reference
  */
-var parameters = [];
+var parameters = [
+	{
+		name : 'resolution',
+		type : 'number',
+		value: 10
+	}
+];
 var exec = function(main){
 	var i=0, auxAvg;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){

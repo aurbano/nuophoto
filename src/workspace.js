@@ -189,7 +189,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 					input = '<input type="range" name="'+param.name+'" value="'+param.value+'" min="'+param.options.min+'" max="'+param.options.max+'">';
 					break;
 			}
-			$('#customizer fieldset').append('<label>'+param.name.replace('-',' ')+'<br />'+input+'</label>');
+			$('#customizer fieldset').append('<label>'+param.display+'<br />'+input+'</label>');
 		}
 		$('#customizer').show().find('.filename').text(title);
 	};

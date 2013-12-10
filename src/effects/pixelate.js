@@ -4,19 +4,20 @@
  */
 var parameters = [
 	{
-		name : 'Square-size',
+		name : 'resolution',
+		display : 'Pixel size',
 		type : 'number',
 		value: 10
 	}
 ];
 var exec = function(main, params){
 	var i = 0;
-	for(var y = 0; y < main.canvas.HEIGHT; y += params['Square-size']){
-		for(var x = 0; x < main.canvas.WIDTH; x += params['Square-size']){
+	for(var y = 0; y < main.canvas.HEIGHT; y += params['resolution']){
+		for(var x = 0; x < main.canvas.WIDTH; x += params['resolution']){
 			// Draw strokes
 			auxAvg = (main.avg[i][0]+main.avg[i][1]+main.avg[i][2])/3;
 			main.canvas.ctx.fillStyle = 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',1)';
-			main.canvas.ctx.fillRect(x,Math.round(main.img.y+y), params['Square-size'], params['Square-size']);
+			main.canvas.ctx.fillRect(x,Math.round(main.img.y+y), params['resolution'], params['resolution']);
 			i++;
 		}
 	}

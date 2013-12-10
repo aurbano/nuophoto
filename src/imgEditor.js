@@ -214,9 +214,9 @@ var imgEditor = function(canvasID){
 	imgEditor.applyEffect = function(effect, params, callback){
 		require(["effects/"+effect], function(){
 			var obj = imgEditor;
-			if(!imgEditor.generated || (typeof(params['Square-size'])!=='undefined' && params['Square-size'] !== imgEditor.strokeResolution)){
-				if(typeof(params['Square-size'])!=='undefined'){
-					imgEditor.strokeResolution = params['Square-size'];
+			if(!imgEditor.generated || (typeof(params['resolution'])!=='undefined' && params['resolution'] !== imgEditor.strokeResolution)){
+				if(typeof(params['resolution'])!=='undefined'){
+					imgEditor.strokeResolution = params['resolution'];
 				}
 				imgEditor.generateAvg(function(){
 					exec(obj, params);

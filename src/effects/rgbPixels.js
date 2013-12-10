@@ -4,10 +4,23 @@
  * It should mimic a very low resolution screen. 
  * @param {Object} main
  */
-var parameters = [];
-var exec = function(main){
+var parameters = [
+	{
+		name : 'resolution',
+		display : 'Pixel size',
+		type : 'number',
+		value: 10
+	},
+	{
+		name : 'separator',
+		display : 'Separation height',
+		type : 'number',
+		value: 1
+	}
+];
+var exec = function(main, params){
 	var i=0;
-	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
+	for(var y = 0; y < main.canvas.HEIGHT - params['separator']; y += main.strokeResolution+params['separator']){
 		for(var x = 0; x < main.canvas.WIDTH; x += main.strokeResolution){
 			// Draw strokes
 			main.canvas.ctx.fillStyle = 'rgba('+main.avg[i][0]+',0,0,1)';
