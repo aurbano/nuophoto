@@ -8,160 +8,182 @@
 define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	
 	var wk = {
-		files : {}, 	// Will hold editor references, layers and history information
-		current : -1,	// Current must always point to element in focus
-		effect : null	// Effect being applied, acts as memory when waiting for user input on the customizer window
+		files : {}, 			// Will hold editor references, layers and history information
+		current : -1,			// Current must always point to element in focus
+		currentEffect : null	// Effect being applied, acts as memory when waiting for user input on the customizer window
 	};
 	
-	/**
-	 * Create a new empty file
-	 */
-	wk.newFile = function(){
-		wk.current++;
-		var id = 'file'+wk.current;
-		var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="icon-circle-blank icon-large"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
-			handle: '.topInfo',
-			stack: ".file",
-			start: function(event, ui) {
+	wk.file = {
+		/**
+		 * Create a new empty file
+		 */
+		create : function(){
+			wk.current++;
+			var id = 'file'+wk.current;
+			var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="icon-circle-blank icon-large"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+				handle: '.topInfo',
+				stack: ".file",
+				start: function(event, ui) {
+					var id = $(this).find("a[href='#closeFile']").attr('rel');
+					if(id == wk.current) return true;
+					wk.current = id;
+					if(id !== undefined) return workspace.switchFile(id);
+					return true;
+				}
+			}).resizable({
+				minHeight : 100,
+				minWidth : 200,
+				resize : function(){
+					wk.file.fixMargin();
+				}
+			}).bind('click',function(){
 				var id = $(this).find("a[href='#closeFile']").attr('rel');
-				if(id == wk.current) return true;
 				wk.current = id;
-				if(id !== undefined) return workspace.switchFile(id);
-				return true;
-			}
-		}).resizable({
-			minHeight : 100,
-			minWidth : 200,
-			resize : function(){
-				wk.fixMargin();
-			}
-		}).bind('click',function(){
-			var id = $(this).find("a[href='#closeFile']").attr('rel');
-			wk.current = id;
-			wk.switchFile(id);
-		});
+				wk.file.change(id);
+			});
+			
+			$('#'+id).get(0).addEventListener('DOMMouseScroll',this.handleScroll,false);
+			$('#'+id).get(0).addEventListener('mousewheel',this.handleScroll,false);
+			
+			//
+			var editor = new imgEditor('#'+id);
+			editor.resizeCanvas(400,500);
+			editor.background('#efefef');
+			// Create and return new imgEditor for this file
+			wk.files[wk.current] = {
+				'elem' : elem,
+				'zoom' : 1,
+				'src' : null,
+				'editor' : editor,
+				'layers' : new Array(),
+				'history' : new Array()
+			};
+			// Change to the new file
+			wk.file.change(wk.current);
+			// Initial background layer
+			wk.history.add('New file','#3FC230');
+			// Initial background layer
+			wk.layer.add('<i class="picker" style="background:#efefef"></i> Background','#3FC230');
+			// Changable background color via Colorpicker
+			$('.picker').ColorPicker({
+				color : 'efefef',
+				onChange : function (hsb, hex, rgb) {
+					$('.picker').css('backgroundColor', '#' + hex);
+					editor.background('#' + hex);
+				}
+			});
+		},
 		
-		$('#'+id).get(0).addEventListener('DOMMouseScroll',this.handleScroll,false);
-		$('#'+id).get(0).addEventListener('mousewheel',this.handleScroll,false);
-		
-		//
-		var editor = new imgEditor('#'+id);
-		editor.resizeCanvas(400,500);
-		editor.background('#efefef');
-		// Create and return new imgEditor for this file
-		wk.files[wk.current] = {
-			'elem' : elem,
-			'zoom' : 1,
-			'src' : null,
-			'editor' : editor,
-			'layers' : new Array(),
-			'history' : new Array()
-		};
-		// Change to the new file
-		wk.switchFile(wk.current);
-		// Initial background layer
-		wk.addHistory('New file','#3FC230');
-		// Initial background layer
-		wk.addLayer('<i class="picker" style="background:#efefef"></i> Background','#3FC230');
-		// Changable background color via Colorpicker
-		$('.picker').ColorPicker({
-			color : 'efefef',
-			onChange : function (hsb, hex, rgb) {
-				$('.picker').css('backgroundColor', '#' + hex);
-				editor.background('#' + hex);
+		/**
+		 * Load a new image inside the currently focused file.
+		 * If there is no file selected it will create it. 
+		 * @param {String} Image source
+		 */
+		load : function(src){
+			// Set initial size
+			if(wk.files[wk.current] == undefined){
+				// Create a new file and select it
+				wk.file.create();
 			}
-		});
-	};
-	
-	/**
-	 * Load a new image inside the currently focused file.
-	 * If there is no file selected it will create it. 
-	 * @param {String} Image source
-	 */
-	wk.loadFile = function(src){
-		// Set initial size
-		if(wk.files[wk.current] == undefined){
-			// Create a new file and select it
-			wk.newFile();
-		}
-		wk.setStatus('Loading image');
-		wk.files[wk.current].editor.load(src, function(){
-			// Center the canvas
-			var id = 'file'+wk.current,
-				h = $('#'+id).height(),
-				w = $('#'+id).width();
-			$('#'+id).css({ marginTop : -h/2, marginLeft : -w/2});
-			wk.clearStatus();
-			wk.addLayer('New layer','#C30'); // Initial background layer
-			wk.addHistory('Open photo','#C30'); // Initial background layer
-			wk.fixMargin();
-		});
-	};
-	
-	/**
-	 * Apply zoom to the selected file
- 	 * @param {float} Scale to apply, where 1 is no zoom. 1.5 would be an increase of 50%.
-	 */
-	wk.zoom = function(scale){
-		if(wk.files[wk.current] == undefined){
-			return;
-		}
-		// Update zoom for display
-		wk.files[wk.current].zoom += scale-1;
-		$(wk.files[wk.current].elem).find('.zoom').text('['+wk.files[wk.current].zoom*100+'%]');
-		// Apply zoom
-		wk.files[wk.current].editor.zoom(scale);
-		// Fix margins
-		wk.fixMargin();
-	};
-	
-	/**
-	 * Fix the margins to keep the image always centered if possible. If the viewport
-	 * is smaller than the image, then it will be stuck to the top-left corner. 
-	 */
-	wk.fixMargin = function(){
-		if(wk.files[wk.current] == undefined){
-			return;
-		}
-		$(wk.files[wk.current].elem).find('canvas').css({
-			'marginTop' : -Math.min(
-				$(wk.files[wk.current].elem).find('canvas').height()/2,
-				$(wk.files[wk.current].elem).find('.box').height()/2
-			),
-			'marginLeft': -Math.min(
-				$(wk.files[wk.current].elem).find('canvas').width()/2,
-				$(wk.files[wk.current].elem).find('.box').width()/2
-			)
-		});
-	};
-	
-	/**
-	 * Close the specified file. 
- 	 * @param {int} File identifier
-	 */
-	wk.closeFile = function(num){
-		delete wk.files[num];
-		wk.cleanMenus();
-	};
-	
-	/**
-	 * Change files, this will ensure that all views and variables are updated accordingly.
- 	 * @param {int} File identifier
-	 */
-	wk.switchFile = function(num){
-		wk.cleanMenus();
-		$('.file').removeClass('active');
-		$('#file'+num).parents('.file').addClass('active');
-		wk.bringFront($('#file'+num).parents('.file'));
-		// Redraw
-		for(var i=0;i<wk.files[wk.current].layers.length;i++){
-			wk.drawLayer(i);
-		}
+			wk.status.set('Loading image');
+			wk.files[wk.current].editor.load(src, function(){
+				// Center the canvas
+				var id = 'file'+wk.current,
+					h = $('#'+id).height(),
+					w = $('#'+id).width();
+				$('#'+id).css({ marginTop : -h/2, marginLeft : -w/2});
+				wk.status.clear();
+				wk.layer.add('New layer','#C30'); // Initial background layer
+				wk.history.add('Open photo','#C30'); // Initial background layer
+				wk.file.fixMargin();
+			});
+		},
 		
-		for(var i=0;i<wk.files[wk.current].history.length;i++){
-			wk.drawHistory(i);
-		}		
-		return true;
+		/**
+		 * Apply zoom to the selected file
+	 	 * @param {float} Scale to apply, where 1 is no zoom. 1.5 would be an increase of 50%.
+		 */
+		zoom : function(scale){
+			if(wk.files[wk.current] == undefined){
+				return;
+			}
+			// Update zoom for display
+			wk.files[wk.current].zoom += scale-1;
+			$(wk.files[wk.current].elem).find('.zoom').text('['+wk.files[wk.current].zoom*100+'%]');
+			// Apply zoom
+			wk.files[wk.current].editor.zoom(scale);
+			// Fix margins
+			wk.file.fixMargin();
+		},
+		
+		/**
+		 * Fix the margins to keep the image always centered if possible. If the viewport
+		 * is smaller than the image, then it will be stuck to the top-left corner. 
+		 */
+		fixMargin : function(){
+			if(wk.files[wk.current] == undefined){
+				return;
+			}
+			$(wk.files[wk.current].elem).find('canvas').css({
+				'marginTop' : -Math.min(
+					$(wk.files[wk.current].elem).find('canvas').height()/2,
+					$(wk.files[wk.current].elem).find('.box').height()/2
+				),
+				'marginLeft': -Math.min(
+					$(wk.files[wk.current].elem).find('canvas').width()/2,
+					$(wk.files[wk.current].elem).find('.box').width()/2
+				)
+			});
+		},
+		
+		/**
+		 * Close the specified file. 
+	 	 * @param {int} File identifier
+		 */
+		close : function(num){
+			delete wk.files[num];
+			wk.cleanMenus();
+		},
+		
+		/**
+		 * Change files, this will ensure that all views and variables are updated accordingly.
+	 	 * @param {int} File identifier
+		 */
+		change : function(num){
+			wk.cleanMenus();
+			$('.file').removeClass('active');
+			$('#file'+num).parents('.file').addClass('active');
+			wk.file.bringFront($('#file'+num).parents('.file'));
+			// Redraw
+			for(var i=0;i<wk.files[wk.current].layers.length;i++){
+				wk.drawLayer(i);
+			}
+			
+			for(var i=0;i<wk.files[wk.current].history.length;i++){
+				wk.drawHistory(i);
+			}		
+			return true;
+		},
+		
+		/**
+		 * Bring a file to the front (by setting the z-index) 
+	 	 * @param {$} jQuery element
+		 */
+		bringFront : function(elem){
+			// Brings a file to the stack front
+			var min, group = $('.file');
+			
+			if(group.length < 1) return;
+	
+			min = parseInt(group[0].style.zIndex, 10) || 0;
+			$(group).each(function(i) {
+				this.style.zIndex = min + i;
+			});
+			
+			if(elem == undefined) return;
+	
+			$(elem).css({'zIndex' : min + group.length});
+		}
 	};
 	
 	/**
@@ -172,149 +194,160 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	};
 	
 	/**
-	 * Display and fill in the values of the customizer
-	 * window 
+	 * The customizer is the generic container
+	 * for effect parameters. 
 	 */
-	wk.openCustomizer = function(title,params){
-		$('#customizer fieldset').html('');
-		wk.bringFront($('#customizer'));
-		for(var i=0;i<params.length;i++){
-			var param = params[i],
-				input;
-			// Prepare the input based on the type
-			switch(param.type){
-				case 'number':
-					input = '<input type="'+param.type+'" name="'+param.name+'" value="'+param.value+'"/>';
-					break;
-				case 'range':
-					input = '<input type="range" name="'+param.name+'" value="'+param.value+'" min="'+param.options.min+'" max="'+param.options.max+'">';
-					break;
+	wk.customizer = {
+		/**
+		 * Display and fill in the values of the customizer
+		 * window 
+		 */
+		open : function(title,params){
+			$('#customizer fieldset').html('');
+			wk.file.bringFront($('#customizer'));
+			for(var i=0;i<params.length;i++){
+				var param = params[i],
+					input;
+				// Prepare the input based on the type
+				switch(param.type){
+					case 'number':
+						input = '<input type="'+param.type+'" name="'+param.name+'" value="'+param.value+'"/>';
+						break;
+					case 'range':
+						input = '<input type="range" name="'+param.name+'" value="'+param.value+'" min="'+param.options.min+'" max="'+param.options.max+'">';
+						break;
+				}
+				$('#customizer fieldset').append('<label>'+param.display+'<br />'+input+'</label>');
 			}
-			$('#customizer fieldset').append('<label>'+param.display+'<br />'+input+'</label>');
-		}
-		$('#customizer').show().find('.filename').text(title);
+			$('#customizer').show().find('.filename').text(title);
+		},
+		/**
+		 * Close the customizer window
+		 * @param {Array} Configuration parameters
+		 */
+		close : function(params){
+			$('#customizer').hide();
+			wk.status.clear();
+		},
 	};
 	
-	/**
-	 * Close the customizer window
-	 * @param {Array} Configuration parameters
-	 */
-	wk.closeCustomizer = function(params){
-		$('#customizer').hide();
-		wk.clearStatus();
-	};
-	
-	/**
-	 * Initiate the requested effect, if it requires parameters
-	 * it will call the customizer window
-	 * @param {String} Effect name, in the scripts folder
-	 * @param {String} Effect name for display
-	 * @param {String} Color for history and layer views
-	 */
-	wk.callEffect = function(effect, name, color){
-		// Check if effect has configuration requirements
-		wk.setStatus('Waiting for input...');
-		require(["effects/"+effect], function(){
-			if(parameters.length == 0){
-				wk.applyEffect(effect, false, name, color);
-			}else{
-				wk.openCustomizer(name+' options', parameters);
-				// Store the effect in memory
-				wk.effect = {
-					effect : effect,
-					name : name,
-					params : parameters
-				};
-			}
-		});
-	};
-	
-	/**
-	 * Applies the requested effect, if it has effects it will parse the contents
-	 * of the customizer window
-	 * @param {String} Effect name
-	 * @param {Boolean} true if it requires configuration
-	 */
-	wk.applyEffect = function(effect, hasConfig, name, color){
-		var params = [];
-		if(hasConfig){
-			// Load the corresponding parameters from the Customizer window
-			// TODO Support for checkboxes and radio buttons
-			$('#customizer input').each(function(){
-				params[$(this).attr('name')] = parseInt($(this).val());
+	wk.effect = {
+		/**
+		 * Initiate the requested effect, if it requires parameters
+		 * it will call the customizer window
+		 * @param {String} Effect name, in the scripts folder
+		 * @param {String} Effect name for display
+		 * @param {String} Color for history and layer views
+		 */
+		call : function(effect, name, color){
+			// Check if effect has configuration requirements
+			wk.status.set('Waiting for input...');
+			require(["effects/"+effect], function(){
+				if(parameters.length == 0){
+					wk.effect.apply(effect, false, name, color);
+				}else{
+					wk.customizer.open(name+' options', parameters);
+					// Store the effect in memory
+					wk.currentEffect = {
+						effect : effect,
+						name : name,
+						params : parameters
+					};
+				}
 			});
+		},
+		
+		/**
+		 * Applies the requested effect, if it has effects it will parse the contents
+		 * of the customizer window
+		 * @param {String} Effect name
+		 * @param {Boolean} true if it requires configuration
+		 */
+		apply : function(effect, hasConfig, name, color){
+			var params = [];
+			if(hasConfig){
+				// Load the corresponding parameters from the Customizer window
+				// TODO Support for checkboxes and radio buttons
+				$('#customizer input').each(function(){
+					params[$(this).attr('name')] = parseInt($(this).val());
+				});
+			}
+			wk.status.set('Applying '+name+'...');
+			wk.editor().applyEffect(effect, params, function(){
+				// Draw the buffer content to the main canvas
+				wk.editor().drawToMain();
+				// Add the layer, with the buffer data included
+				wk.layer.add(name,color,wk.editor().buffer.elem);
+				// And the history element
+				wk.history.add(name,color);
+				// Store the buffer in the history element
+				wk.status.clear();
+			});
+		},
+	};
+	
+	wk.layer = {
+		/**
+		 * Add a new layer to the workspace 
+	 	 * @param {String} Layer name
+	 	 * @param {String} Layer color, each layer type should use a different color to be identified more easily.
+	 	 * @param {Object} Layer contents, as in the buffer state
+		 */
+		add : function(name, color, data){
+			wk.files[wk.current].layers.push({'name' : name, 'color' : color, 'data' : data});
+			wk.layer.draw(wk.files[wk.current].layers.length-1);
+		},
+		
+		/**
+		 * Add the layer to the DOM 
+	 	 * @param {int} Layer number
+		 */
+		draw : function(num){
+			var span = '',
+				eye='',
+				total = wk.files[wk.current].layers.length,
+				name = wk.files[wk.current].layers[num].name,
+				color = wk.files[wk.current].layers[num].color;
+			if(total > 1){
+				eye = '<i class="icon-eye-open icon-large"></i> ';
+				span = '<span><i class="icon-trash"></span>';
+			}
+			$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
+		},
+		
+		/**
+		 * Remove a layer from the current file
+		 * // TODO Redraw canvas without this layer 
+	 	 * @param {int} Layer number
+		 */
+		remove : function(index){
+			wk.addHistory('Delete '+wk.files[wk.current].layers[index].name,wk.files[wk.current].layers[index].color);
+			wk.files[wk.current].layers.splice(index,1);
+			$("#layers a[rel='"+index+"']").parent('li').remove();
 		}
-		wk.setStatus('Applying '+name+'...');
-		wk.editor().applyEffect(effect, params, function(){
-			// Draw the buffer content to the main canvas
-			wk.editor().drawToMain();
-			// Add the layer, with the buffer data included
-			wk.addLayer(name,color,wk.editor().buffer.elem);
-			// And the history element
-			wk.addHistory(name,color);
-			// Store the buffer in the history element
-			wk.clearStatus();
-		});
 	};
 	
-	/**
-	 * Add a new layer to the workspace 
- 	 * @param {String} Layer name
- 	 * @param {String} Layer color, each layer type should use a different color to be identified more easily.
- 	 * @param {Object} Layer contents, as in the buffer state
-	 */
-	wk.addLayer = function(name, color, data){
-		wk.files[wk.current].layers.push({'name' : name, 'color' : color, 'data' : data});
-		wk.drawLayer(wk.files[wk.current].layers.length-1);
-	};
-	
-	/**
-	 * Add the layer to the DOM 
- 	 * @param {int} Layer number
-	 */
-	wk.drawLayer = function(num){
-		var span = '',
-			eye='',
-			total = wk.files[wk.current].layers.length,
-			name = wk.files[wk.current].layers[num].name,
-			color = wk.files[wk.current].layers[num].color;
-		if(total > 1){
-			eye = '<i class="icon-eye-open icon-large"></i> ';
-			span = '<span><i class="icon-trash"></span>';
+	wk.history = {
+		/**
+		 * Add an event to the history log 
+		 * @param {String} Event name
+		 * @param {String} Event color, each event type should use a different color to be identified more easily.
+		 */
+		add : function(name, color){
+			wk.files[wk.current].history.push({'name' : name, 'color' : color});
+			wk.history.draw(wk.files[wk.current].history.length-1);	
+		},
+		
+		/**
+		 * Add the history element to the DOM 
+	 	 * @param {int} Event number
+		 */
+		draw : function(num){
+			var total = wk.files[wk.current].history.length,
+				name = wk.files[wk.current].history[num].name,
+				color = wk.files[wk.current].history[num].color;;
+			$('<li><a href="#history" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
 		}
-		$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
-	};
-	
-	/**
-	 * Add an event to the history log 
-	 * @param {String} Event name
-	 * @param {String} Event color, each event type should use a different color to be identified more easily.
-	 */
-	wk.addHistory = function(name, color){
-		wk.files[wk.current].history.push({'name' : name, 'color' : color});
-		wk.drawHistory(wk.files[wk.current].history.length-1);	
-	};
-	
-	/**
-	 * Add the history element to the DOM 
- 	 * @param {int} Event number
-	 */
-	wk.drawHistory = function(num){
-		var total = wk.files[wk.current].history.length,
-			name = wk.files[wk.current].history[num].name,
-			color = wk.files[wk.current].history[num].color;;
-		$('<li><a href="#history" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px" title="Go back">'+name+'</a></li>').prependTo('#history');
-	},
-	
-	/**
-	 * Remove a layer from the current file
-	 * // TODO Redraw canvas without this layer 
- 	 * @param {int} Layer number
-	 */
-	wk.removeLayer = function(index){
-		wk.addHistory('Delete '+wk.files[wk.current].layers[index].name,wk.files[wk.current].layers[index].color);
-		wk.files[wk.current].layers.splice(index,1);
-		$("#layers a[rel='"+index+"']").parent('li').remove();
 	};
 	
 	/**
@@ -392,39 +425,20 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		window.open(saved, "Image | nuophoto", "width=600, height=400");
 	};
 	
-	/**
-	 * Clear the status text
-	 */
-	wk.clearStatus = function(){
-		$('.file .status').text('').hide();
-	};
-	
-	/**
-	 * Set status text, possibly useful to display information while an effect is being applied. 
- 	 * @param {String} Status text
-	 */
-	wk.setStatus = function(text){
-		$('#file'+wk.current).parents('.file').find('.status').text(text).show();
-	};
-	
-	/**
-	 * Bring a file to the front (by setting the z-index) 
- 	 * @param {$} jQuery element
-	 */
-	wk.bringFront = function(elem){
-		// Brings a file to the stack front
-		var min, group = $('.file');
-		
-		if(group.length < 1) return;
-
-		min = parseInt(group[0].style.zIndex, 10) || 0;
-		$(group).each(function(i) {
-			this.style.zIndex = min + i;
-		});
-		
-		if(elem == undefined) return;
-
-		$(elem).css({'zIndex' : min + group.length});
+	wk.status = {
+		/**
+		 * Set file status text, possibly useful to display information while an effect is being applied. 
+	 	 * @param {String} Status text
+		 */
+		set : function(text){
+			$('#file'+wk.current).parents('.file').find('.status').text(text).show();
+		},
+		/**
+		 * Clear the status text
+		 */
+		clear : function(){
+			$('.file .status').text('').hide();
+		},
 	};
 	
 	/**
