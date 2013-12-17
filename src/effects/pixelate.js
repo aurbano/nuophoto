@@ -10,7 +10,7 @@ var parameters = [
 		value: 10
 	}
 ];
-var exec = function(main, params){
+var exec = function(main, params, callback){
 	var i = 0;
 	for(var y = 0; y < main.canvas.HEIGHT; y += params['resolution']){
 		for(var x = 0; x < main.canvas.WIDTH; x += params['resolution']){
@@ -21,4 +21,6 @@ var exec = function(main, params){
 			i++;
 		}
 	}
+	
+	callback.call();
 };

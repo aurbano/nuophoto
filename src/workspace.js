@@ -177,6 +177,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 */
 	wk.openCustomizer = function(title,params){
 		$('#customizer fieldset').html('');
+		wk.bringFront($('#customizer'));
 		for(var i=0;i<params.length;i++){
 			var param = params[i],
 				input;
@@ -237,7 +238,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		var params = [];
 		if(hasConfig){
 			// Load the corresponding parameters from the Customizer window
-			// I have to add support for checkboxes and radio buttons
+			// TODO Support for checkboxes and radio buttons
 			$('#customizer input').each(function(){
 				params[$(this).attr('name')] = parseInt($(this).val());
 			});
@@ -248,9 +249,9 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			// Draw the buffer content to the main canvas
 			wk.editor().drawToMain();
 			// Add the layer, with the buffer data included
-			workspace.addLayer($(this).text(),color,wk.editor().buffer.elem);
+			wk.addLayer(effect,color,wk.editor().buffer.elem);
 			// And the history element
-			workspace.addHistory($(this).text(),color);
+			wk.addHistory(effect,color);
 			// Store the buffer in the history element
 			wk.clearStatus();
 		});
@@ -290,7 +291,6 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 * @param {String} Event color, each event type should use a different color to be identified more easily.
 	 */
 	wk.addHistory = function(name, color){
-		if(data==undefined) data = false;
 		wk.files[wk.current].history.push({'name' : name, 'color' : color});
 		wk.drawHistory(wk.files[wk.current].history.length-1);	
 	};

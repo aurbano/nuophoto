@@ -10,7 +10,7 @@ var parameters = [
 		value: 10
 	}
 ];
-var exec = function(main){
+var exec = function(main, params, callback){
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var i=0;
 	for(var y = 0; y < main.canvas.HEIGHT; y += main.strokeResolution){
@@ -25,4 +25,6 @@ var exec = function(main){
 			i++;
 		}
 	}
+	
+	callback.call();
 };
