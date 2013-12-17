@@ -21,9 +21,9 @@ requirejs.config({
     enforceDefine: false,
     paths: {
 		// Including CDN version and local fallback in case that fails
-        jquery: ['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
+        jquery: [//'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
 				 '/nuophoto/lib/jquery.min'],
-		jqueryui : ['http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
+		jqueryui : [//'http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
 					'/nuophoto/lib/jqueryui.min'],
 		colorpicker: '/nuophoto/lib/colorpicker/js/colorpicker'
     },
@@ -166,7 +166,7 @@ define(["jquery", "workspace"], function($, workspace) {
 				e.preventDefault();
 				switch($(this).val()){
 					case 'apply':
-						workspace.applyEffect(workspace.effect.name, true);
+						workspace.applyEffect(workspace.effect.effect, true, workspace.effect.name);
 						workspace.closeCustomizer();
 						break;
 					case 'cancel':

@@ -218,10 +218,11 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			if(parameters.length == 0){
 				wk.applyEffect(effect, false, name, color);
 			}else{
-				wk.openCustomizer(effect+' options', parameters);
+				wk.openCustomizer(name+' options', parameters);
 				// Store the effect in memory
 				wk.effect = {
-					name : effect,
+					effect : effect,
+					name : name,
 					params : parameters
 				};
 			}
@@ -243,15 +244,14 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				params[$(this).attr('name')] = parseInt($(this).val());
 			});
 		}
-		wk.setStatus('Applying '+effect+'...');
+		wk.setStatus('Applying '+name+'...');
 		wk.editor().applyEffect(effect, params, function(){
-			console.log("Effect applied, drawing from buffer to canvas");
 			// Draw the buffer content to the main canvas
 			wk.editor().drawToMain();
 			// Add the layer, with the buffer data included
-			wk.addLayer(effect,color,wk.editor().buffer.elem);
+			wk.addLayer(name,color,wk.editor().buffer.elem);
 			// And the history element
-			wk.addHistory(effect,color);
+			wk.addHistory(name,color);
 			// Store the buffer in the history element
 			wk.clearStatus();
 		});
