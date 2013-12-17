@@ -108,7 +108,7 @@ define(["jquery", "workspace"], function($, workspace) {
 			$('#photoList a').click(function(e){
 				e.preventDefault();
 				// Now load the new pic
-				workspace.loadFile('img/editor/'+$(this).attr('rel'));
+				workspace.file.load('img/editor/'+$(this).attr('rel'));
 				$('#gallery').fadeOut(300);
 				$('#webPhoto').fadeOut(300);
 				$('#overlay').fadeOut(300);

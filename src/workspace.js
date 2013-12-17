@@ -63,7 +63,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			// Initial background layer
 			wk.history.add('New file','#3FC230');
 			// Initial background layer
-			wk.layer.add('<i class="picker" style="background:#efefef"></i> Background','#3FC230');
+			wk.layer.add('<i class="picker" style="background:#efefef"></i> Background','#3FC230',wk.editor().getCanvas('main'));
 			// Changable background color via Colorpicker
 			$('.picker').ColorPicker({
 				color : 'efefef',
@@ -93,7 +93,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 					w = $('#'+id).width();
 				$('#'+id).css({ marginTop : -h/2, marginLeft : -w/2});
 				wk.status.clear();
-				wk.layer.add('New layer','#C30'); // Initial background layer
+				wk.layer.add('New layer','#C30',wk.editor().getCanvas('main')); // Initial background layer
 				wk.history.add('Open photo','#C30'); // Initial background layer
 				wk.file.fixMargin();
 			});
@@ -156,11 +156,11 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			wk.file.bringFront($('#file'+num).parents('.file'));
 			// Redraw
 			for(var i=0;i<wk.files[wk.current].layers.length;i++){
-				wk.drawLayer(i);
+				wk.layer.draw(i);
 			}
 			
 			for(var i=0;i<wk.files[wk.current].history.length;i++){
-				wk.drawHistory(i);
+				wk.history.draw(i);
 			}		
 			return true;
 		},
@@ -277,7 +277,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				// Draw the buffer content to the main canvas
 				wk.editor().drawToMain();
 				// Add the layer, with the buffer data included
-				wk.layer.add(name,color,wk.editor().buffer.elem);
+				wk.layer.add(name,color,wk.editor().getCanvas('buffer'));
 				// And the history element
 				wk.history.add(name,color);
 				// Store the buffer in the history element
@@ -317,13 +317,27 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		
 		/**
 		 * Remove a layer from the current file
-		 * // TODO Redraw canvas without this layer 
+		 * //TODO Redraw canvas without this layer 
 	 	 * @param {int} Layer number
 		 */
 		remove : function(index){
-			wk.addHistory('Delete '+wk.files[wk.current].layers[index].name,wk.files[wk.current].layers[index].color);
-			wk.files[wk.current].layers.splice(index,1);
+			var file = wk.files[wk.current];
+			wk.history.add('Delete ' + file.layers[index].name, file.layers[index].color);
+			file.layers.splice(index,1);
 			$("#layers a[rel='"+index+"']").parent('li').remove();
+			wk.redraw();
+		}
+	};
+	
+	/**
+	 * Redraw a file using the data from each layer 
+	 */
+	wk.redraw = function(){
+		var layers = wk.files[wk.current].layers,
+			editor = wk.editor();
+		editor.clear();
+		for(var i=0;i<layers.length;i++){
+			editor.drawToMain(layers[i].data);
 		}
 	};
 	
