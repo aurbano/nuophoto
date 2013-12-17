@@ -14,7 +14,7 @@ var exec = function(main, params, callback){
 		pix[i+1] = avg; // green channel
 		pix[i+2] = avg; // blue channel
 	}
-	main.canvas.ctx.putImageData(imgd, main.img.x, main.img.y);
+	main.buffer.ctx.putImageData(imgd, main.img.x, main.img.y);
 	// Reset the averages
 	main.generated = false;
 	

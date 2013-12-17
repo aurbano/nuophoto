@@ -16,12 +16,12 @@ var exec = function(main, params, callback){
 		for(var x = 0; x < main.canvas.WIDTH; x += main.strokeResolution){
 			// Draw strokes
 			auxAvg = (main.avg[i][0]+main.avg[i][1]+main.avg[i][2])/3;
-			main.canvas.ctx.lineWidth = (255-auxAvg)/main.strokeResolution;
-			main.canvas.ctx.strokeStyle = 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',1)';
-			main.canvas.ctx.beginPath();
-			main.canvas.ctx.moveTo(x,main.img.y+y);
-			main.canvas.ctx.lineTo(x+main.strokeResolution,main.img.y+y+main.strokeResolution);
-			main.canvas.ctx.stroke();
+			main.buffer.ctx.lineWidth = (255-auxAvg)/main.strokeResolution;
+			main.buffer.ctx.strokeStyle = 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',1)';
+			main.buffer.ctx.beginPath();
+			main.buffer.ctx.moveTo(x,main.img.y+y);
+			main.buffer.ctx.lineTo(x+main.strokeResolution,main.img.y+y+main.strokeResolution);
+			main.buffer.ctx.stroke();
 			i++;
 		}
 	}

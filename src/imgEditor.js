@@ -108,6 +108,30 @@ var imgEditor = function(canvasID){
 	};
 	
 	/**
+	 * Return new canvas element, inside canvas specify
+	 * either the buffer or the main canvas
+	 */
+	imgEditor.getCanvas = function(useCanvas){
+		var tmp = {};
+		tmp.elem = document.createElement('canvas');
+		tmp.ctx = imgEditor.buffer.elem.getContext("2d");
+		tmp.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
+		tmp.elem.setAttribute('width', imgEditor.canvas.WIDTH);
+		
+		switch(useCanvas){
+			case 'main':
+				canvas = imgEditor.canvas.elem.get(0);
+				break;
+			case 'buffer':
+				canvas = imgEditor.buffer.elem;
+				break;
+		}
+		tmp.ctx.drawImage(canvas, 0, 0);
+		
+		return tmp.elem;
+	};
+	
+	/**
 	 *  Draw image on the canvas
  	 * @param {Object} Image object to be drawn
 	 */
@@ -150,11 +174,11 @@ var imgEditor = function(canvasID){
 	 */
 	imgEditor.circle = function(x,y,rad,color){
 		// Circulo
-		imgEditor.canvas.ctx.fillStyle = color;
-		imgEditor.canvas.ctx.beginPath();
-		imgEditor.canvas.ctx.arc(x,y,rad,0,Math.PI*2,true);
-		imgEditor.canvas.ctx.closePath();
-		imgEditor.canvas.ctx.fill();
+		imgEditor.buffer.ctx.fillStyle = color;
+		imgEditor.buffer.ctx.beginPath();
+		imgEditor.buffer.ctx.arc(x,y,rad,0,Math.PI*2,true);
+		imgEditor.buffer.ctx.closePath();
+		imgEditor.buffer.ctx.fill();
 	};
 	
 	/**
