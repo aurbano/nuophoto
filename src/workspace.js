@@ -62,17 +62,17 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			// Change to the new file
 			wk.file.change(wk.current);
 			// Initial background layer
-			wk.history.add('New file','#3FC230');
+			//wk.history.add('New file','#3FC230');
 			// Initial background layer
-			wk.layer.add('<i class="picker" style="background:#efefef"></i> Background','#3FC230',wk.editor().getCanvas('main'));
+			//wk.layer.add('<i class="picker" style="background:#efefef"></i> Background','#3FC230',wk.editor().getCanvas('main'));
 			// Changable background color via Colorpicker
-			$('.picker').ColorPicker({
+			/*$('.picker').ColorPicker({
 				color : 'efefef',
 				onChange : function (hsb, hex, rgb) {
 					$('.picker').css('backgroundColor', '#' + hex);
 					editor.background('#' + hex);
 				}
-			});
+			});*/
 		},
 		
 		/**
@@ -286,8 +286,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				wk.layer.add(name,color,wk.editor().getCanvas('buffer'));
 				// And the history element
 				wk.history.add(name,color);
-				// Store the buffer in the history element
+				
 				wk.status.clear();
+				// Clear the buffer
+				wk.editor().clearBuffer();
 			});
 		},
 	};
@@ -331,11 +333,11 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				total = wk.files[wk.current].layers.length,
 				name = wk.files[wk.current].layers[num].name,
 				color = wk.files[wk.current].layers[num].color;
-			if(total > 1){
+			if(total > 0){
 				eye = '<span class="toggle"><i class="fa fa-eye fa-lg"></i></span> ';
 				span = '<span class="delete right"><i class="fa fa-trash-o"></span>';
 			}
-			$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
+			$('<li><a href="#layers" rel="'+num+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
 		},
 		
 		/**

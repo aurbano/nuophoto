@@ -19,7 +19,8 @@ var imgEditor = function(canvasID){
 		randRadius : 5,				// Max random radius extra
 		randPosition : 2,			// Max point position deviation
 		innerMargin : 20,			// Margin to each side of the canvas
-		buffer : {}					// Temporary buffer
+		buffer : {},				// Temporary buffer
+		backgroundColor : '',		// Background color
 	};
 	
 	
@@ -96,12 +97,8 @@ var imgEditor = function(canvasID){
 			var newH = imgEditor.canvas.WIDTH, newW = imgEditor.canvas.HEIGHT;
 			if(imgEditor.img.i.width > imgEditor.canvas.WIDTH) newW = imgEditor.img.i.width;
 			if(imgEditor.img.i.height > imgEditor.canvas.HEIGHT) newH = imgEditor.img.i.height;
-			// Store current drawn canvas
-			//var cache = new Image;
-			//cache.src = imgEditor.save();
 			imgEditor.resizeCanvas(newH,newW);
 			// Redraw the saved data
-			//imgEditor.drawImage(cache);
 			imgEditor.drawImage(imgEditor.img.i);
 			callback.call();
 		};
@@ -149,6 +146,8 @@ var imgEditor = function(canvasID){
 	 * @param {String} HTML color
 	 */
 	imgEditor.background = function(color){
+		imgEditor.backgroundColor = color;
+		
 		// Now add the white canvas to its right
 		imgEditor.canvas.ctx.fillStyle=color;
 		imgEditor.canvas.ctx.fillRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
@@ -168,6 +167,8 @@ var imgEditor = function(canvasID){
 		
 		imgEditor.buffer.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
 		imgEditor.buffer.elem.setAttribute('width', imgEditor.canvas.WIDTH);
+		
+		imgEditor.background(imgEditor.backgroundColor);
 	};
 	
 	/**
@@ -264,8 +265,10 @@ var imgEditor = function(canvasID){
 		require(["effects/"+effect], function(){
 			var obj = imgEditor;
 			if(!imgEditor.generated || (typeof(params['resolution'])!=='undefined' && params['resolution'] !== imgEditor.strokeResolution)){
-				if(typeof(params['resolution'])!=='undefined'){
+				if(typeof params['resolution'] !== undefined){
 					imgEditor.strokeResolution = params['resolution'];
+					// Set flag
+					imgEditor.generated = false;
 				}
 				imgEditor.generateAvg(function(){
 					exec(obj, params, function(){
