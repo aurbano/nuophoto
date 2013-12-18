@@ -28,14 +28,14 @@ var exec = function(main, params, callback){
 					0.001,
 					Math.round(x+main.strokeResolution/2),
 					Math.round(main.img.y+y+main.strokeResolution/2), 
-					main.strokeResolution+20
+					main.strokeResolution
 			);
 			rad.addColorStop(0, 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',1)');
 			rad.addColorStop(1, 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',0)');
 			main.circle(
-				Math.round(x+main.innerMargin+main.strokeResolution/2),
-				Math.round(main.img.y+y+main.strokeResolution/2),
-				main.strokeResolution*10,
+				Math.round(x+main.strokeResolution/2),
+				Math.round(y+main.strokeResolution/2),
+				main.strokeResolution,
 				rad
 			);
 			i++;
