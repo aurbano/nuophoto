@@ -148,6 +148,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		close : function(num){
 			delete wk.files[num];
 			wk.cleanMenus();
+			$('#layerOpts').hide();
 		},
 		
 		/**
@@ -314,7 +315,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				'blendingMode' : 'normal'
 			});
 			// Display inside the layer list
-			wk.layer.draw(wk.files[wk.current].layers.length-1);
+			var index = wk.files[wk.current].layers.length-1;
+			wk.layer.draw(index);
+			wk.layer.select(index);
+			
 		},
 		
 		/**
@@ -414,7 +418,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			editor = wk.editor();
 		editor.clear();
 		for(var i=0;i<layers.length;i++){
-			if(typeof(layers[i])===undefined || layers[i].hidden)
+			if(layers[i] === undefined || layers[i].hidden)
 				continue;
 			editor.drawToMain(layers[i].data, layers[i].opacity, layers[i].blendingMode);
 		}
@@ -519,8 +523,9 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		if(wk.files[wk.current] == undefined){
 			return;
 		}
-		var saved = wk.files[wk.current].editor.save();
-		window.open(saved, "Image | nuophoto", "width=600, height=400");
+		var editor = wk.files[wk.current].editor,
+			saved = editor.save();
+		window.open(saved, "nuophoto", "width="+(editor.canvas.WIDTH)+", height="+(editor.canvas.HEIGHT)+", toolbar=0, scrollbars=0, menubar=0, status=0, titlebar=0, resizable=0");
 	};
 	
 	/**

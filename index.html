@@ -40,7 +40,7 @@
         	<li><a href="#newFile" style="border-left:#C30 solid 3px"><i class="fa fa-file"></i> New file</a></li>
 			<li><a href="#gallery" style="border-left:#C30 solid 3px"><i class="fa fa-briefcase"></i> Load from gallery</a></li>
 			<li><a href="#webPhoto" style="border-left:#C30 solid 3px"><i class="fa fa-cloud"></i> Load from URL</a></li>
-			<li><a href="#download" style="border-left:#C30 solid 3px"><i class="fa fa-download-alt"></i> Save</a></li>
+			<li><a href="#download" style="border-left:#C30 solid 3px"><i class="fa fa-download"></i> Save</a></li>
 		</ul>
 	</div>
 	
@@ -87,17 +87,24 @@
 					Opacity: <input type="number" value="100" max="100" min="0" id="opacity" style="width:40px" />
 					<select id="blendingMode">
 						<option value="normal">Normal</option>
-						<option value="multiply">Multiply</option>
-						<option value="screen">Screen</option>
-						<option value="overlay">Overlay</option>
+						<option disabled="disabled">-----------</option>
 						<option value="darken">Darken</option>
-						<option value="lighten">Lighten</option>
-						<option value="color-dodge">Color dodge</option>
+						<option value="multiply">Multiply</option>
 						<option value="color-burn">Color burn</option>
+						<option disabled="disabled">-----------</option>
+						<option value="lighten">Lighten</option>
+						<option value="screen">Screen</option>
+						<option value="color-dodge">Color dodge</option>
+						<option disabled="disabled">-----------</option>
+						<option value="overlay">Overlay</option>
 						<option value="soft-light">Soft light</option>
+						<option value="hard-light">Hard light</option>
+						<option disabled="disabled">-----------</option>
 						<option value="difference">Difference</option>
 						<option value="exclusion">Exclusion</option>
+						<option disabled="disabled">-----------</option>
 						<option value="hue">Hue</option>
+						<option value="saturation">Saturation</option>
 						<option value="color">Color</option>
 						<option value="luminosity">Luminosity</option>
 					</select>

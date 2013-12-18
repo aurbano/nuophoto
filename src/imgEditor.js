@@ -285,14 +285,14 @@ var imgEditor = function(canvasID){
 	 * @param {Object} Canvas buffer element 
 	 */
 	imgEditor.drawToMain = function(buffer, opacity, blendingMode){
-		if(typeof(buffer)==='undefined'){
+		if(buffer === undefined){
 			buffer = imgEditor.buffer.elem;
 		}
 		if(blendingMode === undefined)
 			blendingMode = 'normal';
-		if(opacity===undefined || opacity > 1 || opacity<0)
+		if(opacity === undefined || opacity > 1 || opacity<0)
 			opacity = 1;
-		
+			
 		imgEditor.canvas.ctx.save();
 		imgEditor.canvas.ctx.globalAlpha = opacity;
 		imgEditor.canvas.ctx.globalCompositeOperation = blendingMode;
