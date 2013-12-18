@@ -109,12 +109,16 @@ var imgEditor = function(canvasID){
 	
 	/**
 	 * Return new canvas element, inside canvas specify
-	 * either the buffer or the main canvas
+	 * either the buffer or the main canvas.
+	 * This is done to provide a "snapshot" of the state of the canvas,
+	 * so that history and layers can be redrawn
+	 * @param {String} Which canvas to use: buffer or main.
+	 * @return {Object} Canvas element containing a copy of the specified canvas
 	 */
 	imgEditor.getCanvas = function(useCanvas){
 		var tmp = {};
 		tmp.elem = document.createElement('canvas');
-		tmp.ctx = imgEditor.buffer.elem.getContext("2d");
+		tmp.ctx = tmp.elem.getContext("2d");
 		tmp.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
 		tmp.elem.setAttribute('width', imgEditor.canvas.WIDTH);
 		
@@ -126,6 +130,7 @@ var imgEditor = function(canvasID){
 				canvas = imgEditor.buffer.elem;
 				break;
 		}
+		
 		tmp.ctx.drawImage(canvas, 0, 0);
 		
 		return tmp.elem;
