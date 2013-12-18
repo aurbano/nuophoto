@@ -161,11 +161,26 @@ define(["jquery", "workspace"], function($, workspace) {
 				}
 			});
 			
-			$('#layerOptsForm').submit(function(e){
-				e.preventDefault();
+			function updateParameters(){
 				workspace.layer.set({
 					opacity : parseInt($('#opacity').val())/100,
+					blendingMode : $('#blendingMode').val()
 				});
+			}
+			
+			$('#layerOptsForm').submit(function(e){
+				e.preventDefault();
+				updateParameters();
+			});
+			
+			$('#layerOpts input').change(function(e){
+				e.preventDefault();
+				updateParameters();
+			});
+			
+			$('#layerOpts select').change(function(e){
+				e.preventDefault();
+				updateParameters();
 			});
 			
 			$('#tools').draggable({

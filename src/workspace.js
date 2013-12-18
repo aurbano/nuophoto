@@ -310,7 +310,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				'color' : color,
 				'data' : data,
 				'hidden' : false,
-				'opacity' : 1
+				'opacity' : 1,
+				'blendingMode' : 'normal'
 			});
 			// Display inside the layer list
 			wk.layer.draw(wk.files[wk.current].layers.length-1);
@@ -380,6 +381,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			$('#layerOpts').show();
 			// Reset opacity content
 			$('#opacity').val(wk.files[wk.current].layers[index].opacity*100);
+			$('#blendingMode option[value="'+wk.files[wk.current].layers[index].blendingMode+'"]').attr('selected','selecteds');
 		},
 		
 		/**
@@ -414,7 +416,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		for(var i=0;i<layers.length;i++){
 			if(typeof(layers[i])===undefined || layers[i].hidden)
 				continue;
-			editor.drawToMain(layers[i].data, layers[i].opacity);
+			editor.drawToMain(layers[i].data, layers[i].opacity, layers[i].blendingMode);
 		}
 	};
 	

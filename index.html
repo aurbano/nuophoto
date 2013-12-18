@@ -80,7 +80,30 @@
 	<div class="block" style="background:rgba(0,0,0,0.3);">
 		<h2>History</h2>
 		<ul id="history" style="border-left:solid #000 3px;"></ul>
-		<h2>Layers <span class="right" id="layerOpts" style="display:none"><form id="layerOptsForm">Opacity: <input type="number" value="100" max="100" min="0" id="opacity" /></form></span></h2>
+		<h2>
+			Layers 
+			<span class="right" id="layerOpts" style="display:none">
+				<form id="layerOptsForm">
+					Opacity: <input type="number" value="100" max="100" min="0" id="opacity" style="width:40px" />
+					<select id="blendingMode">
+						<option value="normal">Normal</option>
+						<option value="multiply">Multiply</option>
+						<option value="screen">Screen</option>
+						<option value="overlay">Overlay</option>
+						<option value="darken">Darken</option>
+						<option value="lighten">Lighten</option>
+						<option value="color-dodge">Color dodge</option>
+						<option value="color-burn">Color burn</option>
+						<option value="soft-light">Soft light</option>
+						<option value="difference">Difference</option>
+						<option value="exclusion">Exclusion</option>
+						<option value="hue">Hue</option>
+						<option value="color">Color</option>
+						<option value="luminosity">Luminosity</option>
+					</select>
+				</form>
+			</span>
+		</h2>
         <div id="layersContainer" style="border-left:solid #000 3px;">
 			<ul id="layers"></ul>
         </div>

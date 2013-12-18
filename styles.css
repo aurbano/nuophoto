@@ -115,10 +115,8 @@ h1, h2, h3{
 	color:#888888;
 	font-size:12px;
 }
-.gui h2 span.right input{
-	width: 40px;
+.gui h2 span.right input, .gui h2 span.right select{
 	font-size: 11px;
-	height: 14px;
 	text-align: center;
 	background:#ccc;
 	border:#000 solid 1px;
