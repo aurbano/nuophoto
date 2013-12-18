@@ -42,14 +42,15 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				wk.file.change(id);
 			});
 			
-			$('#'+id).get(0).addEventListener('DOMMouseScroll',this.handleScroll,false);
-			$('#'+id).get(0).addEventListener('mousewheel',this.handleScroll,false);
+			// Not being used at the moment, needs fixing
+			//$('#'+id).get(0).addEventListener('DOMMouseScroll',this.handleScroll,false);
+			//$('#'+id).get(0).addEventListener('mousewheel',this.handleScroll,false);
 			
-			//
+			// New imgEditor reference
 			var editor = new imgEditor('#'+id);
-			editor.resizeCanvas(400,500);
+			editor.resizeCanvas(400,500); // Default size
 			editor.background('#efefef');
-			// Create and return new imgEditor for this file
+			// Setup the properties and store
 			wk.files[wk.current] = {
 				'elem' : elem,
 				'zoom' : 1,
@@ -76,7 +77,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		
 		/**
 		 * Load a new image inside the currently focused file.
-		 * If there is no file selected it will create it. 
+		 * If there is no file selected it will create it.
+		 * It will also resize the file if it is smaller
 		 * @param {String} Image source
 		 */
 		load : function(src){
@@ -86,6 +88,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				wk.file.create();
 			}
 			wk.status.set('Loading image');
+			// Call the imgEditor load method
 			wk.files[wk.current].editor.load(src, function(){
 				// Center the canvas
 				var id = 'file'+wk.current,
@@ -93,8 +96,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 					w = $('#'+id).width();
 				$('#'+id).css({ marginTop : -h/2, marginLeft : -w/2});
 				wk.status.clear();
-				wk.layer.add('New layer','#C30',wk.editor().getCanvas('main')); // Initial background layer
-				wk.history.add('Open photo','#C30'); // Initial background layer
+				// File loaded layer
+				wk.layer.add('New layer','#C30',wk.editor().getCanvas('main'));
+				// File loaded event in history
+				wk.history.add('Open photo','#C30');
 				wk.file.fixMargin();
 			});
 		},
@@ -288,13 +293,26 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	
 	wk.layer = {
 		/**
+		 * Index of the currently selected layer 
+		 */
+		selected : -1,
+		
+		/**
 		 * Add a new layer to the workspace 
 	 	 * @param {String} Layer name
 	 	 * @param {String} Layer color, each layer type should use a different color to be identified more easily.
 	 	 * @param {Object} Layer contents, as in the buffer state
 		 */
 		add : function(name, color, data){
-			wk.files[wk.current].layers.push({'name' : name, 'color' : color, 'data' : data});
+			// Create and store a new layer object
+			wk.files[wk.current].layers.push({
+				'name' : name,
+				'color' : color,
+				'data' : data,
+				'hidden' : false,
+				'opacity' : 1
+			});
+			// Display inside the layer list
 			wk.layer.draw(wk.files[wk.current].layers.length-1);
 		},
 		
@@ -349,10 +367,45 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			
 			wk.redraw();
 		},
+		
+		/**
+		 * Select the specified layer. This will allow certain operations to be performed
+		 * like adjusting the opacity or the blending modes 
+		 */
+		select : function(index){
+			// Deselect the previous one
+			$('#layers li > a').removeClass("active");
+			wk.layer.selected = index;
+			$("#layers a[rel='"+index+"']").addClass('active');
+			$('#layerOpts').show();
+			// Reset opacity content
+			$('#opacity').val(wk.files[wk.current].layers[index].opacity*100);
+		},
+		
+		/**
+		 * Set layer parameters, only the existing ones are modified.
+		 * If no layer is specified, it uses the selected layer.
+		 * @param {Object} List of parameters to be set 
+		 */
+		set : function(params, layer){
+			if(layer===undefined || layer < 0){
+				layer = wk.layer.selected;
+				if(layer < 0) return;
+			}
+			// Current file
+			var file = wk.files[wk.current];
+			// Now iterate the parameters and set them
+			for(var param in params){
+				file.layers[layer][param] = params[param];
+			}
+			wk.redraw();
+		}
 	};
 	
 	/**
-	 * Redraw a file using the data from each layer 
+	 * Redraw a file using the data from each layer.
+	 * If a layer is deleted it will be undefined, and if it's hidden
+	 * it will have hidden set to true.
 	 */
 	wk.redraw = function(){
 		var layers = wk.files[wk.current].layers,
@@ -361,10 +414,14 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		for(var i=0;i<layers.length;i++){
 			if(typeof(layers[i])===undefined || layers[i].hidden)
 				continue;
-			editor.drawToMain(layers[i].data);
+			editor.drawToMain(layers[i].data, layers[i].opacity);
 		}
 	};
 	
+	/**
+	 * Handle the history event list. At the moment this only
+	 * displays the performed events, there is no going back. 
+	 */
 	wk.history = {
 		/**
 		 * Add an event to the history log 
@@ -428,11 +485,11 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 */
 	wk.closeMenus = function(){
 		$('#navBar ul').slideUp(100);
-		$('#navBar h3 i').removeClass('fa-caret-down').addClass('fa-caret-right');	
+		$('#navBar h3 > i').removeClass('fa-caret-down').addClass('fa-caret-right');	
 	};
 	
 	/**
-	 * Resize the editor (fluid layout) 
+	 * Resize the editor to fit screen
 	 */
 	wk.resizeEditor = function(){
 		// Overlay
@@ -445,7 +502,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	};
 	
 	/**
-	 * Clear the menus 
+	 * Clear the layer and history menus 
 	 */
 	wk.cleanMenus = function(){
 		$('#layers').html('');
@@ -453,7 +510,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	};
 	
 	/**
-	 * Save the image on the current editor 
+	 * Save the image on the current editor. It opens a pop-up window
+	 * with the contents of the file as an image.
 	 */
 	wk.saveImage = function(){
 		if(wk.files[wk.current] == undefined){
@@ -463,6 +521,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		window.open(saved, "Image | nuophoto", "width=600, height=400");
 	};
 	
+	/**
+	 * This handles the status message at the bottom left corner
+	 * of every file. 
+	 */
 	wk.status = {
 		/**
 		 * Set file status text, possibly useful to display information while an effect is being applied. 
@@ -480,7 +542,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	};
 	
 	/**
-	 * Zoom with the scrollwheel 
+	 * Zoom with the scrollwheel.
+	 * //TODO not working nor being used at the moment
  	 * @param {Event} Scroll event
 	 */
 	wk.handleScroll = function(evt){

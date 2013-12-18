@@ -110,6 +110,21 @@ h1, h2, h3{
 .gui h3:hover{
 	background:#000;
 }
+.gui h2 span.right{
+	float:right;
+	color:#888888;
+	font-size:12px;
+}
+.gui h2 span.right input{
+	width: 40px;
+	font-size: 11px;
+	height: 14px;
+	text-align: center;
+	background:#ccc;
+	border:#000 solid 1px;
+	outline:none;
+	padding:none;
+}
 .gui ul{
 	list-style:none;
 	margin:0;
@@ -129,9 +144,6 @@ h1, h2, h3{
 	border-bottom: 1px solid #2C2C2C;
 	position:relative;
 }
-.gui ul li a.hidden{
-	background:rgba(40,40,40,0.8);
-}
 .gui ul li a span.right{
 	position:absolute;
 	top:4px;
@@ -150,6 +162,18 @@ h1, h2, h3{
 }
 .gui ul li a:hover i{
 	color:#FC0;
+}
+.gui ul li a.hidden{
+	background:rgba(0,0,0,0.8);
+}
+.gui ul li a.active{
+	background:rgba(60,60,60,1);
+}
+.gui ul li a.hidden:hover{
+	background:rgba(40,40,40,0.8);
+}
+.gui ul li a.active:hover{
+	background:rgba(60,60,60,1);
 }
 .scrollbars ::-webkit-scrollbar{
 width: 15px;

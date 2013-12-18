@@ -284,11 +284,17 @@ var imgEditor = function(canvasID){
 	 * Draws the contents of the canvas buffer into the main canvas
 	 * @param {Object} Canvas buffer element 
 	 */
-	imgEditor.drawToMain = function(buffer){
+	imgEditor.drawToMain = function(buffer, opacity){
 		if(typeof(buffer)==='undefined'){
 			buffer = imgEditor.buffer.elem;
 		}
+		if(opacity===undefined || opacity > 1 || opacity<0)
+			opacity = 1;
+		
+		imgEditor.canvas.ctx.save();
+		imgEditor.canvas.ctx.globalAlpha = opacity;
 		imgEditor.canvas.ctx.drawImage(buffer, 0, 0);
+		imgEditor.canvas.ctx.restore();
 	};
 	
 	/**

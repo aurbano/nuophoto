@@ -140,6 +140,13 @@ define(["jquery", "workspace"], function($, workspace) {
 				
 			});
 			
+			$(document).on('click','#layers a',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				var index = $(this).attr('rel');
+				workspace.layer.select(index);				
+			});
+			
 			$(document).on('click','#tools a',function(e){
 				e.preventDefault();
 				e.stopPropagation();
@@ -152,6 +159,13 @@ define(["jquery", "workspace"], function($, workspace) {
 						workspace.file.zoom(1.25);
 						break;
 				}
+			});
+			
+			$('#layerOptsForm').submit(function(e){
+				e.preventDefault();
+				workspace.layer.set({
+					opacity : parseInt($('#opacity').val())/100,
+				});
 			});
 			
 			$('#tools').draggable({
