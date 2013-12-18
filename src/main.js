@@ -21,9 +21,9 @@ requirejs.config({
     enforceDefine: false,
     paths: {
 		// Including CDN version and local fallback in case that fails
-        jquery: ['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
+        jquery: [//'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
 				 '/nuophoto/lib/jquery.min'],
-		jqueryui : ['http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
+		jqueryui : [//'http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
 					'/nuophoto/lib/jqueryui.min'],
 		colorpicker: '/nuophoto/lib/colorpicker/js/colorpicker'
     },
@@ -56,9 +56,9 @@ define(["jquery", "workspace"], function($, workspace) {
 			workspace.resizeEditor();
 			
 			// Create a new empty file
-			workspace.newFile();
+			workspace.file.create();
 			// Preload an image (makes development faster)
-			workspace.loadFile('img/editor/4.jpg');
+			workspace.file.load('img/editor/4.jpg');
 			
 			
 			$('.gui a').click(function(e){
@@ -66,33 +66,31 @@ define(["jquery", "workspace"], function($, workspace) {
 				// Close menu
 				workspace.closeMenus();
 				// Intercept gallery calls
-				if($(this).attr('href') == '#newFile') return workspace.newFile();
+				if($(this).attr('href') == '#newFile') return workspace.file.create();
 				if($(this).attr('href') == '#gallery') return workspace.displayGallery();
 				if($(this).attr('href') == '#webPhoto') return workspace.displayWebPhoto();
 				if($(this).attr('href') == '#download') return workspace.saveImage();
 				// If it didnt return it must be an effect
 				// Copy color from tool
 				var color = $(this).css('borderLeftColor'),
-					effect = $(this).attr('href').substring(1);
-				// Normal effect
-				workspace.addHistory($(this).text(),color);
-				workspace.addLayer($(this).text(),color);
+					effect = $(this).attr('href').substring(1),
+					name = $(this).text();
 				
-				workspace.callEffect(effect);
+				workspace.effect.call(effect, name, color);
 			});
 			
 			$('.gui h3').click(function(e){
 				e.preventDefault();
 				e.stopPropagation();
-				if($(this).children('i').first().attr('class') == 'icon-caret-right'){
+				if($(this).children('i').first().hasClass('fa-caret-right')){
 					// Collapsed
 					workspace.closeMenus();
 					$(this).next('ul').slideDown(100);
-					$(this).children('i').first().removeClass('icon-caret-right').addClass('icon-caret-down');
+					$(this).children('i').first().removeClass('fa-caret-right').addClass('fa-caret-down');
 					return true;	
 				}
 				$(this).next('ul').slideUp(100);
-				$(this).children('i').first().removeClass('icon-caret-down').addClass('icon-caret-right');
+				$(this).children('i').first().removeClass('fa-caret-down').addClass('fa-caret-right');
 			});
 			
 			$(document).click(function(e){
@@ -110,7 +108,7 @@ define(["jquery", "workspace"], function($, workspace) {
 			$('#photoList a').click(function(e){
 				e.preventDefault();
 				// Now load the new pic
-				workspace.loadFile('img/editor/'+$(this).attr('rel'));
+				workspace.file.load('img/editor/'+$(this).attr('rel'));
 				$('#gallery').fadeOut(300);
 				$('#webPhoto').fadeOut(300);
 				$('#overlay').fadeOut(300);
@@ -119,7 +117,7 @@ define(["jquery", "workspace"], function($, workspace) {
 			$(document).on('click',"a[href='#closeFile']",function(e){
 				e.preventDefault();
 				// Out of this scope, use workspace
-				workspace.closeFile($(this).attr('rel'));
+				workspace.file.close($(this).attr('rel'));
 				// Close visually
 				$(this).parents('.file').remove();
 			});
@@ -134,7 +132,12 @@ define(["jquery", "workspace"], function($, workspace) {
 				e.preventDefault();
 				e.stopPropagation();
 				var index = $(this).parent().attr('rel');
-				workspace.removeLayer(index);
+				if($(this).hasClass("delete")){
+					workspace.layer.remove(index);
+				}else if($(this).hasClass("toggle")){
+					workspace.layer.toggle(index);
+				}
+				
 			});
 			
 			$(document).on('click','#tools a',function(e){
@@ -143,10 +146,10 @@ define(["jquery", "workspace"], function($, workspace) {
 				
 				switch($(this).attr('href')){
 					case '#zoomOut':
-						workspace.zoom(0.75);
+						workspace.file.zoom(0.75);
 						break;
 					case '#zoomIn':
-						workspace.zoom(1.25);
+						workspace.file.zoom(1.25);
 						break;
 				}
 			});
@@ -168,11 +171,11 @@ define(["jquery", "workspace"], function($, workspace) {
 				e.preventDefault();
 				switch($(this).val()){
 					case 'apply':
-						workspace.applyEffect(workspace.effect.name, true);
-						workspace.closeCustomizer();
+						workspace.effect.apply(workspace.currentEffect.effect, true, workspace.currentEffect.name);
+						workspace.customizer.close();
 						break;
 					case 'cancel':
-						workspace.closeCustomizer();
+						workspace.customizer.close();
 						break;
 				}
 			});

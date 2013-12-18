@@ -3,7 +3,7 @@
  * @param {Object} main
  */
 var parameters = [];
-var exec = function(main){
+var exec = function(main, params, callback){
 	// Start processing
 	var imgd = main.canvas.ctx.getImageData(main.img.x, main.img.y, main.canvas.WIDTH, main.canvas.HEIGHT); 
 	var pix = imgd.data, avg;
@@ -14,7 +14,9 @@ var exec = function(main){
 		if(pix[i+2]>pix[maxRGB]) maxRGB = i+2;
 		pix[maxRGB] = Math.min(pix[maxRGB]+0.1*pix[maxRGB],255);
 	}
-	main.canvas.ctx.putImageData(imgd, main.img.x, main.img.y);
+	main.canvas.buffer.putImageData(imgd, main.img.x, main.img.y);
 	// Reset the averages
 	main.generated = false;
+	
+	callback.call();
 };

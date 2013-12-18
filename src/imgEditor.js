@@ -18,7 +18,8 @@ var imgEditor = function(canvasID){
 		minRadius : 5,				// Minimum radius
 		randRadius : 5,				// Max random radius extra
 		randPosition : 2,			// Max point position deviation
-		innerMargin : 20			// Margin to each side of the canvas
+		innerMargin : 20,			// Margin to each side of the canvas
+		buffer : {}					// Temporary buffer
 	};
 	
 	
@@ -44,6 +45,15 @@ var imgEditor = function(canvasID){
 	};
 	
 	/**
+	 * Temporary canvas data
+	 * This one is used by effects while they are being applied 
+	 */
+	imgEditor.buffer.elem = document.createElement('canvas');
+	imgEditor.buffer.ctx = imgEditor.buffer.elem.getContext("2d");
+	imgEditor.buffer.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
+	imgEditor.buffer.elem.setAttribute('width', imgEditor.canvas.WIDTH);
+	
+	/**
 	 * Mouse tracking 
 	 */
 	imgEditor.mouse = {
@@ -56,6 +66,13 @@ var imgEditor = function(canvasID){
 	 */
 	imgEditor.clear = function() {
 		imgEditor.canvas.ctx.clearRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
+	};
+	
+	/**
+	 * Clear the temporary canvas 
+	 */
+	imgEditor.clearBuffer = function(){
+		imgEditor.buffer.ctx.clearRect(0, 0, imgEditor.canvas.WIDTH, imgEditor.canvas.HEIGHT);
 	};
 	
 	/**
@@ -91,6 +108,35 @@ var imgEditor = function(canvasID){
 	};
 	
 	/**
+	 * Return new canvas element, inside canvas specify
+	 * either the buffer or the main canvas.
+	 * This is done to provide a "snapshot" of the state of the canvas,
+	 * so that history and layers can be redrawn
+	 * @param {String} Which canvas to use: buffer or main.
+	 * @return {Object} Canvas element containing a copy of the specified canvas
+	 */
+	imgEditor.getCanvas = function(useCanvas){
+		var tmp = {};
+		tmp.elem = document.createElement('canvas');
+		tmp.ctx = tmp.elem.getContext("2d");
+		tmp.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
+		tmp.elem.setAttribute('width', imgEditor.canvas.WIDTH);
+		
+		switch(useCanvas){
+			case 'main':
+				canvas = imgEditor.canvas.elem.get(0);
+				break;
+			case 'buffer':
+				canvas = imgEditor.buffer.elem;
+				break;
+		}
+		
+		tmp.ctx.drawImage(canvas, 0, 0);
+		
+		return tmp.elem;
+	};
+	
+	/**
 	 *  Draw image on the canvas
  	 * @param {Object} Image object to be drawn
 	 */
@@ -119,6 +165,9 @@ var imgEditor = function(canvasID){
 		
 		imgEditor.canvas.elem.attr('width',imgEditor.canvas.WIDTH);
 		imgEditor.canvas.elem.attr('height',imgEditor.canvas.HEIGHT);
+		
+		imgEditor.buffer.elem.setAttribute('height', imgEditor.canvas.HEIGHT);
+		imgEditor.buffer.elem.setAttribute('width', imgEditor.canvas.WIDTH);
 	};
 	
 	/**
@@ -130,11 +179,11 @@ var imgEditor = function(canvasID){
 	 */
 	imgEditor.circle = function(x,y,rad,color){
 		// Circulo
-		imgEditor.canvas.ctx.fillStyle = color;
-		imgEditor.canvas.ctx.beginPath();
-		imgEditor.canvas.ctx.arc(x,y,rad,0,Math.PI*2,true);
-		imgEditor.canvas.ctx.closePath();
-		imgEditor.canvas.ctx.fill();
+		imgEditor.buffer.ctx.fillStyle = color;
+		imgEditor.buffer.ctx.beginPath();
+		imgEditor.buffer.ctx.arc(x,y,rad,0,Math.PI*2,true);
+		imgEditor.buffer.ctx.closePath();
+		imgEditor.buffer.ctx.fill();
 	};
 	
 	/**
@@ -219,14 +268,27 @@ var imgEditor = function(canvasID){
 					imgEditor.strokeResolution = params['resolution'];
 				}
 				imgEditor.generateAvg(function(){
-					exec(obj, params);
-					callback.call();
+					exec(obj, params, function(){
+						callback.call();
+					});
 				});
 			}else{
-				exec(obj, params);
-				callback.call();
+				exec(obj, params, function(){
+					callback.call();
+				});
 			}
 		});
+	};
+	
+	/**
+	 * Draws the contents of the canvas buffer into the main canvas
+	 * @param {Object} Canvas buffer element 
+	 */
+	imgEditor.drawToMain = function(buffer){
+		if(typeof(buffer)==='undefined'){
+			buffer = imgEditor.buffer.elem;
+		}
+		imgEditor.canvas.ctx.drawImage(buffer, 0, 0);
 	};
 	
 	/**
