@@ -20,7 +20,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		create : function(){
 			wk.current++;
 			var id = 'file'+wk.current;
-			var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="icon-circle-blank icon-large"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
+			var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="fa fa-times"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 				handle: '.topInfo',
 				stack: ".file",
 				start: function(event, ui) {
@@ -309,8 +309,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				name = wk.files[wk.current].layers[num].name,
 				color = wk.files[wk.current].layers[num].color;
 			if(total > 1){
-				eye = '<span class="toggle"><i class="icon-eye-open icon-large"></i></span> ';
-				span = '<span class="delete right"><i class="icon-trash"></span>';
+				eye = '<span class="toggle"><i class="fa fa-eye fa-lg"></i></span> ';
+				span = '<span class="delete right"><i class="fa fa-trash-o"></span>';
 			}
 			$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
 		},
@@ -339,10 +339,12 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				file.layers[index].hidden = false;
 				wk.history.add('Show ' + file.layers[index].name, file.layers[index].color);
 				$("#layers a[rel='"+index+"']").removeClass('hidden');
+				$("#layers a[rel='"+index+"']").find("i.fa-eye-slash").removeClass('fa-eye-slash').addClass("fa-eye");
 			}else{
 				file.layers[index].hidden = true;
 				wk.history.add('Hide ' + file.layers[index].name, file.layers[index].color);
 				$("#layers a[rel='"+index+"']").addClass('hidden');
+				$("#layers a[rel='"+index+"']").find("i.fa-eye").removeClass('fa-eye').addClass("fa-eye-slash");
 			}
 			
 			wk.redraw();
@@ -426,7 +428,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 */
 	wk.closeMenus = function(){
 		$('#navBar ul').slideUp(100);
-		$('#navBar h3 i').removeClass('icon-caret-down').addClass('icon-caret-right');	
+		$('#navBar h3 i').removeClass('fa-caret-down').addClass('fa-caret-right');	
 	};
 	
 	/**

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>nuophoto | JavaScript Image Editor</title>
-<link rel="stylesheet" href="lib/font-awesome.min.css">
+<link rel="stylesheet" href="lib/fontawesome-4/css/font-awesome.min.css">
 <link rel="stylesheet" href="styles.css">
 <!--<link href='http://fonts.googleapis.com/css?family=Raleway:400' type='text/css' rel="stylesheet" >-->
 <link rel="stylesheet" media="screen" type="text/css" href="lib/colorpicker/css/colorpicker.css" />
@@ -12,13 +12,13 @@
 </head>
 
 <body>
-<h1 id="logo"><i class="icon-fire icon-large"></i> nuophoto <small>A canvas image editor</small></h1>
+<h1 id="logo"><i class="fa fa-camera-retro"></i> nuophoto <small>A canvas image editor</small></h1>
 <div id="error" class="overlayMenu">
-	<h1><i class="icon-warning-sign"></i> An error occurred</h1>
+	<h1><i class="fa fa-exclamation-sign"></i> An error occurred</h1>
     <p id="errorText"></p>
 </div>
 <div id="gallery" class="overlayMenu">
-	<h1><i class="icon-briefcase"></i> Photo gallery</h1>
+	<h1><i class="fa fa-briefcase"></i> Photo gallery</h1>
 	<p>Pick the photo you would like to edit</p>
 	<ul id="photoList">
 		<li><a href="#changePic" rel="1.jpg" style="background-image:url(img/editor/1.jpg)"></a></li>
@@ -28,24 +28,24 @@
 	</ul>
 </div>
 <div id="webPhoto" class="overlayMenu">
-	<h1><i class="icon-cloud"></i> Load from URL</h1>
+	<h1><i class="fa fa-cloud"></i> Load from URL</h1>
 	<p>Enter the URL of the photo you would like to edit</p>
 	<p>Sorry but it's not ready yet :(</p>
 </div>
 <div id="overlay"></div>
 <div id="navBar" class="gui scrollbars" style="right:270px">
 	<div class="block">
-		<h3><i class="icon-caret-right"></i> File</h3>
+		<h3><i class="fa fa-caret-right"></i> File</h3>
 		<ul id="imageFunctions" style="display:none">
-        	<li><a href="#newFile" style="border-left:#C30 solid 3px"><i class="icon-file"></i> New file</a></li>
-			<li><a href="#gallery" style="border-left:#C30 solid 3px"><i class="icon-briefcase"></i> Load from gallery</a></li>
-			<li><a href="#webPhoto" style="border-left:#C30 solid 3px"><i class="icon-cloud"></i> Load from URL</a></li>
-			<li><a href="#download" style="border-left:#C30 solid 3px"><i class="icon-download-alt"></i> Save</a></li>
+        	<li><a href="#newFile" style="border-left:#C30 solid 3px"><i class="fa fa-file"></i> New file</a></li>
+			<li><a href="#gallery" style="border-left:#C30 solid 3px"><i class="fa fa-briefcase"></i> Load from gallery</a></li>
+			<li><a href="#webPhoto" style="border-left:#C30 solid 3px"><i class="fa fa-cloud"></i> Load from URL</a></li>
+			<li><a href="#download" style="border-left:#C30 solid 3px"><i class="fa fa-download-alt"></i> Save</a></li>
 		</ul>
 	</div>
 	
 	<div class="block">
-		<h3><i class="icon-caret-right"></i> Color effects</h3>
+		<h3><i class="fa fa-caret-right"></i> Color effects</h3>
 		<ul id="colorEffects" style="display:none">
 			<li><a style="border-left:#FC0 solid 3px" href="#blackAndWhite">Black and White</a></li>
 			<li><a style="border-left:#FC0 solid 3px" href="#grayScale">Gray Scale</a></li>
@@ -55,7 +55,7 @@
 		</ul>
 	</div>
 	<div class="block">
-		<h3><i class="icon-caret-right"></i> Artistic</h3>
+		<h3><i class="fa fa-caret-right"></i> Artistic</h3>
 		<ul id="artisticEffects" style="display:none">
 			<li><a href="#pixelate">Pixelate</a></li>
 			<li><a href="#rgbPixels">RGB pixels</a></li>
@@ -96,8 +96,8 @@
 		<div class="topInfo"><div class="filename">Tools</div></div>
 		<div class="box">
 			<ul class="tool">
-				<li><a href="#zoomIn" title="Zoom in"><i class="icon-zoom-in icon-large"></i></a></li>
-				<li><a href="#zoomOut" title="Zoom out"><i class="icon-zoom-out icon-large"></i></a></li>
+				<li><a href="#zoomIn" title="Zoom in"><i class="fa fa-search-plus fa-lg"></i></a></li>
+				<li><a href="#zoomOut" title="Zoom out"><i class="fa fa-search-minus fa-lg"></i></a></li>
 			</ul>
 		</div>
 	</div>

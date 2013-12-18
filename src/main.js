@@ -82,15 +82,15 @@ define(["jquery", "workspace"], function($, workspace) {
 			$('.gui h3').click(function(e){
 				e.preventDefault();
 				e.stopPropagation();
-				if($(this).children('i').first().attr('class') == 'icon-caret-right'){
+				if($(this).children('i').first().hasClass('fa-caret-right')){
 					// Collapsed
 					workspace.closeMenus();
 					$(this).next('ul').slideDown(100);
-					$(this).children('i').first().removeClass('icon-caret-right').addClass('icon-caret-down');
+					$(this).children('i').first().removeClass('fa-caret-right').addClass('fa-caret-down');
 					return true;	
 				}
 				$(this).next('ul').slideUp(100);
-				$(this).children('i').first().removeClass('icon-caret-down').addClass('icon-caret-right');
+				$(this).children('i').first().removeClass('fa-caret-down').addClass('fa-caret-right');
 			});
 			
 			$(document).click(function(e){
