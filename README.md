@@ -15,13 +15,10 @@ Still in alpha stage of development. If you want to test the latest build check 
 - http://aurbano.github.com/nuophoto
 
 
-##Requirements:
+##Compatibility:
+nuophoto is using some CSS3 and HTML5 things that only updated browsers support. I haven't run very specific tests (if you do please let me know) but so far I have detected the following:
 
-- [jQuery](https://github.com/jquery/jquery)
-- [requireJS](https://github.com/jrburke/requirejs)
-- [Font Awesome 4](https://github.com/FortAwesome/Font-Awesome)
-- [PhotoJShop](https://github.com/aurbano/PhotoJShop)
-- workspace	(Just some gui functions bundled together)
+- Blending modes: [Chrome and Firefox](http://blogs.adobe.com/webplatform/2013/05/20/canvas-blending-is-now-in-chrome-canary-safari-and-firefox/), iOS Safari
 
 ##How it works
 It consists of different parts that are completely independent (modular). First it's the GUI, without any logic. It's all hard coded inside `index.html`.
