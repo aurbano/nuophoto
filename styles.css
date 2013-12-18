@@ -129,14 +129,17 @@ h1, h2, h3{
 	border-bottom: 1px solid #2C2C2C;
 	position:relative;
 }
-.gui ul li a span{
+.gui ul li a.hidden{
+	background:rgba(40,40,40,0.8);
+}
+.gui ul li a span.right{
 	position:absolute;
 	top:4px;
 	right:10px;
 	display:none;
 }
 .gui ul li a:hover span{
-	display:block;
+	display:inline-block;
 }
 .gui ul li a i:hover{
 	color:#F00 !important;	

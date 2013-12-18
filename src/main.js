@@ -132,7 +132,12 @@ define(["jquery", "workspace"], function($, workspace) {
 				e.preventDefault();
 				e.stopPropagation();
 				var index = $(this).parent().attr('rel');
-				workspace.layer.remove(index);
+				if($(this).hasClass("delete")){
+					workspace.layer.remove(index);
+				}else if($(this).hasClass("toggle")){
+					workspace.layer.toggle(index);
+				}
+				
 			});
 			
 			$(document).on('click','#tools a',function(e){

@@ -309,24 +309,44 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				name = wk.files[wk.current].layers[num].name,
 				color = wk.files[wk.current].layers[num].color;
 			if(total > 1){
-				eye = '<i class="icon-eye-open icon-large"></i> ';
-				span = '<span><i class="icon-trash"></span>';
+				eye = '<span class="toggle"><i class="icon-eye-open icon-large"></i></span> ';
+				span = '<span class="delete right"><i class="icon-trash"></span>';
 			}
 			$('<li><a href="#layers" rel="'+(total-1)+'" style="border-left:'+color+' solid 3px">'+eye+name+span+'</a></li>').prependTo('#layers');
 		},
 		
 		/**
 		 * Remove a layer from the current file
-		 * //TODO Redraw canvas without this layer 
+		 * The layer is deleted from the array, so all other preserve their index
 	 	 * @param {int} Layer number
 		 */
 		remove : function(index){
 			var file = wk.files[wk.current];
 			wk.history.add('Delete ' + file.layers[index].name, file.layers[index].color);
-			file.layers.splice(index,1);
+			delete file.layers[index];
 			$("#layers a[rel='"+index+"']").parent('li').remove();
 			wk.redraw();
-		}
+		},
+		
+		/**
+		 * Hides/Shows the specified layer and redraws the canvas
+		 * @param {int} Layer number
+		 */
+		toggle : function(index){
+			var file = wk.files[wk.current];
+			
+			if(file.layers[index].hidden){
+				file.layers[index].hidden = false;
+				wk.history.add('Show ' + file.layers[index].name, file.layers[index].color);
+				$("#layers a[rel='"+index+"']").removeClass('hidden');
+			}else{
+				file.layers[index].hidden = true;
+				wk.history.add('Hide ' + file.layers[index].name, file.layers[index].color);
+				$("#layers a[rel='"+index+"']").addClass('hidden');
+			}
+			
+			wk.redraw();
+		},
 	};
 	
 	/**
@@ -337,6 +357,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			editor = wk.editor();
 		editor.clear();
 		for(var i=0;i<layers.length;i++){
+			if(typeof(layers[i])===undefined || layers[i].hidden)
+				continue;
 			editor.drawToMain(layers[i].data);
 		}
 	};
