@@ -14,7 +14,7 @@ var exec = function(main, params, callback){
 		if(pix[i+2]>pix[maxRGB]) maxRGB = i+2;
 		pix[maxRGB] = Math.min(pix[maxRGB]+0.1*pix[maxRGB],255);
 	}
-	main.canvas.buffer.putImageData(imgd, main.img.x, main.img.y);
+	main.buffer.ctx.putImageData(imgd, main.img.x, main.img.y);
 	// Reset the averages
 	main.generated = false;
 	

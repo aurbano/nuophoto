@@ -328,6 +328,10 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 	 * @param {int} Layer number
 		 */
 		draw : function(num){
+			if(typeof wk.files[wk.current].layers[num] === undefined){
+				console.error("Layer "+num+" doesnt exist");
+				return;
+			}
 			var span = '',
 				eye='',
 				total = wk.files[wk.current].layers.length,
