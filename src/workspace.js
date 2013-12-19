@@ -61,18 +61,6 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			};
 			// Change to the new file
 			wk.file.change(wk.current);
-			// Initial background layer
-			//wk.history.add('New file','#3FC230');
-			// Initial background layer
-			//wk.layer.add('<i class="picker" style="background:#efefef"></i> Background','#3FC230',wk.editor().getCanvas('main'));
-			// Changable background color via Colorpicker
-			/*$('.picker').ColorPicker({
-				color : 'efefef',
-				onChange : function (hsb, hex, rgb) {
-					$('.picker').css('backgroundColor', '#' + hex);
-					editor.background('#' + hex);
-				}
-			});*/
 		},
 		
 		/**

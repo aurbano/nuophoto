@@ -17,7 +17,7 @@ var exec = function(main, params, callback){
 			// Draw strokes
 			auxAvg = (main.avg[i][0]+main.avg[i][1]+main.avg[i][2])/3;
 			var rad = main.strokeResolution - main.strokeResolution*0.5,
-				color = 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+','+(255-auxAvg)/255+')';
+				color = 'rgba('+main.avg[i][0]+','+main.avg[i][1]+','+main.avg[i][2]+',1)';
 			main.circle(x+rad/2,y+rad/2,rad,color);
 			i++;
 		}
