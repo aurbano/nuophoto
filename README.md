@@ -1,5 +1,5 @@
-nuophoto
-========
+![nuophoto](https://raw.github.com/aurbano/nuophoto/master/img/logo/logo_bw.PNG)
+===
 
 > A JavaScript/HTML5 canvas image editor
 
