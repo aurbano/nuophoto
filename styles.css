@@ -229,8 +229,8 @@ height: 15px;
 	 *
 	 * box-shadow:#000 0 0 10px 0px;
 	 */
-	height:400px;
-	width:500px;
+	height:150px;
+	width:200px;
 	overflow:hidden;
 	/* Fixes antialiasing problem */
 	outline: 5px solid transparent;

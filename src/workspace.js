@@ -65,6 +65,8 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			};
 			// Change to the new file
 			wk.file.change(wk.current);
+			// Center file
+			wk.file.fixMargin();
 		},
 		
 		/**
