@@ -91,17 +91,18 @@ var imgEditor = function(canvasID){
 	 * @param {Function} Callback, executed when the image is loaded
 	 */
 	imgEditor.load = function(src, callback){
-		imgEditor.img.i.src = src;
 		imgEditor.img.i.onload = function(){
-			// Resize canvas to match image size (If bigger)
+			// Calculate new file size if necessary
 			var newH = imgEditor.canvas.WIDTH, newW = imgEditor.canvas.HEIGHT;
 			if(imgEditor.img.i.width > imgEditor.canvas.WIDTH) newW = imgEditor.img.i.width;
 			if(imgEditor.img.i.height > imgEditor.canvas.HEIGHT) newH = imgEditor.img.i.height;
+			// Resize to fit
 			imgEditor.resizeCanvas(newH,newW);
 			// Redraw the saved data
 			imgEditor.drawImage(imgEditor.img.i);
 			callback.call();
 		};
+		imgEditor.img.i.src = src;
 	};
 	
 	/**
@@ -138,6 +139,7 @@ var imgEditor = function(canvasID){
  	 * @param {Object} Image object to be drawn
 	 */
 	imgEditor.drawImage = function(img){
+		console.log("Drawing image:",img);
 		imgEditor.canvas.ctx.drawImage(img, 0, 0);
 	};
 	
@@ -159,6 +161,13 @@ var imgEditor = function(canvasID){
 	 * @param {int} Width, in pixels
 	 */
 	imgEditor.resizeCanvas = function(h,w) {
+		console.log("Resizing to ",h,w);
+		
+		if(typeof h === 'undefined') h=1;
+		if(typeof w === 'undefined') w=1;
+		
+		console.log("Using ",h,w);
+		
 		imgEditor.canvas.WIDTH = w;
 		imgEditor.canvas.HEIGHT = h;
 		
@@ -264,8 +273,8 @@ var imgEditor = function(canvasID){
 	imgEditor.applyEffect = function(effect, params, callback){
 		require(["effects/"+effect], function(){
 			var obj = imgEditor;
-			if(!imgEditor.generated || (typeof(params['resolution'])!=='undefined' && params['resolution'] !== imgEditor.strokeResolution)){
-				if(typeof params['resolution'] !== undefined){
+			if(!imgEditor.generated || (params['resolution'] !== 'undefined' && params['resolution'] !== imgEditor.strokeResolution)){
+				if(typeof params['resolution'] !== 'undefined'){
 					imgEditor.strokeResolution = params['resolution'];
 					// Set flag
 					imgEditor.generated = false;
@@ -288,12 +297,12 @@ var imgEditor = function(canvasID){
 	 * @param {Object} Canvas buffer element 
 	 */
 	imgEditor.drawToMain = function(buffer, opacity, blendingMode){
-		if(buffer === undefined){
+		if(typeof buffer === 'undefined'){
 			buffer = imgEditor.buffer.elem;
 		}
-		if(blendingMode === undefined)
+		if(typeof blendingMode === 'undefined')
 			blendingMode = 'normal';
-		if(opacity === undefined || opacity > 1 || opacity<0)
+		if(typeof opacity === 'undefined' || opacity > 1 || opacity<0)
 			opacity = 1;
 			
 		imgEditor.canvas.ctx.save();

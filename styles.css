@@ -294,6 +294,18 @@ height: 15px;
 	border:#CCC inset 1px;
 	z-index:2;
 }
+input.dark{
+	background:#000000;
+	border:1px solid #fff;
+	padding:5px 10px;
+	color:#FC0;
+	cursor:pointer;
+}
+input.dark:hover{
+	background:#FC0;
+	color:#000000;
+	border:#000 solid 1px;
+}
 .active .overlay{
 	display:none;
 }

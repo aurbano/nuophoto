@@ -17,8 +17,12 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		/**
 		 * Create a new empty file
 		 */
-		create : function(){
+		create : function(height, width){
 			wk.current++;
+			if(typeof height === 'undefined' || typeof width === 'undefined'){
+				height = 100;
+				width = 100;
+			}
 			var id = 'file'+wk.current;
 			var elem = $('<div class="window file active scrollbars" style="position:absolute; top:100px;"><div class="overlay"></div><div class="status"></div><div class="topInfo"><div class="filename">File ' + (wk.current+1) + ' <span class="zoom">[100%]</span></div> <div class="fileops"><a href="#closeFile" title="Close file" rel="' + wk.current + '"><i class="fa fa-times"> </i> </a> </div> </div> <div class="box"><canvas width="100%" height="100%" id="' + id + '" style="color:#09F"></canvas></div></div>').appendTo('#workspace').draggable({
 				handle: '.topInfo',
@@ -27,12 +31,12 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 					var id = $(this).find("a[href='#closeFile']").attr('rel');
 					if(id == wk.current) return true;
 					wk.current = id;
-					if(id !== undefined) return workspace.switchFile(id);
+					if(typeof id !== 'undefined') return workspace.switchFile(id);
 					return true;
 				}
 			}).resizable({
-				minHeight : 100,
-				minWidth : 200,
+				minHeight : 50,
+				minWidth : 100,
 				resize : function(){
 					wk.file.fixMargin();
 				}
@@ -42,13 +46,13 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				wk.file.change(id);
 			});
 			
-			// Not being used at the moment, needs fixing
+			// TODO Not being used at the moment, needs fixing
 			//$('#'+id).get(0).addEventListener('DOMMouseScroll',this.handleScroll,false);
 			//$('#'+id).get(0).addEventListener('mousewheel',this.handleScroll,false);
 			
 			// New imgEditor reference
 			var editor = new imgEditor('#'+id);
-			editor.resizeCanvas(400,500); // Default size
+			editor.resizeCanvas(height,width);
 			editor.background('#efefef');
 			// Setup the properties and store
 			wk.files[wk.current] = {
@@ -71,9 +75,9 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		 */
 		load : function(src){
 			// Set initial size
-			if(wk.files[wk.current] == undefined){
+			if(typeof wk.files[wk.current] === 'undefined'){
 				// Create a new file and select it
-				wk.file.create();
+				wk.file.create(1,1);
 			}
 			wk.status.set('Loading image');
 			// Call the imgEditor load method
@@ -97,7 +101,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 	 * @param {float} Scale to apply, where 1 is no zoom. 1.5 would be an increase of 50%.
 		 */
 		zoom : function(scale){
-			if(wk.files[wk.current] == undefined){
+			if(typeof wk.files[wk.current] === 'undefined'){
 				return;
 			}
 			// Update zoom for display
@@ -114,7 +118,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		 * is smaller than the image, then it will be stuck to the top-left corner. 
 		 */
 		fixMargin : function(){
-			if(wk.files[wk.current] == undefined){
+			if(typeof wk.files[wk.current] === 'undefined'){
 				return;
 			}
 			$(wk.files[wk.current].elem).find('canvas').css({
@@ -174,7 +178,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 				this.style.zIndex = min + i;
 			});
 			
-			if(elem == undefined) return;
+			if(typeof elem === 'undefined') return;
 	
 			$(elem).css({'zIndex' : min + group.length});
 		}
@@ -316,7 +320,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 	 * @param {int} Layer number
 		 */
 		draw : function(num){
-			if(typeof wk.files[wk.current].layers[num] === undefined){
+			if(typeof wk.files[wk.current].layers[num] === 'undefined'){
 				console.error("Layer "+num+" doesnt exist");
 				return;
 			}
@@ -388,7 +392,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 		 * @param {Object} List of parameters to be set 
 		 */
 		set : function(params, layer){
-			if(layer===undefined || layer < 0){
+			if(typeof layer === 'undefined' || layer < 0){
 				layer = wk.layer.selected;
 				if(layer < 0) return;
 			}
@@ -412,7 +416,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 			editor = wk.editor();
 		editor.clear();
 		for(var i=0;i<layers.length;i++){
-			if(layers[i] === undefined || layers[i].hidden)
+			if(typeof layers[i] === 'undefined' || layers[i].hidden)
 				continue;
 			editor.drawToMain(layers[i].data, layers[i].opacity, layers[i].blendingMode);
 		}
@@ -477,6 +481,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	wk.displayWebPhoto = function(){
 		$('#overlay').fadeIn(300, function(){
 			$('#webPhoto').show();
+			$('#loadFromUrl').focus();
 		});
 	};
 	
@@ -514,7 +519,7 @@ define(["jquery", "jqueryui", "imgEditor", "colorpicker"], function($) {
 	 * with the contents of the file as an image.
 	 */
 	wk.saveImage = function(){
-		if(wk.files[wk.current] == undefined){
+		if(typeof wk.files[wk.current] === 'undefined'){
 			return;
 		}
 		var editor = wk.files[wk.current].editor,

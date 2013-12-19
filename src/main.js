@@ -209,6 +209,16 @@ define(["jquery", "workspace"], function($, workspace) {
 				}
 			});
 			
+			$('#loadFromUrlForm').submit(function(e){
+				e.preventDefault();
+				var url = $('#loadFromUrl').val();
+				$('#loadFromUrl').val('');
+				workspace.file.load(url);
+				$('#gallery').fadeOut(300);
+				$('#webPhoto').fadeOut(300);
+				$('#overlay').fadeOut(300);
+			});
+			
 			// Updaters
 			$(window).resize(function(e){workspace.resizeEditor(); });
 		});
