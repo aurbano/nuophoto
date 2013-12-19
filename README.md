@@ -32,6 +32,8 @@ imgEditor should be completely unaware of the existance of the other layers, it'
 ##Contribute
 If you want to contribute please feel free to do so, below are some ideas I have for future development:
 
+- Responsive design
+- Touch controls
 - Custom matrix effects (Maybe even store in local memory)
 - Upload/load from url
 - Allow history traversal (moving back and forth)
