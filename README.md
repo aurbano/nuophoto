@@ -35,7 +35,6 @@ If you want to contribute please feel free to do so, below are some ideas I have
 - Custom matrix effects (Maybe even store in local memory)
 - Upload/load from url
 - Allow history traversal (moving back and forth)
-- Layer options, like blending modes and opacity.
 
 ##Meta
 
