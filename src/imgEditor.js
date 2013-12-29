@@ -80,7 +80,7 @@ var imgEditor = function(canvasID){
 	 * Define a new image 
 	 */
 	imgEditor.img = {
-		i : new Image(),
+		i : document.createElement('img'),
 		x : 0,
 		y : 0
 	};
@@ -91,9 +91,11 @@ var imgEditor = function(canvasID){
 	 * @param {Function} Callback, executed when the image is loaded
 	 */
 	imgEditor.load = function(src, callback){
+		// Redefine the onload, although that might be only necessary
+		// when loading the editor.
 		imgEditor.img.i.onload = function(){
 			// Calculate new file size if necessary
-			var newH = imgEditor.canvas.WIDTH, newW = imgEditor.canvas.HEIGHT;
+			var newW = imgEditor.canvas.WIDTH, newH = imgEditor.canvas.HEIGHT;
 			if(imgEditor.img.i.width > imgEditor.canvas.WIDTH) newW = imgEditor.img.i.width;
 			if(imgEditor.img.i.height > imgEditor.canvas.HEIGHT) newH = imgEditor.img.i.height;
 			// Resize to fit
@@ -102,6 +104,7 @@ var imgEditor = function(canvasID){
 			imgEditor.drawImage(imgEditor.img.i);
 			callback.call();
 		};
+		imgEditor.img.i.crossOrigin = 'Anonymous';
 		imgEditor.img.i.src = src;
 	};
 	
@@ -139,7 +142,6 @@ var imgEditor = function(canvasID){
  	 * @param {Object} Image object to be drawn
 	 */
 	imgEditor.drawImage = function(img){
-		console.log("Drawing image:",img);
 		imgEditor.canvas.ctx.drawImage(img, 0, 0);
 	};
 	
