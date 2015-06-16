@@ -43,3 +43,5 @@ If you want to contribute please feel free to do so, below are some ideas I have
 * Developed by [Alejandro U. Alvarez](http://urbanoalvarez.es)
 * Licensed under the MIT License
 * Contributors: -
+
+[![Analytics](https://ga-beacon.appspot.com/UA-3181088-16/nuophoto/readme)](https://github.com/aurbano)
