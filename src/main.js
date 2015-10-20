@@ -22,16 +22,18 @@ requirejs.config({
   paths: {
     // Including CDN version and local fallback in case that fails
     jquery: [ //'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min',
-      '/lib/jquery.min'
+      '/lib/jquery-1.11.3'
     ],
     jqueryui: [ //'http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
       '/lib/jqueryui.min'
     ],
-    colorpicker: '/lib/colorpicker/js/colorpicker'
+    colorpicker: '/lib/colorpicker/js/colorpicker',
+    bootstrap: '/lib/bootstrap-3.3.5-dist/js/bootstrap.min'
   },
   shim: {
     'colorpicker': ['jquery'],
-    'jqueryui': ['jquery']
+    'jqueryui': ['jquery'],
+    'bootstrap' : { 'deps' :['jquery'] }
   }
 });
 
@@ -51,7 +53,7 @@ requirejs.onError = function(err) {
   }
 };
 
-define(["jquery", "workspace"], function($, workspace) {
+define(["jquery", "workspace", "bootstrap"], function($, workspace) {
   $(function() {
     $(document).ready(function(e) {
       // Resize editor
