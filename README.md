@@ -3,6 +3,8 @@
 
 > A JavaScript/HTML5 canvas image editor
 
+**Currently working on version 2 - With Angular, bootstrap, and much better practices**
+
 Nuophoto is basically a web interface that aims to show the capabilities of JavaScript as a photo editing software.
 The photo editing part is done with the library [PhotoJShop](https://github.com/aurbano/PhotoJShop).
 
