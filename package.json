@@ -28,7 +28,10 @@
     "grunt-bower-requirejs": "^2.0.0",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-sass": "^0.9.2",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-gh-pages": "^0.10.0",
     "grunt-string-replace": "^1.2.0"
   }

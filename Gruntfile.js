@@ -7,6 +7,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-string-replace");
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-clean");
+  grunt.loadNpmTasks("grunt-contrib-sass");
+  grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-contrib-cssmin");
   grunt.loadNpmTasks("grunt-gh-pages");
 
   grunt.initConfig({
@@ -58,21 +61,41 @@ module.exports = function(grunt) {
         }
       }
     },
-    copy: {
-      main: {
-        files: [
-          // includes files within path
-          {
-            expand: true,
-            src: [
-              "bower_components/bootstrap/dist/css/*",
-              "bower_components/bootstrap/dist/fonts/*",
-              "assets/**",
-            ],
-            dest: "build/"
-          }
-        ],
+    sass: {
+      dev: { // Target
+        options: { // Target options
+          style: "expanded",
+          trace: true
+        },
+        files: { // Dictionary of files
+          "app/assets/css/app.css": "assets/sass/main.scss" // "destination": "source"
+        }
       },
+      dist: { // Target
+        options: { // Target options
+          style: "compressed"
+        },
+        files: { // Dictionary of files
+          "app/assets/css/app.css": "assets/sass/main.scss" // "destination": "source"
+        }
+      }
+    },
+    watch: {
+      sass: {
+        files: "assets/sass/**/*.scss",
+        tasks: "sass:dev"
+      }
+    },
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: "app/assets/css",
+          src: ["*.css", "!*.min.css"],
+          dest: "app/assets/css",
+          ext: ".min.css"
+        }]
+      }
     },
     "gh-pages": {
       options: {
@@ -84,8 +107,15 @@ module.exports = function(grunt) {
 
   grunt.registerTask("default", ["bowerRequirejs"]);
 
+  grunt.registerTask("sass-watch", [
+    "sass:dev",
+    "watch"
+  ]);
+
   grunt.registerTask("build", [
     "clean",
+    "sass:dev",
+    "cssmin",
     "requirejs",
     "string-replace",
     "copy"
@@ -93,6 +123,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask("deploy", [
     "clean",
+    "cssmin",
+    "sass:dist",
     "requirejs",
     "string-replace",
     "copy",

@@ -1,22 +1,14 @@
-/*            
+/**            
  *                         - nuophoto -
  *
  *  A JavaScript/HTML5 canvas image editor
  *
- *  Test it: http://aurbano.github.com/nuophoto (Temporary location)
- *  Project page: https://github.com/aurbano/nuophoto
- *  Author: Alejandro U. Alvarez (http://urbanoalvarez.es)
- *
- *  Description:
- *    A nice editor built with JavaScript.
- *
- *  Requirements:
- *    - jQuery
- *    - jQueryUI
- *    - requireJS
- *    - imgEditor
- *    - workspace (Just some gui functions)
- */
+ *  @demo http://aurbano.github.com/nuophoto (Temporary location)
+ *  @homepage https://github.com/aurbano/nuophoto
+ *  @author Alejandro U. Alvarez (http://urbanoalvarez.es)
+ *  @license MIT
+ **/
+
 requirejs.config({
   enforceDefine: false,
   paths: {
@@ -25,25 +17,56 @@ requirejs.config({
     "angular-bootstrap": "../bower_components/angular-bootstrap/ui-bootstrap-tpls",
     "angular-loader": "../bower_components/angular-loader/angular-loader",
     "angular-route": "../bower_components/angular-route/angular-route",
-    bootstrap: "../bower_components/bootstrap/dist/js/bootstrap",
     jquery: "../bower_components/jquery/dist/jquery",
-    requirejs: "../bower_components/requirejs/require"
+    requirejs: "../bower_components/requirejs/require",
+    "mjolnic-bootstrap-colorpicker": "../bower_components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker",
+    "jquery-ui": "../bower_components/jquery-ui/jquery-ui",
+    "bootstrap-sass": "../bower_components/bootstrap-sass/assets/javascripts/bootstrap"
   },
   shim: {
-    bootstrap: {
-      deps: ["jquery"]
+    angular: {
+      exports: "angular"
+    },
+    "bootstrap-sass": {
+      deps: [
+        "jquery"
+      ]
     },
     "angular-bootstrap": {
-      deps: ["angular"]
+      deps: [
+        "angular"
+      ]
     },
     "angular-loader": {
-      deps: ["angular"]
+      deps: [
+        "angular"
+      ]
     },
     "angular-route": {
-      deps: ["angular"]
+      deps: [
+        "angular"
+      ]
     }
   },
   packages: [
 
   ]
+});
+
+require([
+  "angular",
+  "app"
+], function(angular, app) {
+
+  "use strict";
+
+  console.info("Nuophoto initialized");
+
+  var $html = angular.element(document.getElementsByTagName("html")[0]);
+
+  angular.element().ready(function() {
+    // bootstrap the app manually
+    angular.bootstrap(document, ["nuophoto"]);
+  });
+
 });

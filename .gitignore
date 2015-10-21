@@ -6,6 +6,7 @@ Backup/
 debug/
 *.LCK
 .grunt
+.sass-cache
 build
 coverage
 lib-cov
