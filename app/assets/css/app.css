@@ -7319,5 +7319,12 @@ button.close {
     display: none !important;
   }
 }
+body {
+  color: #e6e6e6;
+  background: #1a1a1a url(../../assets/img/stressed_linen.png);
+  font-family: Raleway, Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  overflow: hidden;
+}
 
 /*# sourceMappingURL=app.css.map */

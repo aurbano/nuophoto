@@ -61,6 +61,21 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      main: {
+        files: [
+          // includes files within path
+          {
+            expand: true,
+            src: [
+              "bower_components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css",
+              "assets/img/**",
+            ],
+            dest: "app/"
+          }
+        ],
+      },
+    },
     sass: {
       dev: { // Target
         options: { // Target options
@@ -109,6 +124,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask("sass-watch", [
     "sass:dev",
+    "copy",
     "watch"
   ]);
 

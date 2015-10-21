@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h3 class="modal-title"><i class="fa fa-cloud"></i> Load from URL</h3>
+</div>
+<div class="modal-body">
+  <p>Enter the URL of the photo you would like to edit</p>
+  <form id="loadFromUrlForm">
+    <p>
+      <input type="url" name="url" id="loadFromUrl" placeholder="http://" style="width: 40%" />
+    </p>
+    <p>
+      <input type="submit" value="Load" id="loadFromUrlBtn" class="dark" />
+    </p>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

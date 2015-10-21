@@ -13,6 +13,8 @@
 
 define([
   'angular',
+  'bootstrap-sass',
+  'angular-bootstrap',
   'angular-route'
 ], function(angular, angularRoute) {
   // Declare app level module which depends on views, and components
