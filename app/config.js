@@ -70,3 +70,19 @@ require([
   });
 
 });
+
+requirejs.onError = function(err) {
+  switch (err.requireType) {
+    case 'timeout':
+      alert('Something is taking too long to load! Make sure your Internet connection is fine');
+      break;
+    case 'scripterror':
+      alert("I can't find a script, please check if all dependencies have been loaded");
+      break;
+    default:
+      alert("An error occurred. For more information check the console");
+      console.error('[nuophoto] An error occured:');
+      console.error(err);
+      break;
+  }
+};
