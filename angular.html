@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>nuophoto | JavaScript Image Editor</title>
+<link rel="stylesheet" href="lib/fontawesome-4/css/font-awesome.min.css">
+<link rel="stylesheet" href="styles.css">
+<!--<link href='http://fonts.googleapis.com/css?family=Raleway:400' type='text/css' rel="stylesheet" >-->
+<link rel="stylesheet" media="screen" type="text/css" href="lib/colorpicker/css/colorpicker.css" />
+<link rel="stylesheet" media="all" href="lib/jqueryui.css" />
+<link rel="stylesheet" media="all" href="lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" />
+<script data-main="src/main.js" src="lib/require.js"></script>
+</head>
+
+<body>
+<h1 id="logo"><i class="fa fa-camera-retro"></i> nuophoto <small>A canvas image editor</small></h1>
+<div id="error" class="overlayMenu">
+  <h1><i class="fa fa-exclamation-sign"></i> An error occurred</h1>
+    <p id="errorText"></p>
+</div>
+<div id="gallery" class="overlayMenu">
+  <h1><i class="fa fa-briefcase"></i> Photo gallery</h1>
+  <p>Pick the photo you would like to edit</p>
+  <ul id="photoList">
+    <li><a href="#changePic" rel="1.jpg" style="background-image:url(img/editor/1.jpg)"></a></li>
+    <li><a href="#changePic" rel="2.png" style="background-image:url(img/editor/2.png); background-position:-23px;"></a></li>
+    <li><a href="#changePic" rel="3.jpg" style="background-image:url(img/editor/3.jpg);"></a></li>
+    <li><a href="#changePic" rel="4.jpg" style="background-image:url(img/editor/4.jpg);"></a></li>
+  </ul>
+</div>
+<div id="webPhoto" class="overlayMenu">
+  <h1><i class="fa fa-cloud"></i> Load from URL</h1>
+  <p>Enter the URL of the photo you would like to edit</p>
+  <form id="loadFromUrlForm">
+    <p><input type="url" name="url" id="loadFromUrl" placeholder="http://" style="width: 40%" /></p>
+    <p><input type="submit" value="Load" id="loadFromUrlBtn" class="dark" /></p>
+  </form>
+</div>
+<div id="overlay"></div>
+<div id="navBar" class="gui scrollbars" style="right:270px">
+  <div class="block">
+    <h3><i class="fa fa-caret-right"></i> File</h3>
+    <ul id="imageFunctions" style="display:none">
+          <li><a href="#newFile" style="border-left:#C30 solid 3px"><i class="fa fa-file"></i> New file</a></li>
+      <li><a href="#gallery" style="border-left:#C30 solid 3px"><i class="fa fa-briefcase"></i> Load from gallery</a></li>
+      <li><a href="#webPhoto" style="border-left:#C30 solid 3px"><i class="fa fa-cloud"></i> Load from URL</a></li>
+      <li><a href="#download" style="border-left:#C30 solid 3px"><i class="fa fa-download"></i> Save</a></li>
+    </ul>
+  </div>
+  
+  <div class="block">
+    <h3><i class="fa fa-caret-right"></i> Color effects</h3>
+    <ul id="colorEffects" style="display:none">
+      <li><a style="border-left:#FC0 solid 3px" href="#blackAndWhite">Black and White</a></li>
+      <li><a style="border-left:#FC0 solid 3px" href="#grayScale">Gray Scale</a></li>
+      <li><a style="border-left:#FC0 solid 3px" href="#sepia">Sepia</a></li>
+      <li><a style="border-left:#FC0 solid 3px" href="#contrast">Contrast</a></li>
+      <li><a style="border-left:#FC0 solid 3px" href="#saturate">Saturate colors</a></li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3><i class="fa fa-caret-right"></i> Artistic</h3>
+    <ul id="artisticEffects" style="display:none">
+      <li><a href="#pixelate">Pixelate</a></li>
+      <li><a href="#rgbPixels">RGB pixels</a></li>
+      <li><a href="#emboss">Emboss</a></li>
+      <li><a href="#strokesWidthLeft">Brush left</a></li>
+      <li><a href="#strokesWidthRight">Brush right</a></li>
+      <li><a href="#strokesOpacityRight">Strokes right</a></li>
+      <li><a href="#strokesOpacityLeft">Strokes left</a></li>
+      <li><a href="#strokesOpacityVertical">Vertical strokes</a></li>
+      <li><a href="#strokesOpacityHorizontal">Horizontal strokes</a></li>
+      <li><a href="#strokesPastel">Pastel</a></li>
+      <li><a href="#squaresFilled">Filled squares</a></li>
+      <li><a href="#squareLines">Empty squares</a></li>
+      <li><a href="#blur">Blur</a></li>
+      <li><a href="#watercolor">Watercolor</a></li>
+      <li><a href="#dotted">Dotted</a></li>
+    </ul>
+  </div>
+</div>
+<div id="config" class="gui scrollbars">
+  <div class="block" style="background:rgba(0,0,0,0.3);">
+    <h2>History</h2>
+    <ul id="history" style="border-left:solid #000 3px;"></ul>
+    <h2>
+      Layers 
+      <span class="right" id="layerOpts" style="display:none">
+        <form id="layerOptsForm">
+          Opacity: <input type="number" value="100" max="100" min="0" id="opacity" style="width:40px" />
+          <select id="blendingMode">
+            <option value="normal">Normal</option>
+            <option disabled="disabled">-----------</option>
+            <option value="darken">Darken</option>
+            <option value="multiply">Multiply</option>
+            <option value="color-burn">Color burn</option>
+            <option disabled="disabled">-----------</option>
+            <option value="lighten">Lighten</option>
+            <option value="screen">Screen</option>
+            <option value="color-dodge">Color dodge</option>
+            <option disabled="disabled">-----------</option>
+            <option value="overlay">Overlay</option>
+            <option value="soft-light">Soft light</option>
+            <option value="hard-light">Hard light</option>
+            <option disabled="disabled">-----------</option>
+            <option value="difference">Difference</option>
+            <option value="exclusion">Exclusion</option>
+            <option disabled="disabled">-----------</option>
+            <option value="hue">Hue</option>
+            <option value="saturation">Saturation</option>
+            <option value="color">Color</option>
+            <option value="luminosity">Luminosity</option>
+          </select>
+        </form>
+      </span>
+    </h2>
+        <div id="layersContainer" style="border-left:solid #000 3px;">
+      <ul id="layers"></ul>
+        </div>
+  </div>
+</div>
+<div id="github"><a href="https://github.com/aurbano/nuophoto"><small>Fork on</small><br />Github</a></div>
+
+<div id="workspace">  
+  <div id="tools" class="window" style="left: 40px; top:200px; width:4.4em;height:auto;">
+    <div class="topInfo"><div class="filename">Tools</div></div>
+    <div class="box">
+      <ul class="tool">
+        <li><a href="#zoomIn" title="Zoom in"><i class="fa fa-search-plus fa-lg"></i></a></li>
+        <li><a href="#zoomOut" title="Zoom out"><i class="fa fa-search-minus fa-lg"></i></a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div id="customizer" class="window" style="left: 60%; top:300px; width:300px; height:100px; display:none;">
+    <div class="topInfo"><div class="filename">[effect] options</div></div>
+    <div class="box">
+      <fieldset>Some effect options here</fieldset>
+      <div class="buttons">
+        <button type="button" value="apply">Apply</button>
+        <button type="button" value="cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+</body>
+</html>

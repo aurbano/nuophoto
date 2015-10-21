@@ -27,8 +27,7 @@ requirejs.config({
     jqueryui: [ //'http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min',
       '/lib/jqueryui.min'
     ],
-    colorpicker: '/lib/colorpicker/js/colorpicker',
-    bootstrap: '/lib/bootstrap-3.3.5-dist/js/bootstrap.min'
+    colorpicker: '/lib/colorpicker/js/colorpicker'
   },
   shim: {
     'colorpicker': ['jquery'],
@@ -53,7 +52,7 @@ requirejs.onError = function(err) {
   }
 };
 
-define(["jquery", "workspace", "bootstrap"], function($, workspace) {
+define(["jquery", "workspace"], function($, workspace) {
   $(function() {
     $(document).ready(function(e) {
       // Resize editor

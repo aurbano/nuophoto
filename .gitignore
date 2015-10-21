@@ -5,3 +5,9 @@ _compareTemp/
 Backup/
 debug/
 *.LCK
+.grunt
+build
+coverage
+lib-cov
+node_modules
+bower_components

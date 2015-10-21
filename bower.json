@@ -1,0 +1,34 @@
+{
+  "name": "nuophoto",
+  "version": "2.0.0",
+  "homepage": "https://github.com/aurbano/nuophoto",
+  "authors": [
+    "Alejandro U. Alvarez"
+  ],
+  "description": "Web based image editor",
+  "main": "index.html",
+  "keywords": [
+    "image",
+    "processing",
+    "editor"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-bootstrap": "~0.14.2",
+    "angular-loader": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "requirejs": "~2.1.20",
+    "almond": "~0.3.1",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4"
+  }
+}

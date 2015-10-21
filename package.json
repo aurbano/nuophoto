@@ -1,0 +1,35 @@
+{
+  "name": "nuophoto",
+  "version": "2.0.0",
+  "description": "Web based image editor",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo No tests available"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aurbano/nuophoto.git"
+  },
+  "keywords": [
+    "web",
+    "image",
+    "editor",
+    "processing"
+  ],
+  "author": "Alejandro U. Alvarez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aurbano/nuophoto/issues"
+  },
+  "homepage": "https://github.com/aurbano/nuophoto#readme",
+  "dependencies": {
+    "bower": "^1.6.3",
+    "grunt": "^0.4.5",
+    "grunt-bower-requirejs": "^2.0.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-gh-pages": "^0.10.0",
+    "grunt-string-replace": "^1.2.0"
+  }
+}
